@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
     public enum WeaponShootType
     {
-        Manual,
+        Burst,
         Automatic,
         Single
     }
@@ -31,7 +32,7 @@ public class Weapon : MonoBehaviour
     [Tooltip("The type of weapon will affect how it shoots")]
     public WeaponShootType ShootType;
 
-    [Tooltip("The projectile prefab")] public ProjectileBase ProjectilePrefab;
+    [Tooltip("The bullet prefab")] public Bullet BulletPrefab;
 
     [Tooltip("Minimum duration between two shots")]
     public float DelayBetweenShots = 0.5f;
@@ -49,6 +50,10 @@ public class Weapon : MonoBehaviour
     [Tooltip("Ratio of the default FOV that this weapon applies while aiming")]
     [Range(0f, 1f)]
     public float AimZoomRatio = 1f;
+
+    [Header("Scope Settings")]
+    [Tooltip("The exact position where the aim camera should move to align with the scope")]
+    public Transform ScopeTransform;
 
     [Tooltip("Translation to apply to weapon arm when aiming with this weapon")]
     public Vector3 AimOffset;
@@ -87,39 +92,20 @@ public class Weapon : MonoBehaviour
     [Tooltip("Unparent the muzzle flash instance on spawn")]
     public bool UnparentMuzzleFlash;
 
-    [Tooltip("sound played when shooting")]
-    public AudioClip ShootSfx;
-
-    [Tooltip("Sound played when changing to this weapon")]
-    public AudioClip ChangeWeaponSfx;
-
-    [Tooltip("Continuous Shooting Sound")] public bool UseContinuousShootSound = false;
-    public AudioClip ContinuousShootStartSfx;
-    public AudioClip ContinuousShootLoopSfx;
-    public AudioClip ContinuousShootEndSfx;
-    private AudioSource _continuousShootAudioSource = null;
-    private bool _wantsToShoot = false;
-
     public UnityAction OnShoot;
     public event Action OnShootProcessed;
 
-    private int _carriedPhysicalBullets;
     private float m_CurrentAmmo;
     private float m_LastTimeShot = Mathf.NegativeInfinity;
     public float LastChargeTriggerTimestamp { get; private set; }
-    private Vector3 _lastMuzzlePosition;
+    private Vector3 m_LastMuzzlePosition;
 
-    public GameObject Owner { get; set; }
+    public GameObject Owner;
     public GameObject SourcePrefab { get; set; }
-    public bool IsCharging { get; private set; }
     public float CurrentAmmoRatio { get; private set; }
     public bool IsWeaponActive { get; private set; }
-    public bool IsCooling { get; private set; }
-    public float CurrentCharge { get; private set; }
     public Vector3 MuzzleWorldVelocity { get; private set; }
     public int GetCurrentAmmo() => Mathf.FloorToInt(m_CurrentAmmo);
-
-    private AudioSource _shootAudioSource;
 
     public bool IsReloading { get; private set; }
 
@@ -130,33 +116,162 @@ public class Weapon : MonoBehaviour
     void Awake()
     {
         m_CurrentAmmo = MaxAmmo;
-        _carriedPhysicalBullets = HasPhysicalBullets ? ClipSize : 0;
-        _lastMuzzlePosition = WeaponMuzzle.position;
+        m_LastMuzzlePosition = WeaponMuzzle.position;
+    }
 
-        _shootAudioSource = GetComponent<AudioSource>();
-        DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(_shootAudioSource, this,
-            gameObject);
-
-        if (UseContinuousShootSound)
+    void Update()
+    {
+        UpdateAmmo();
+        if (Time.deltaTime > 0)
         {
-            _continuousShootAudioSource = gameObject.AddComponent<AudioSource>();
-            _continuousShootAudioSource.playOnAwake = false;
-            _continuousShootAudioSource.clip = ContinuousShootLoopSfx;
-            _continuousShootAudioSource.outputAudioMixerGroup =
-                AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.WeaponShoot);
-            _continuousShootAudioSource.loop = true;
+            MuzzleWorldVelocity = (WeaponMuzzle.position - m_LastMuzzlePosition) / Time.deltaTime;
+            m_LastMuzzlePosition = WeaponMuzzle.position;
+        }
+    }
+
+    void UpdateAmmo()
+    {
+        if (AutomaticReload && m_LastTimeShot + AmmoReloadDelay < Time.time && m_CurrentAmmo < MaxAmmo)
+        {
+            // reloads weapon over time
+            m_CurrentAmmo += AmmoReloadRate * Time.deltaTime;
+
+            // limits ammo to max value
+            m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, MaxAmmo);
         }
 
-        if (HasPhysicalBullets)
-        {
-            m_PhysicalAmmoPool = new Queue<Rigidbody>(ShellPoolSize);
+        /* if (MaxAmmo == Mathf.Infinity)
+         {
+             CurrentAmmoRatio = 1f;
+         }
+         else
+         {
+             CurrentAmmoRatio = m_CurrentAmmo / MaxAmmo;
+         }*/
+    }
 
-            for (int i = 0; i < ShellPoolSize; i++)
+    void Reload()
+    {
+        m_CurrentAmmo = ClipSize;
+        IsReloading = false;
+    }
+
+    public void StartReloadAnimation()
+    {
+        if (m_CurrentAmmo < ClipSize)
+        {
+            //GetComponent<Animator>().SetTrigger("Reload");
+            IsReloading = true;
+        }
+    }
+
+    public void UseAmmo(float amount)
+    {
+        m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo - amount, 0f, MaxAmmo);
+        m_LastTimeShot = Time.time;
+    }
+
+    public bool HandleShootInputs(bool inputDown, bool inputHeld, bool inputUp)
+    {
+        switch (ShootType)
+        {
+            case WeaponShootType.Burst:
+            case WeaponShootType.Single:
+                if (inputDown)
+                {
+                    return TryShoot();
+                }
+
+                return false;
+
+            case WeaponShootType.Automatic:
+                if (inputHeld)
+                {
+                    return TryShoot();
+                }
+
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
+    bool TryShoot()
+    {
+        if (m_CurrentAmmo >= 1f
+            && m_LastTimeShot + DelayBetweenShots < Time.time)
+        {
+            HandleShoot();
+            m_CurrentAmmo -= 1f;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    void HandleShoot()
+    {
+        BulletsPerShot = GetBulletsPerShot();
+
+        // spawn all bullets with random direction
+        for (int i = 0; i < BulletsPerShot; i++)
+        {
+            Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
+            Bullet newBullet = Instantiate(BulletPrefab, WeaponMuzzle.position,
+                Quaternion.LookRotation(shotDirection));
+            newBullet.Shoot(this);
+        }
+
+        // muzzle flash
+        if (MuzzleFlashPrefab != null)
+        {
+            GameObject muzzleFlashInstance = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position,
+                WeaponMuzzle.rotation, WeaponMuzzle.transform);
+            // Unparent the muzzleFlashInstance
+            if (UnparentMuzzleFlash)
             {
-                GameObject shell = Instantiate(ShellCasing, transform);
-                shell.SetActive(false);
-                m_PhysicalAmmoPool.Enqueue(shell.GetComponent<Rigidbody>());
+                muzzleFlashInstance.transform.SetParent(null);
             }
+
+            Destroy(muzzleFlashInstance, 2f);
         }
+
+        /*if (HasPhysicalBullets)
+        {
+            ShootShell();
+            m_CarriedPhysicalBullets--;
+        }*/
+
+        m_LastTimeShot = Time.time;
+
+        // Trigger attack animation if there is any
+        if (WeaponAnimator)
+        {
+            WeaponAnimator.SetTrigger(k_AnimAttackParameter);
+        }
+
+        OnShoot?.Invoke();
+        OnShootProcessed?.Invoke();
+    }
+
+    private int GetBulletsPerShot()
+    {
+        return ShootType switch
+        {
+            WeaponShootType.Automatic or WeaponShootType.Single => 1,
+            WeaponShootType.Burst => 3,
+            _ => 1,
+        };
+    }
+
+    public Vector3 GetShotDirectionWithinSpread(Transform shootTransform)
+    {
+        float spreadAngleRatio = BulletSpreadAngle / 180f;
+        Vector3 spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere,
+            spreadAngleRatio);
+
+        return spreadWorldDirection;
     }
 }

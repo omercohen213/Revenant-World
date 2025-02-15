@@ -1,4 +1,4 @@
-using StarterAssets;
+using Unity.Cinemachine;
 using UnityEngine;
 
 
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Grounded")]
     [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-    public bool Grounded = true;
+    public bool IsGrounded = true;
     [Tooltip("Useful for rough ground")]
     public float GroundedOffset = -0.14f;
     [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
@@ -47,6 +47,23 @@ public class PlayerController : MonoBehaviour
     public float TopClamp = 90.0f;
     [Tooltip("How far in degrees can you move the camera down")]
     public float BottomClamp = -90.0f;
+
+    [Header("Aim Rotation")]
+    [Tooltip("The objects that should follow the player's aim")]
+    public GameObject Weapon;
+    [Tooltip("The right arm that moves with the camera")]
+    public GameObject RightArm;
+    [Tooltip("The left arm that moves with the camera")]
+    public GameObject LeftArm;
+
+    // Reference to camera
+    public CinemachineCamera Camera;
+
+
+    // Store initial rotations
+    private Quaternion _initialWeaponRotation;
+    private Quaternion _initialRightArmRotation;
+    private Quaternion _initialLeftArmRotation;
 
     // cinemachine
     private float _cinemachineTargetPitch;
@@ -75,6 +92,11 @@ public class PlayerController : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
 
+        // Parent arms and weapon to camera target for smooth following
+        Weapon.transform.SetParent(CinemachineCameraTarget.transform, true);
+        RightArm.transform.SetParent(CinemachineCameraTarget.transform, true);
+        LeftArm.transform.SetParent(CinemachineCameraTarget.transform, true);
+
         // reset our timeouts on start
         _jumpTimeoutDelta = JumpTimeout;
         _fallTimeoutDelta = FallTimeout;
@@ -84,7 +106,6 @@ public class PlayerController : MonoBehaviour
     {
         JumpAndGravity();
         GroundedCheck();
-        Fire();
         Move();
     }
 
@@ -97,7 +118,7 @@ public class PlayerController : MonoBehaviour
     {
         // set sphere position, with offset
         Vector3 spherePosition = new(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
-        Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+        IsGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void CameraRotation()
@@ -169,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
     private void JumpAndGravity()
     {
-        if (Grounded)
+        if (IsGrounded)
         {
             // reset the fall timeout timer
             _fallTimeoutDelta = FallTimeout;
@@ -215,16 +236,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Fire()
-    {
-        bool fired = _playerInput.fire;
-        if (fired)
-        {
-            {
-                Debug.Log("ss");
-            }
-        }
-    }
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
     {
         if (lfAngle < -360f) lfAngle += 360f;
