@@ -1,0 +1,803 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PoseA
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.000000007450581, y: -1.5509636e-25, z: -2.0816682e-17, w: -1}
+        inSlope: {x: 2.6645351e-14, y: 0.0000004470348, z: -6.2450003e-16, w: 0}
+        outSlope: {x: 2.6645351e-14, y: 0.0000004470348, z: -6.2450003e-16, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -0.0000000074505797, y: 0.000000014901161, z: -4.163335e-17, w: -1}
+        inSlope: {x: 2.6645351e-14, y: 0.0000004470348, z: -6.2450003e-16, w: 0}
+        outSlope: {x: 2.6645351e-14, y: 0.0000004470348, z: -6.2450003e-16, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069/pinky_03_l_070
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0.0000015397685, y: -0.00073315663, z: 0.0077979853, w: -0.9999693}
+        inSlope: {x: 0.0000006628306, y: -0.000000904547, z: 0.00000093597913, w: 0}
+        outSlope: {x: 0.0000006628306, y: -0.000000904547, z: 0.00000093597913, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0.0000015618629, y: -0.0007331868, z: 0.0077980165, w: -0.9999693}
+        inSlope: {x: 0.0000006628306, y: -0.000000904547, z: 0.00000093597913, w: 0}
+        outSlope: {x: 0.0000006628306, y: -0.000000904547, z: 0.00000093597913, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0.00047980357, y: 0.00015664785, z: -0.03358871, w: -0.9994356}
+        inSlope: {x: -0.0000001938315, y: -0.0000009023642, z: 0.0000015646218, w: 0}
+        outSlope: {x: -0.0000001938315, y: -0.0000009023642, z: 0.0000015646218, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0.0004797971, y: 0.00015661777, z: -0.03358866, w: -0.9994356}
+        inSlope: {x: -0.0000001938315, y: -0.0000009023642, z: 0.0000015646218, w: 0}
+        outSlope: {x: -0.0000001938315, y: -0.0000009023642, z: 0.0000015646218, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.017080545, y: -0.06342174, z: 0.03148698, w: -0.9973437}
+        inSlope: {x: -0.00000061467284, y: 0.0000006705522, z: -0.0000008940696, w: 0}
+        outSlope: {x: -0.00000061467284, y: 0.0000006705522, z: -0.0000008940696, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -0.017080566, y: -0.06342172, z: 0.03148695, w: -0.9973437}
+        inSlope: {x: -0.00000061467284, y: 0.0000006705522, z: -0.0000008940696, w: 0}
+        outSlope: {x: -0.00000061467284, y: 0.0000006705522, z: -0.0000008940696, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.000000014901158, y: -0.000000007450581, z: -1, w: 1.7225462e-16}
+        inSlope: {x: -1.06581404e-13, y: 0.0000002235174, z: 0, w: -3.330668e-15}
+        outSlope: {x: -1.06581404e-13, y: 0.0000002235174, z: 0, w: -3.330668e-15}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -0.000000014901161, y: -9.12433e-25, z: -1, w: 6.123234e-17}
+        inSlope: {x: -1.06581404e-13, y: 0.0000002235174, z: 0, w: -3.330668e-15}
+        outSlope: {x: -1.06581404e-13, y: 0.0000002235174, z: 0, w: -3.330668e-15}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101/pinky_03_r_0102
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.0000015393753, y: 0.0007332014, z: 0.007798045, w: -0.9999693}
+        inSlope: {x: -0.00000066522824, y: 0.0000008993083, z: -0.000002235174, w: 0}
+        outSlope: {x: -0.00000066522824, y: 0.0000008993083, z: -0.000002235174, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -0.0000015615495, y: 0.00073323137, z: 0.0077979704, w: -0.9999693}
+        inSlope: {x: -0.00000066522824, y: 0.0000008993083, z: -0.000002235174, w: 0}
+        outSlope: {x: -0.00000066522824, y: 0.0000008993083, z: -0.000002235174, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -0.000479812, y: -0.0001566183, z: -0.03358871, w: -0.9994356}
+        inSlope: {x: -8.7311486e-10, y: 0.0000000013096723, z: 0.0000013411044, w: 0}
+        outSlope: {x: -8.7311486e-10, y: 0.0000000013096723, z: 0.0000013411044, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -0.00047981204, y: -0.00015661826, z: -0.033588666, w: -0.9994356}
+        inSlope: {x: -8.7311486e-10, y: 0.0000000013096723, z: 0.0000013411044, w: 0}
+        outSlope: {x: -8.7311486e-10, y: 0.0000000013096723, z: 0.0000013411044, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0.017080545, y: 0.063421726, z: 0.031486966, w: -0.9973437}
+        inSlope: {x: 0.0000016763805, y: -0.0000002235174, z: -0.0000008940696, w: 0}
+        outSlope: {x: 0.0000016763805, y: -0.0000002235174, z: -0.0000008940696, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0, w: 0}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0.017080601, y: 0.06342172, z: 0.031486936, w: -0.9973437}
+        inSlope: {x: 0.0000016763805, y: -0.0000002235174, z: -0.0000008940696, w: 0}
+        outSlope: {x: 0.0000016763805, y: -0.0000002235174, z: -0.0000008940696, w: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
+        outWeight: {x: 0, y: 0, z: 0, w: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 17.503601, y: -0.000030517578, z: 0.000015258789}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.00045776364, y: 0.0009155273, z: -0.00045776364}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 17.503586, y: 0, z: -2.842171e-14}
+        inSlope: {x: -0.00045776364, y: 0.0009155273, z: -0.00045776364}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069/pinky_03_l_070
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 15.647034, y: 0.000030517578, z: -2.842171e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -0.0009155273, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 15.647034, y: 0, z: -2.842171e-14}
+        inSlope: {x: 0, y: -0.0009155273, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 22.729996, y: 0, z: -0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.00045776364, y: -0, z: -0.00045776364}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 22.72998, y: 0, z: -0.000015258789}
+        inSlope: {x: -0.00045776364, y: 0, z: -0.00045776364}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 21.025787, y: 0, z: -1.0658141e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -0, z: 4.2632561e-13}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 21.025787, y: 0, z: 3.5527137e-15}
+        inSlope: {x: 0, y: 0, z: 4.2632561e-13}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/thumb_00_r_083/thumb_01_r_084/thumb_02_r_085/thumb_03_r_086
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 16.809586, y: -0.000030517578, z: -0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -0, z: -8.5265123e-13}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 16.809586, y: -0.000030517578, z: -2.842171e-14}
+        inSlope: {x: 0, y: 0, z: -8.5265123e-13}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/index_00_r_087/index_01_r_088/index_02_r_089
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 23.873611, y: 0, z: -0.000015258789}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -1.7053025e-12, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 23.873611, y: -5.684342e-14, z: -0.000015258789}
+        inSlope: {x: 0, y: -1.7053025e-12, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/index_00_r_087/index_01_r_088
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 25.875992, y: 0, z: 1.4210855e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: 1.7053025e-12, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 25.875992, y: 5.684342e-14, z: 1.4210855e-14}
+        inSlope: {x: 0, y: 1.7053025e-12, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/middle_00_r_091/middle_01_r_092/middle_02_r_093/middle_03_r_094
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 26.465591, y: 5.684342e-14, z: 1.4210855e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -1.7053025e-12, z: -4.2632561e-13}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 26.465591, y: 0, z: -0}
+        inSlope: {x: 0, y: -1.7053025e-12, z: -4.2632561e-13}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/middle_00_r_091/middle_01_r_092
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 21.134613, y: 0, z: 0.000015258789}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: 1.7053025e-12, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 21.134613, y: 5.684342e-14, z: 0.000015258789}
+        inSlope: {x: 0, y: 1.7053025e-12, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/ring_00_r_095/ring_01_r_096/ring_02_r_097/ring_03_r_098
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 19.812225, y: 0, z: -2.842171e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -1.7053025e-12, z: 8.5265123e-13}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 19.812225, y: -5.684342e-14, z: -0}
+        inSlope: {x: 0, y: -1.7053025e-12, z: 8.5265123e-13}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/ring_00_r_095/ring_01_r_096/ring_02_r_097
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 17.503616, y: 0, z: 0.000015258789}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.00045776364, y: 1.7053025e-12, z: -0.00045776364}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 17.503601, y: 5.684342e-14, z: -0}
+        inSlope: {x: -0.00045776364, y: 1.7053025e-12, z: -0.00045776364}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101/pinky_03_r_0102
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 15.647034, y: 0, z: -0.000015258789}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0.00045776364, y: -0, z: 0.00045776364}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 15.647049, y: 0, z: 2.842171e-14}
+        inSlope: {x: 0.00045776364, y: 0, z: 0.00045776364}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 22.72998, y: -5.684342e-14, z: -0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: 1.7053025e-12, z: -0.00045776364}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 22.72998, y: 0, z: -0.000015258789}
+        inSlope: {x: 0, y: 1.7053025e-12, z: -0.00045776364}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 87.28722, y: -2.842171e-14, z: 5.684342e-14}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.00045776364, y: 8.5265123e-13, z: -1.7053025e-12}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 87.2872, y: 0, z: -0}
+        inSlope: {x: -0.00045776364, y: 8.5265123e-13, z: -1.7053025e-12}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082
+  m_ScaleCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 1, y: 1, z: 1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: 0.0000035762785, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 1, y: 1.0000001, z: 1}
+        inSlope: {x: 0, y: 0.0000035762785, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069/pinky_03_l_070
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 1.0000001, y: 0.99999994, z: 1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.000007152557, y: -0, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0.9999999, y: 0.99999994, z: 1}
+        inSlope: {x: -0.000007152557, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068/pinky_02_l_069
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 1, y: 1, z: 1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0, y: -0, z: -0.0000017881392}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 1, y: 1, z: 0.99999994}
+        inSlope: {x: 0, y: 0, z: -0.0000017881392}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067/pinky_01_l_068
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0.9999999, y: 0.9999999, z: 1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0.0000017881392, y: 0.0000017881392, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0.99999994, y: 0.99999994, z: 1}
+        inSlope: {x: 0.0000017881392, y: 0.0000017881392, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_l_047/upperarm_l_048/lowerarm_l_049/hand_l_050/pinky_00_l_067
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: -1.0000002, y: -1, z: -1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0.000007152557, y: -0, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: -1, y: -1, z: -1}
+        inSlope: {x: 0.000007152557, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101/pinky_03_r_0102
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 1.0000001, y: 1, z: 1}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -0.0000035762785, y: -0.0000053644176, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 1, y: 0.9999998, z: 1}
+        inSlope: {x: -0.0000035762785, y: -0.0000053644176, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100/pinky_02_r_0101
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 1, y: 1, z: 0.99999994}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0.0000035762785, y: -0, z: 0.0000017881392}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 1.0000001, y: 1, z: 1}
+        inSlope: {x: 0.0000035762785, y: 0, z: 0.0000017881392}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099/pinky_01_r_0100
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0.9999999, y: 0.9999999, z: 1.0000001}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0.0000035762785, y: 0.0000035762785, z: -0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 1, y: 1, z: 1.0000001}
+        inSlope: {x: 0.0000035762785, y: 0.0000035762785, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0, z: 0}
+        outWeight: {x: 0, y: 0, z: 0}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Sketchfab_model/fbx_merge.fbx/Object_2/RootNode/Object_4/_rootJoint/root_04/pelvis_05/pelvis_01_00/spine_01_06/spine_02_07/spine_03_08/spine_04_09/spine_05_010/neck_00_011/clavicle_r_079/upperarm_r_080/lowerarm_r_081/hand_r_082/pinky_00_r_099
+  m_FloatCurves: []
+  m_PPtrCurves: []
+  m_SampleRate: 60
+  m_WrapMode: 2
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings: []
+    pptrCurveMapping: []
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 0.033333335
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves: []
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events: []
