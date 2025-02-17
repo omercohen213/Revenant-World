@@ -8,6 +8,9 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Sensitivity multiplier for moving the camera around")]
         public float LookSensitivity = 1f;
 
+        [Tooltip("Additional sensitivity multiplier for WebGL")]
+        public float WebglLookSensitivityMultiplier = 0.25f;
+
         [Tooltip("Limit to consider an input when using a trigger on a controller")]
         public float TriggerAxisThreshold = 0.4f;
 
@@ -35,7 +38,7 @@ namespace Unity.FPS.Gameplay
 
         void LateUpdate()
         {
-            //m_FireInputWasHeld = GetFireInputHeld();
+            m_FireInputWasHeld = GetFireInputHeld();
         }
 
         public bool CanProcessInput()
@@ -47,7 +50,7 @@ namespace Unity.FPS.Gameplay
         {
             if (CanProcessInput())
             {
-                Vector3 move = new(Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal), 0f,
+                Vector3 move = new Vector3(Input.GetAxisRaw(GameConstants.k_AxisNameHorizontal), 0f,
                     Input.GetAxisRaw(GameConstants.k_AxisNameVertical));
 
                 // constrain move input to a maximum magnitude of 1, otherwise diagonal movement might exceed the max move speed defined
@@ -105,10 +108,16 @@ namespace Unity.FPS.Gameplay
         {
             if (CanProcessInput())
             {
-
-                return Input.GetButton(GameConstants.k_ButtonNameFire);
+                bool isGamepad = Input.GetAxis(GameConstants.k_ButtonNameGamepadFire) != 0f;
+                if (isGamepad)
+                {
+                    return Input.GetAxis(GameConstants.k_ButtonNameGamepadFire) >= TriggerAxisThreshold;
+                }
+                else
+                {
+                    return Input.GetButton(GameConstants.k_ButtonNameFire);
+                }
             }
-
 
             return false;
         }
@@ -217,7 +226,7 @@ namespace Unity.FPS.Gameplay
             }
 
             return 0;
-        }/**/
+        }
 
         float GetMouseOrStickLookAxis(string mouseInputName, string stickInputName)
         {

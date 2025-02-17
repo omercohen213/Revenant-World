@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -54,15 +52,15 @@ public class Bullet : MonoBehaviour
     [Tooltip("Color of the projectile radius debug view")]
     public Color RadiusColor = Color.cyan * 0.2f;
 
-    Vector3 m_LastRootPosition;
-    Vector3 m_Velocity;
-    bool _hasTrajectoryOverride;
-    float _shootTime;
-    Vector3 _trajectoryCorrectionVector;
-    Vector3 _consumedTrajectoryCorrectionVector;
-    List<Collider> m_IgnoredColliders;
+    private Vector3 _lastRootPosition;
+    private Vector3 _velocity;
+    private bool _hasTrajectoryOverride;
+    private float _shootTime;
+    private Vector3 _trajectoryCorrectionVector;
+    private Vector3 _consumedTrajectoryCorrectionVector;
+    private List<Collider> _ignoredColliders;
 
-    const QueryTriggerInteraction k_TriggerInteraction = QueryTriggerInteraction.Collide;
+    private const QueryTriggerInteraction k_TriggerInteraction = QueryTriggerInteraction.Collide;
 
     public GameObject Owner { get; private set; }
     public Vector3 InitialPosition { get; private set; }
@@ -79,40 +77,40 @@ public class Bullet : MonoBehaviour
 
     public void Shoot(Weapon weapon)
     {
-        Owner = weapon.Owner;
+        Owner = weapon.Owner.gameObject;
         Transform muzzleTransform = weapon.WeaponMuzzle;
 
+        if (!DebugUtil.SafeGetComponent(Owner, out WeaponManager playerWeaponManager)) return;
+        
         // Get the active camera
-        PlayerWeaponManager playerWeaponManager = Owner.GetComponent<PlayerWeaponManager>();
-        CinemachineCamera activeCamera = playerWeaponManager.IsAiming ? playerWeaponManager.AimCamera : playerWeaponManager.DefaultCamera;
+        CinemachineCamera activeCamera = playerWeaponManager.Camera;
 
         // Get aiming direction from the correct camera
         Vector3 aimDirection = activeCamera.transform.forward;
 
-        // Correct the bullet rotation by aligning it with the aim direction
-        Quaternion correctedRotation = Quaternion.LookRotation(aimDirection);
-
-        // Apply the corrected rotation
-        //transform.rotation = correctedRotation;
+        // Set bullet position at the muzzle
         transform.position = muzzleTransform.position;
+
+        // Correct rotation: Align bullet's forward (Z-axis) with the aiming direction
+         transform.rotation = Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f);
 
         // Store the initial direction
         InitialPosition = transform.position;
         InitialDirection = aimDirection;
 
         // Set the velocity in the new direction
-        m_Velocity = aimDirection * Speed;
+        _velocity = aimDirection * Speed;
 
         // Apply inherited weapon velocity
         InheritedMuzzleVelocity = weapon.MuzzleWorldVelocity;
         if (InheritWeaponVelocity)
         {
-            m_Velocity += InheritedMuzzleVelocity;
+            _velocity += InheritedMuzzleVelocity;
         }
 
         // Ignore colliders of the weapon owner
         Collider[] ownerColliders = Owner.GetComponentsInChildren<Collider>();
-        m_IgnoredColliders = new List<Collider>(ownerColliders);
+        _ignoredColliders = new List<Collider>(ownerColliders);
 
         // Trigger the shoot event
         OnShoot?.Invoke();
@@ -121,7 +119,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         // Move
-        transform.position += m_Velocity * Time.deltaTime;
+        transform.position += _velocity * Time.deltaTime;
         if (InheritWeaponVelocity)
         {
             transform.position += InheritedMuzzleVelocity * Time.deltaTime;
@@ -133,7 +131,7 @@ public class Bullet : MonoBehaviour
             _trajectoryCorrectionVector.sqrMagnitude)
         {
             Vector3 correctionLeft = _trajectoryCorrectionVector - _consumedTrajectoryCorrectionVector;
-            float distanceThisFrame = (Root.position - m_LastRootPosition).magnitude;
+            float distanceThisFrame = (Root.position - _lastRootPosition).magnitude;
             Vector3 correctionThisFrame =
                 (distanceThisFrame / TrajectoryCorrectionDistance) * _trajectoryCorrectionVector;
             correctionThisFrame = Vector3.ClampMagnitude(correctionThisFrame, correctionLeft.magnitude);
@@ -148,14 +146,20 @@ public class Bullet : MonoBehaviour
             transform.position += correctionThisFrame;
         }
 
-        // Orient towards velocity
-        transform.forward = m_Velocity.normalized;
+        /*// Orient towards velocity
+        transform.forward = _velocity.normalized;*/
+
+        // Maintain correct rotation (Prevents mid-flight rotation issues)
+        if (_velocity.sqrMagnitude > 0.01f)  // Only rotate if moving
+        {
+            transform.rotation = Quaternion.LookRotation(_velocity) * Quaternion.Euler(90f, 0f, 0f);
+        }
 
         // Gravity
         if (GravityDownAcceleration > 0)
         {
             // add gravity to the projectile velocity for ballistic effect
-            m_Velocity += Vector3.down * GravityDownAcceleration * Time.deltaTime;
+            _velocity += Vector3.down * GravityDownAcceleration * Time.deltaTime;
         }
 
         // Hit detection
@@ -165,8 +169,8 @@ public class Bullet : MonoBehaviour
             bool foundHit = false;
 
             // Sphere cast
-            Vector3 displacementSinceLastFrame = Tip.position - m_LastRootPosition;
-            RaycastHit[] hits = Physics.SphereCastAll(m_LastRootPosition, Radius,
+            Vector3 displacementSinceLastFrame = Tip.position - _lastRootPosition;
+            RaycastHit[] hits = Physics.SphereCastAll(_lastRootPosition, Radius,
                 displacementSinceLastFrame.normalized, displacementSinceLastFrame.magnitude, HittableLayers,
                 k_TriggerInteraction);
             foreach (var hit in hits)
@@ -191,7 +195,7 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        m_LastRootPosition = Root.position;
+        _lastRootPosition = Root.position;
     }
 
     bool IsHitValid(RaycastHit hit)
@@ -209,7 +213,7 @@ public class Bullet : MonoBehaviour
         }
 
         // ignore hits with specific ignored colliders (self colliders, by default)
-        if (m_IgnoredColliders != null && m_IgnoredColliders.Contains(hit.collider))
+        if (_ignoredColliders != null && _ignoredColliders.Contains(hit.collider))
         {
             return false;
         }

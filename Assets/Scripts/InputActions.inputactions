@@ -70,8 +70,17 @@
                 },
                 {
                     "name": "Reload",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "79bbe23f-dbd0-49af-a3d1-2070e4a43d93",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "PassThrough",
+                    "id": "e7fbb039-1d13-496d-9829-41700ca5c745",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -296,6 +305,17 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b338800-62a2-4df4-abe0-08d476ed6874",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

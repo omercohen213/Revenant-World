@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public abstract class Item : MonoBehaviour
+public abstract class Item : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public string ItemName;
+    public string Description;
+    public Sprite Icon;
+    public float Weight;  // Affects inventory capacity
+    public int MaxStack;  // Max number of this item in one slot
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public virtual void Use() { } // Overridden by specific item types
 }

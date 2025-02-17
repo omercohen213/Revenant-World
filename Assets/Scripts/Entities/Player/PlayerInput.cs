@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     public Vector2 look;
     public bool jump;
     public bool sprint;
+    public bool dash;
 
     public bool fireDown;
     public bool fireHeld;
@@ -32,6 +33,8 @@ public class PlayerInput : MonoBehaviour
     public void OnLook(InputValue value) { if (cursorInputForLook) look = value.Get<Vector2>(); }
     public void OnJump(InputValue value) => jump = value.isPressed;
     public void OnSprint(InputValue value) => sprint = value.isPressed;
+    public void OnDash(InputValue value) => dash = value.isPressed;
+
 
     public void OnFire(InputValue value)
     {

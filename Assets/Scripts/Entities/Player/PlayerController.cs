@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("The right arm that moves with the camera")]
     public GameObject RightArm;
     [Tooltip("The left arm that moves with the camera")]
-    public GameObject LeftArm;
+    public GameObject LeftArm;  
 
     // Reference to camera
     public CinemachineCamera Camera;
@@ -86,14 +86,16 @@ public class PlayerController : MonoBehaviour
 
     private const float _threshold = 0.01f;
 
-
-    private void Start()
+    private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
+    }
 
-        // Parent arms and weapon to camera target for smooth following
-        Weapon.transform.SetParent(CinemachineCameraTarget.transform, true);
+
+    private void Start()
+    {
+        // Parent arms and weapon to camera target for smooth 
         RightArm.transform.SetParent(CinemachineCameraTarget.transform, true);
         LeftArm.transform.SetParent(CinemachineCameraTarget.transform, true);
 
