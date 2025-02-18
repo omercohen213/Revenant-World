@@ -75,10 +75,10 @@ public class Bullet : MonoBehaviour
         OnShoot?.Invoke();
     }
 
-    public void Shoot(Weapon weapon)
+    public void Shoot(Gun gun)
     {
-        Owner = weapon.Owner.gameObject;
-        Transform muzzleTransform = weapon.WeaponMuzzle;
+        Owner = gun.Owner.gameObject;
+        Transform muzzleTransform = gun.WeaponMuzzle;
 
         if (!DebugUtil.SafeGetComponent(Owner, out WeaponManager playerWeaponManager)) return;
         
@@ -88,11 +88,9 @@ public class Bullet : MonoBehaviour
         // Get aiming direction from the correct camera
         Vector3 aimDirection = activeCamera.transform.forward;
 
-        // Set bullet position at the muzzle
-        transform.position = muzzleTransform.position;
-
+        // Set bullet position at the muzzle   
         // Correct rotation: Align bullet's forward (Z-axis) with the aiming direction
-         transform.rotation = Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f);
+         transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f));
 
         // Store the initial direction
         InitialPosition = transform.position;
@@ -102,7 +100,7 @@ public class Bullet : MonoBehaviour
         _velocity = aimDirection * Speed;
 
         // Apply inherited weapon velocity
-        InheritedMuzzleVelocity = weapon.MuzzleWorldVelocity;
+        InheritedMuzzleVelocity = gun.MuzzleWorldVelocity;
         if (InheritWeaponVelocity)
         {
             _velocity += InheritedMuzzleVelocity;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1370883996030892580}
   - component: {fileID: 5375884123069142101}
-  - component: {fileID: 1310867505574549470}
+  - component: {fileID: 3787800803669364905}
   m_Layer: 8
   m_Name: Scar-L
   m_TagString: Untagged
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170424340172562550}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1310867505574549470
+--- !u!114 &3787800803669364905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,17 +52,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1170424340172562550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d048018d5d23c20429170cb0015ad35f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e5aaff2ee06a89418e01d4b3a6e15f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponData: {fileID: 11400000, guid: b1cd07b23b9aeab49ab35683243c80d6, type: 2}
   Owner: {fileID: 0}
-  WeaponRoot: {fileID: 1170424340172562550}
+  RangedWeaponData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
+  CurrentAmmo: 0
+  gunData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
   WeaponMuzzle: {fileID: 1171665404314480440}
-  ScopeTransform: {fileID: 6431832728494779870}
   MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 9f671b22f25370048a18fb1f821294ec, type: 3}
   UnparentMuzzleFlash: 0
-  CurrentAmmo: 0
 --- !u!1001 &598082886981806951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1009,11 +1008,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a978d51a59208b94a85017d1173d1ab4, type: 3}
---- !u!4 &6431832728494779870 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8330326939876349658, guid: a978d51a59208b94a85017d1173d1ab4, type: 3}
-  m_PrefabInstance: {fileID: 3087553983554517764}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6496897881067924071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8138197826653999459, guid: a978d51a59208b94a85017d1173d1ab4, type: 3}

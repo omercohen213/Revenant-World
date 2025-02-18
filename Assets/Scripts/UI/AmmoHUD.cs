@@ -15,18 +15,30 @@ public class AmmoHUD: MonoBehaviour
     public TextMeshProUGUI OutMagAmmo;
 
     private InventoryManager _inventoryManager;
-    private Weapon _activeWeapon;
+    private RangedWeapon _activeWeapon;
 
     void Awake()
     {
         DebugUtil.SafeGetComponentInParent(gameObject, out _inventoryManager);
-        _activeWeapon = _inventoryManager.GetActiveWeapon();
+
+
+        // ********************* CHANGE ************************
+        _activeWeapon = (RangedWeapon)_inventoryManager.GetActiveWeapon(); 
     }
 
     private void OnEnable()
     {
-        _activeWeapon.OnShoot += UpdateAmmoText;
-        _activeWeapon.OnReload += UpdateAmmoText;
+        if (_activeWeapon != null)
+        {
+            _activeWeapon.OnShoot += UpdateAmmoText;
+            _activeWeapon.OnReload += UpdateAmmoText;
+        }
+        else
+        {
+            Debug.LogWarning("Active weapon is not assigned.");
+        }
+        //_activeWeapon.OnShoot += UpdateAmmoText;
+        //_activeWeapon.OnReload += UpdateAmmoText;
     }
 
     private void Start()
@@ -36,10 +48,8 @@ public class AmmoHUD: MonoBehaviour
 
     void OnDisable()
     {
-        // Unsubscribe from events to avoid memory leaks
         if (_activeWeapon != null)
         {
-            //_weapon.OnShootProcessed -= UpdateAmmoText;
             _activeWeapon.OnShoot -= UpdateAmmoText;
             _activeWeapon.OnReload -= UpdateAmmoText;
         }

@@ -29,5 +29,14 @@ public class Crosshair : MonoBehaviour
     {
     }
 
-    
+    public void DisableCrosshair()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void EnableCrosshair()
+    {
+        gameObject.SetActive(true);
+    }
+
 }

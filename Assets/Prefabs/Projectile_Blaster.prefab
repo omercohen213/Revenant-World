@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3659995153115176982}
-  - component: {fileID: 8924682559891268397}
+  - component: {fileID: -6930481111388103609}
   m_Layer: 0
   m_Name: Projectile_Blaster
   m_TagString: Untagged
@@ -24,15 +24,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3659995153115176983}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8402172112652589804}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8924682559891268397
+--- !u!114 &-6930481111388103609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,28 +42,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3659995153115176983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de99b30e1e73fd14e98cc5371da25d12, type: 3}
+  m_Script: {fileID: 11500000, guid: 4228658ceb3085f438021112d884f2ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Radius: 0.01
-  Root: {fileID: 3659995153115176982}
-  Tip: {fileID: 1135791333161367127}
+  Root: {fileID: 2787594106011184721, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
+  Tip: {fileID: 6965400757647036215, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
   MaxLifeTime: 5
-  ImpactVfx: {fileID: 7655095426451682942, guid: a7d68b1a502e02a49b8efb1b86a8c931,
-    type: 3}
+  ImpactVfx: {fileID: 5781806936358044080, guid: fa498bfcbbc9707458a2c75334b150c8, type: 3}
   ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
-  ImpactSfxClip: {fileID: 0}
   HittableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  Speed: 300
-  GravityDownAcceleration: 0
-  TrajectoryCorrectionDistance: 5
+  Speed: 1
+  GravityDownAcceleration: 0.1
+  TrajectoryCorrectionDistance: 0
   InheritWeaponVelocity: 0
-  Damage: 15
-  AreaOfDamage: {fileID: 0}
-  RadiusColor: {r: 0, g: 1, b: 0.9007921, a: 1}
+  Damage: 40
+  RadiusColor: {r: 0, g: 0.2, b: 0.2, a: 0.2}
 --- !u!1 &5564024855854763701
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,12 +84,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5564024855854763701}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 101.4293}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8402172112652589804}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8402172112652879564
 GameObject:
@@ -118,13 +117,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8402172112652879564}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1135791333161367127}
   m_Father: {fileID: 3659995153115176982}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8402172112653884108
 MeshFilter:
@@ -145,11 +145,15 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

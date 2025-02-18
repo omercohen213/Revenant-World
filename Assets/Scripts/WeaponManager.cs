@@ -9,36 +9,35 @@ using UnityEngine.UIElements;
 public class WeaponManager : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Default Camera")]
+    [Tooltip("Main Camera")]
     public CinemachineCamera Camera;
+    [Tooltip("Animator")]
     public Animator animator;
-
     [Tooltip("Position for weapons when active but not actively aiming")]
     public Transform DefaultWeaponPosition;
-
-
-    public bool IsReloading = false;
+    [Tooltip("Crosshair")]
+    public Crosshair crosshair;
 
     [Header("Misc")]
+    public bool IsReloading = false;
+
     [Tooltip("Field of view when not aiming")]
     public float DefaultFov = 60f;
 
     [Tooltip("Portion of the regular FOV to apply to the weapon camera")]
     public float WeaponFovMultiplier = 0.5f; //change to scope
+    [Tooltip("Aiming Animation Speed")]
     public float AimingAnimationSpeed = 10f;
-
     [Tooltip("Delay before switching weapon a second time, to avoid recieving multiple inputs from mouse wheel")]
     public float WeaponSwitchDelay = 1f;
-
     [Tooltip("Layer to set FPS weapon gameObjects to")]
     public LayerMask FpsWeaponLayer;
 
     public bool IsAiming { get; private set; }
-    public int ActiveWeaponIndex { get; private set; }
 
     private PlayerInput _playerInput;
-    private PlayerController _playerController;
     private InventoryManager _inventoryManager;
+    private RangedWeapon _activeWeapon;
 
     private float _weaponBobFactor;
     private Vector3 _lastCharacterPosition;
@@ -51,32 +50,19 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         if (!DebugUtil.SafeGetComponent(gameObject, out _playerInput)) return;
-        if (!DebugUtil.SafeGetComponent(gameObject, out _playerController)) return;
         if (!DebugUtil.SafeGetComponent(gameObject, out _inventoryManager)) return;
         SetFov(DefaultFov);
     }
 
     void Update()
     {
+        if (_inventoryManager.GetActiveWeapon() is RangedWeapon rangedWeapon)
+        {
+            _activeWeapon = rangedWeapon;
+        }
+
         // shoot handling
-        Weapon activeWeapon = _inventoryManager.GetActiveWeapon();
-        if (activeWeapon == null) return;
-
-        // Handle fire input
-        if (_playerInput.GetFireInputDown())
-        {
-            activeWeapon.StartShooting();
-        }
-
-        if (_playerInput.GetFireInputHeld())
-        {
-            activeWeapon.ContinueShooting();
-        }
-
-        if (_playerInput.GetFireInputReleased())
-        {
-            activeWeapon.StopShooting();
-        }
+        if (_activeWeapon == null) return;
 
         // Prevent actions while reloading
         if (IsReloading)
@@ -85,23 +71,46 @@ public class WeaponManager : MonoBehaviour
             return;
         }
 
-        // Handle reload input or if the weapon runs out of ammo
-        if (_playerInput.reload && !IsReloading && _inventoryManager.GetTotalAmmo(activeWeapon) > 0
-            || activeWeapon.CurrentAmmo <= 0 && _inventoryManager.GetTotalAmmo(activeWeapon) > 0)
+        // Handle fire input
+        if (_playerInput.GetFireInputDown())
         {
-            StartReload();
+            _activeWeapon.StartShooting();
+        }
+
+        if (_playerInput.GetFireInputHeld())
+        {
+            _activeWeapon.ContinueShooting();
+        }
+
+        if (_playerInput.GetFireInputReleased())
+        {
+            _activeWeapon.StopShooting();
+        }
+
+        if (_activeWeapon.RangedWeaponData.HasAmmo)
+        {
+            // Handle reload input or if the weapon runs out of ammo
+            if (_playerInput.reload && !IsReloading && _inventoryManager.GetTotalAmmo(_activeWeapon) > 0
+                || _activeWeapon.CurrentAmmo <= 0 && _inventoryManager.GetTotalAmmo(_activeWeapon) > 0)
+            {
+                StartReload();
+            }
         }
 
         IsAiming = _playerInput.aim;
+
     }
 
 
     // Update various animated features in LateUpdate because it needs to override the animated arm position
     void LateUpdate()
     {
-        UpdateWeaponAiming();
-        //UpdateWeaponBob();
-        //UpdateWeaponRecoil();
+        if (_activeWeapon is RangedWeapon)
+        {
+            UpdateWeaponAiming();
+            //UpdateWeaponBob();
+            //UpdateWeaponRecoil();
+        }
     }
 
     // Sets the FOV of the main camera
@@ -121,22 +130,21 @@ public class WeaponManager : MonoBehaviour
     // Handles the reloading process over time
     private IEnumerator ReloadCoroutine()
     {
-        Weapon activeWeapon = _inventoryManager.GetActiveWeapon();
-        if (activeWeapon == null) yield break;
+        if (_activeWeapon == null) yield break;
 
-        activeWeapon.StartReloadAnimation();
+        _activeWeapon.StartReloadAnimation();
 
-        float reloadTime = activeWeapon.WeaponData.ReloadTime;
+        float reloadTime = _activeWeapon.RangedWeaponData.ReloadTime;
         yield return new WaitForSeconds(reloadTime);
 
         // Check if the weapon still exists before applying the reload
-        if (activeWeapon != null)
+        if (_activeWeapon != null)
         {
-            int ammoNeeded = activeWeapon.WeaponData.ClipSize - activeWeapon.CurrentAmmo;
-            int ammoToReload = Mathf.Min(ammoNeeded, _inventoryManager.GetTotalAmmo(activeWeapon));
+            int ammoNeeded = _activeWeapon.RangedWeaponData.ClipSize - _activeWeapon.CurrentAmmo;
+            int ammoToReload = Mathf.Min(ammoNeeded, _inventoryManager.GetTotalAmmo(_activeWeapon));
 
             _inventoryManager.UseAmmo(ammoToReload);
-            activeWeapon.Reload(ammoToReload);
+            _activeWeapon.Reload(ammoToReload);
         }
 
         StopReload();
@@ -147,7 +155,7 @@ public class WeaponManager : MonoBehaviour
     {
         IsReloading = false;
         _reloadCoroutine = null;
-        _inventoryManager.GetActiveWeapon().StopReloadAnimation();
+        _activeWeapon.StopReloadAnimation();
     }
 
     // Updates weapon position and camera FoV for the aiming transition
@@ -206,12 +214,14 @@ public class WeaponManager : MonoBehaviour
 
         if (IsAiming)
         {
+            crosshair.DisableCrosshair();
             animator.SetBool("Aim", true);
             SetFov(Mathf.Lerp(Camera.Lens.FieldOfView,
          WeaponFovMultiplier * DefaultFov, AimingAnimationSpeed * Time.deltaTime));
         }
         else
         {
+            crosshair.EnableCrosshair();
             animator.SetBool("Aim", false);
             SetFov(Mathf.Lerp(Camera.Lens.FieldOfView, DefaultFov, AimingAnimationSpeed * Time.deltaTime));
         }
