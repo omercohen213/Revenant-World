@@ -20,6 +20,7 @@ MonoBehaviour:
   ClipSize: 30
   ShootType: 0
   BulletPrefab: {fileID: -9056775269376815003, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
+  Damage: 20
   DelayBetweenShots: 0.1
   BulletsPerShot: 1
   BaseSpread: 0.05

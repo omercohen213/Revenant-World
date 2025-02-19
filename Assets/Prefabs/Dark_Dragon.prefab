@@ -4908,8 +4908,9 @@ GameObject:
   - component: {fileID: 7177880130636862632}
   - component: {fileID: 6743017535890291506}
   - component: {fileID: 612236923175947023}
-  - component: {fileID: 1854248244827473178}
   - component: {fileID: 2777343380740289403}
+  - component: {fileID: 2348639386395231473}
+  - component: {fileID: 1124339495896642497}
   m_Layer: 0
   m_Name: Dark_Dragon
   m_TagString: Untagged
@@ -5018,7 +5019,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseData: {fileID: 11400000, guid: 47a0c1d0f25a73d45a36fc6c900d6cc4, type: 2}
-  Health: 0
   Speed: 0
   AttackDamage: 0
   Armor: 0
@@ -5029,20 +5029,6 @@ MonoBehaviour:
   isFlying: 0
   specialAbilities: []
   lootTable: {fileID: 0}
---- !u!114 &1854248244827473178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616211505216702690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2629b13c7fb82134c93d97e889d2be5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 1000
-  CriticalHealthRatio: 0.3
 --- !u!114 &2777343380740289403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5055,6 +5041,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0972751963720489af3dada528ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MonsterData: {fileID: 0}
+--- !u!114 &2348639386395231473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616211505216702690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02db9e9537fca204795d1ac093b12b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageMultiplier: 1
+  SelfDamageMultiplier: 0.5
+--- !u!114 &1124339495896642497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616211505216702690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a475e911f4d6f704fb93456215f95ece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  MaxHealth: 0
+  CurrentHealth: 0
 --- !u!1 &4625528097855613612
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,5 @@
-using DevionGames.InventorySystem;
 using TMPro;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
-using Unity.FPS.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AmmoHUD: MonoBehaviour
 {
@@ -20,10 +15,9 @@ public class AmmoHUD: MonoBehaviour
     void Awake()
     {
         DebugUtil.SafeGetComponentInParent(gameObject, out _inventoryManager);
-
-
-        // ********************* CHANGE ************************
-        _activeWeapon = (RangedWeapon)_inventoryManager.GetActiveWeapon(); 
+        DebugUtil.SafeGetComponentInParent(gameObject, out Player player);
+    
+        _activeWeapon = (RangedWeapon) player.ActiveWeapon; 
     }
 
     private void OnEnable()
@@ -37,8 +31,6 @@ public class AmmoHUD: MonoBehaviour
         {
             Debug.LogWarning("Active weapon is not assigned.");
         }
-        //_activeWeapon.OnShoot += UpdateAmmoText;
-        //_activeWeapon.OnReload += UpdateAmmoText;
     }
 
     private void Start()

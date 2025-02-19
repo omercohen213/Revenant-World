@@ -48,7 +48,6 @@ public class Dash : MonoBehaviour
 
     IEnumerator PerformDash()
     {
-        Debug.Log("dash");
         _isDashing = true;
         _currentCharges--;
 

@@ -14,7 +14,7 @@ public class Gun : RangedWeapon
 
     [Header("Weapon Data")]
     [Tooltip("Reference to the ScriptableObject holding gun stats")]
-    public GunData gunData;
+    public GunData GunData;
 
     [Tooltip("Tip of the weapon, where the projectiles are shot")]
     public Transform WeaponMuzzle;
@@ -27,7 +27,6 @@ public class Gun : RangedWeapon
     public bool UnparentMuzzleFlash;
 
     private float _lastTimeShot = Mathf.NegativeInfinity;
-    private Vector3 _lastMuzzlePosition;
     private Queue<Rigidbody> _physicalAmmoPool;
 
     // Variables for recoil and spread control
@@ -40,21 +39,20 @@ public class Gun : RangedWeapon
 
     void Awake()
     {
-        if (gunData == null)
+        if (GunData == null)
         {
             Debug.LogError($"Weapon {gameObject.name} is missing WeaponData!");
             return;
         }
 
-        CurrentAmmo = gunData.ClipSize;
-        _lastMuzzlePosition = WeaponMuzzle.position;
+        CurrentAmmo = GunData.ClipSize;
         Owner = DebugUtil.GetFirstParentOfType<Player>(gameObject);
     }
 
     private void Update()
     {
         //_accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * WeaponData.RecoilRecoverySpeed);
-        _accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * gunData.RecoilRecoverySpeed);
+        _accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * GunData.RecoilRecoverySpeed);
     }
 
     public override void StartShooting()
@@ -77,7 +75,7 @@ public class Gun : RangedWeapon
 
     public override void Reload(int ammoToReload)
     {
-        CurrentAmmo = Mathf.Min(CurrentAmmo + ammoToReload, gunData.ClipSize);
+        CurrentAmmo = Mathf.Min(CurrentAmmo + ammoToReload, GunData.ClipSize);
         InvokeReload();
     }
 
@@ -93,13 +91,13 @@ public class Gun : RangedWeapon
 
     public override bool TryShoot()
     {
-        if (gunData == null)
+        if (GunData == null)
         {
             Debug.LogError("WeaponData is missing!");
             return false;
         }
 
-        if (CurrentAmmo > 0 && Time.time - _lastTimeShot >= gunData.DelayBetweenShots)
+        if (CurrentAmmo > 0 && Time.time - _lastTimeShot >= GunData.DelayBetweenShots)
         {
             _lastTimeShot = Time.time;
             CurrentAmmo--;
@@ -119,7 +117,7 @@ public class Gun : RangedWeapon
             Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle.forward);
 
             // Instantiate bullet with calculated spread direction
-            Bullet newBullet = Instantiate(gunData.BulletPrefab, WeaponMuzzle.position, Quaternion.LookRotation(shotDirection));
+            Bullet newBullet = Instantiate(GunData.BulletPrefab, WeaponMuzzle.position, Quaternion.LookRotation(shotDirection));
             newBullet.Shoot(this);
         }
 
@@ -134,7 +132,7 @@ public class Gun : RangedWeapon
 
     private int GetBulletsPerShot()
     {
-        return gunData.ShootType switch
+        return GunData.ShootType switch
         {
             ShootType.Automatic or ShootType.Single => 1,
             ShootType.Burst => 3,
@@ -144,10 +142,10 @@ public class Gun : RangedWeapon
 
     public void ApplyRecoil()
     {
-        if (gunData.ShootType == ShootType.Automatic)
+        if (GunData.ShootType == ShootType.Automatic)
         {
-            _accumulatedRecoil += Vector3.back * gunData.RecoilForce;
-            _accumulatedRecoil = Vector3.ClampMagnitude(_accumulatedRecoil, gunData.MaxRecoilDistance);
+            _accumulatedRecoil += Vector3.back * GunData.RecoilForce;
+            _accumulatedRecoil = Vector3.ClampMagnitude(_accumulatedRecoil, GunData.MaxRecoilDistance);
         }
         //WeaponRoot.transform.localPosition += _accumulatedRecoil;
     }
@@ -155,13 +153,13 @@ public class Gun : RangedWeapon
     // Calculates bullet spread based on weapon type and continuous fire
     private Vector3 GetShotDirectionWithinSpread(Vector3 baseDirection)
     {
-        float spread = gunData.BaseSpread;
+        float spread = GunData.BaseSpread;
 
         // Increase spread progressively for automatic weapons
-        if (gunData.ShootType == ShootType.Automatic && _isFiringContinuously)
+        if (GunData.ShootType == ShootType.Automatic && _isFiringContinuously)
         {
             spread += _progressiveSpread;
-            _progressiveSpread = Mathf.Min(_progressiveSpread + gunData.SpreadIncreasePerShot, gunData.MaxSpread);
+            _progressiveSpread = Mathf.Min(_progressiveSpread + GunData.SpreadIncreasePerShot, GunData.MaxSpread);
         }
         else
         {
@@ -177,13 +175,13 @@ public class Gun : RangedWeapon
     public void ApplySpread()
     {
         // Increase spread per shot
-        _progressiveSpread += gunData.SpreadIncreasePerShot;
-        _progressiveSpread = Mathf.Min(_progressiveSpread, gunData.MaxSpread);
+        _progressiveSpread += GunData.SpreadIncreasePerShot;
+        _progressiveSpread = Mathf.Min(_progressiveSpread, GunData.MaxSpread);
     }
 
     public void ResetSpread()
     {
-        _progressiveSpread = gunData.BaseSpread;
+        _progressiveSpread = GunData.BaseSpread;
 
     }
 

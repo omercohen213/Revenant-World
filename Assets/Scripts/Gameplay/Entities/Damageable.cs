@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent (typeof(Health))]
 public class Damageable : MonoBehaviour
 {
     [Tooltip("Multiplier to apply to the received damage")]
@@ -23,7 +24,6 @@ public class Damageable : MonoBehaviour
 
     public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
     {
-        Debug.Log("inflict dmg");
         if (Health)
         {
             var totalDamage = damage;

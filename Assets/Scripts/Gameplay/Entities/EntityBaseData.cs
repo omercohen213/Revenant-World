@@ -1,7 +1,9 @@
-using DevionGames.StatSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
+ /// <summary>
+ /// Contains all of the base data for the entity
+ /// </summary>
 public abstract class EntityBaseData : ScriptableObject
 {
     [Header("Stats")]
@@ -12,7 +14,7 @@ public abstract class EntityBaseData : ScriptableObject
     public float AttackSpeed = 1f;
     public float Armor = 5f;
 
-    public int Level;
-    public float xpReward;  // Amount of XP this entity gives upon defeat
-
+    [Header("Kill Rewards")]
+    public int XpReward = 50; 
+    public int ScoreReward = 1;  
 }

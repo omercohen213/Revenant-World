@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Health : MonoBehaviour
+public class Health : MonoBehaviour
 {
     public float MaxHealth;
     public float CurrentHealth;
 
+    private Entity Owner;
     public UnityAction<float, GameObject> OnDamaged;
     public UnityAction<float> OnHealed;
-    public UnityAction OnDie;
+    public UnityAction<Health, GameObject> OnKilled;
 
     public bool Invincible { get; set; }
     public bool CanPickup() => CurrentHealth < MaxHealth;
@@ -17,8 +18,15 @@ public abstract class Health : MonoBehaviour
 
     private bool _isDead;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
+        Owner = GetComponent<Entity>();
+
+    }
+
+    private void Start()
+    {
+        MaxHealth = Owner.GetEntityData().baseData.MaxHealth;
         CurrentHealth = MaxHealth;
     }
 
@@ -57,7 +65,8 @@ public abstract class Health : MonoBehaviour
             OnDamaged?.Invoke(trueDamageAmount, damageSource);
         }
 
-        CheckDeath();
+        //FloatingTextManager.Instance.ShowDamageText(transform.position + Vector3.up, Mathf.RoundToInt(damage));
+        CheckDeath(damageSource);
     }
 
     public virtual void Kill()
@@ -66,11 +75,10 @@ public abstract class Health : MonoBehaviour
 
         // call OnDamage action
         OnDamaged?.Invoke(MaxHealth, null);
-
-        CheckDeath();
+        CheckDeath(Owner.gameObject);
     }
 
-    protected virtual void CheckDeath()
+    protected virtual void CheckDeath(GameObject killer)
     {
         if (_isDead)
             return;
@@ -79,39 +87,38 @@ public abstract class Health : MonoBehaviour
         if (CurrentHealth <= 0f)
         {
             _isDead = true;
-            OnDie?.Invoke();
+            OnKilled?.Invoke(this, killer);
         }
     }
 
     /*private IEnumerator RegenerateCoroutine()
 {
-    while (true)
-    {
-        if (isInCombat)
-        {
-            yield return new WaitForSeconds(inCombatDelay);
-            isInCombat = false; // set isInCombat back to false after inCombatDelay
-        }
-        else
-        {
-            bool shouldRegenerateHp = hp < maxHp;
+   while (true)
+   {
+       if (isInCombat)
+       {
+           yield return new WaitForSeconds(inCombatDelay);
+           isInCombat = false; // set isInCombat back to false after inCombatDelay
+       }
+       else
+       {
+           bool shouldRegenerateHp = hp < maxHp;
 
-            if (shouldRegenerateHp)
-            {
-                // Regenerate HP
-                hp += hpRegen;
-                if (hp > maxHp)
-                {
-                    hp = maxHp;
-                }
-                hud.onHpChange();
-            }
+           if (shouldRegenerateHp)
+           {
+               // Regenerate HP
+               hp += hpRegen;
+               if (hp > maxHp)
+               {
+                   hp = maxHp;
+               }
+               hud.onHpChange();
+           }
 
-            // Wait for the next regeneration tick
-            yield return new WaitForSeconds(regenDelay);
-        }
-    }*/
-
+           // Wait for the next regeneration tick
+           yield return new WaitForSeconds(regenDelay);
+       }
+   }*/
 }
 
 

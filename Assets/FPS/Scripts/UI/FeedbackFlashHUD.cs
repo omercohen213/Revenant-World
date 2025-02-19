@@ -42,7 +42,7 @@ namespace Unity.FPS.UI
 
         bool m_FlashActive;
         float m_LastTimeFlashStarted = Mathf.NegativeInfinity;
-        PlayerHealth m_PlayerHealth;
+        Health m_PlayerHealth;
         GameFlowManager m_GameFlowManager;
 
         void Start()
@@ -52,7 +52,7 @@ namespace Unity.FPS.UI
             DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FeedbackFlashHUD>(
                 playerCharacterController, this);
 
-            m_PlayerHealth = playerCharacterController.GetComponent<PlayerHealth>();
+            m_PlayerHealth = playerCharacterController.GetComponent<Health>();
             DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(m_PlayerHealth, this,
                 playerCharacterController.gameObject);
 
@@ -65,7 +65,7 @@ namespace Unity.FPS.UI
 
         void Update()
         {
-            if (m_PlayerHealth.IsCritical())
+           /* if (m_PlayerHealth.IsCritical())
             {
                 VignetteCanvasGroup.gameObject.SetActive(true);
                 float vignetteAlpha =
@@ -98,7 +98,7 @@ namespace Unity.FPS.UI
                     FlashCanvasGroup.gameObject.SetActive(false);
                     m_FlashActive = false;
                 }
-            }
+            }*/
         }
 
         void ResetFlash()

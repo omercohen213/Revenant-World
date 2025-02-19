@@ -35,6 +35,7 @@ public class WeaponManager : MonoBehaviour
 
     public bool IsAiming { get; private set; }
 
+    private Player _player;
     private PlayerInput _playerInput;
     private InventoryManager _inventoryManager;
     private RangedWeapon _activeWeapon;
@@ -51,12 +52,13 @@ public class WeaponManager : MonoBehaviour
     {
         if (!DebugUtil.SafeGetComponent(gameObject, out _playerInput)) return;
         if (!DebugUtil.SafeGetComponent(gameObject, out _inventoryManager)) return;
+        if (!DebugUtil.SafeGetComponent(gameObject, out _player)) return;
         SetFov(DefaultFov);
     }
 
     void Update()
     {
-        if (_inventoryManager.GetActiveWeapon() is RangedWeapon rangedWeapon)
+        if (_player.ActiveWeapon is RangedWeapon rangedWeapon)
         {
             _activeWeapon = rangedWeapon;
         }
@@ -209,7 +211,7 @@ public class WeaponManager : MonoBehaviour
 
     private void UpdateWeaponAiming()
     {
-        Weapon activeWeapon = _inventoryManager.GetActiveWeapon();
+        Weapon activeWeapon = _player.ActiveWeapon;
         if (activeWeapon == null) return;
 
         if (IsAiming)

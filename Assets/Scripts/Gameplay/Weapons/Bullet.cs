@@ -44,10 +44,6 @@ public class Bullet : MonoBehaviour
     [Tooltip("Determines if the projectile inherits the velocity that the weapon's muzzle had when firing")]
     public bool InheritWeaponVelocity = false;
 
-    [Header("Damage")]
-    [Tooltip("Damage of the projectile")]
-    public float Damage = 40f;
-
     [Header("Debug")]
     [Tooltip("Color of the projectile radius debug view")]
     public Color RadiusColor = Color.cyan * 0.2f;
@@ -63,6 +59,7 @@ public class Bullet : MonoBehaviour
     private const QueryTriggerInteraction k_TriggerInteraction = QueryTriggerInteraction.Collide;
 
     public GameObject Owner { get; private set; }
+    public Gun GunParent { get; private set; }
     public Vector3 InitialPosition { get; private set; }
     public Vector3 InitialDirection { get; private set; }
     public Vector3 InheritedMuzzleVelocity { get; private set; }
@@ -77,6 +74,7 @@ public class Bullet : MonoBehaviour
 
     public void Shoot(Gun gun)
     {
+        GunParent = gun;
         Owner = gun.Owner.gameObject;
         Transform muzzleTransform = gun.WeaponMuzzle;
 
@@ -226,7 +224,7 @@ public class Bullet : MonoBehaviour
         Damageable damageable = collider.GetComponent<Damageable>();
         if (damageable)
         {
-            damageable.InflictDamage(Damage, false, Owner);
+            damageable.InflictDamage(GunParent.GunData.Damage, false, Owner);
         }
 
 
