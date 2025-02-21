@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using Unity.FPS.Game;
-using Unity.FPS.Gameplay;
-using Unity.FPS.UI;
 using UnityEngine;
 
 public class WeaponsHUD : MonoBehaviour
@@ -11,7 +8,7 @@ public class WeaponsHUD : MonoBehaviour
  
     }
 
-    void OnWeaponAdded(WeaponController newWeapon, int weaponIndex)
+    void OnWeaponAdded(Weapon weapon, int weaponIndex)
     {
         
     }

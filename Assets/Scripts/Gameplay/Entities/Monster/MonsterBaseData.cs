@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EntityBaseData", menuName = "Scriptable Objects/MonsterBaseData")]
-public class MonsterBaseData : EntityBaseData
+public class MonsterBaseData : GameEntityBaseData
 {
     public float aggroRange;         // Range at which monster targets players
     public float attackPatternCooldown;  // Cooldown between special attack patterns

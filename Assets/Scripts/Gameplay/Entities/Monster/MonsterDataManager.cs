@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterDataManager : EntityDataManager
+public class MonsterDataManager : GameEntityDataManager
 {
     public float aggroRange;         // Range at which monster targets players
     public float attackPatternCooldown;  // Cooldown between special attack patterns

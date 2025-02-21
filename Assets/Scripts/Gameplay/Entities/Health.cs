@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
     public float MaxHealth;
     public float CurrentHealth;
 
-    private Entity Owner;
+    private GameEntity Owner;
     public UnityAction<float, GameObject> OnDamaged;
     public UnityAction<float> OnHealed;
     public UnityAction<Health, GameObject> OnKilled;
@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Owner = GetComponent<Entity>();
+        Owner = GetComponent<GameEntity>();
 
     }
 
@@ -65,7 +65,11 @@ public class Health : MonoBehaviour
             OnDamaged?.Invoke(trueDamageAmount, damageSource);
         }
 
-        //FloatingTextManager.Instance.ShowDamageText(transform.position + Vector3.up, Mathf.RoundToInt(damage));
+        string damageTextToDisplay = $"-{Mathf.RoundToInt(damage)}";
+        
+        // CHANGE TO EVENT
+        FloatingTextManager.Instance.ShowFloatingText(gameObject,transform.position + Vector3.up, damageTextToDisplay); 
+
         CheckDeath(damageSource);
     }
 

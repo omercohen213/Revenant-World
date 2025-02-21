@@ -348,9 +348,11 @@ MonoBehaviour:
   Armor: 0
   AttackSpeed: 0
   XpReward: 0
-  score: 0
-  gold: 0
-  xp: 0
+  ScoreReward: 0
+  Score: 0
+  Gold: 0
+  Xp: 0
+  XpToLevelUp: 0
 --- !u!114 &7828531249051854069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +619,7 @@ GameObject:
   - component: {fileID: 771076414356161791}
   m_Layer: 0
   m_Name: PlayerFollowCamera
-  m_TagString: Untagged
+  m_TagString: PlayerCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

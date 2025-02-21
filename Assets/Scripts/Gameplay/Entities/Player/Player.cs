@@ -4,7 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(PlayerDataManager))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(InventoryManager))]
-public class Player : Entity
+public class Player : GameEntity
 {
     public PlayerDataManager PlayerData;
     public Weapon ActiveWeapon;
@@ -36,7 +36,7 @@ public class Player : Entity
         base.Start();
     }
 
-    public void GetRewardForKill(Entity entity)
+    public void GetRewardForKill(GameEntity entity)
     {
         PlayerData.AddXP(entity.GetEntityData().XpReward);
         PlayerData.AddScore(entity.GetEntityData().ScoreReward);
@@ -53,7 +53,7 @@ public class Player : Entity
 
     }
 
-    public override EntityDataManager GetEntityData()
+    public override GameEntityDataManager GetEntityData()
     {
         return PlayerData;
     }

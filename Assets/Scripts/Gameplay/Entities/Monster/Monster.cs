@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MonsterDataManager))]
 [RequireComponent(typeof(Health))]
-public class Monster : Entity
+public class Monster : GameEntity
 {
     public MonsterDataManager MonsterData;
 
@@ -17,7 +17,7 @@ public class Monster : Entity
         base.Start();
     }
 
-    public override EntityDataManager GetEntityData()
+    public override GameEntityDataManager GetEntityData()
     {
         return MonsterData;
     }

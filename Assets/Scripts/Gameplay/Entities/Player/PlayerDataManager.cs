@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerDataManager : EntityDataManager
+public class PlayerDataManager : GameEntityDataManager
 {
     public int Score = 0;
     public float Gold = 0f;
