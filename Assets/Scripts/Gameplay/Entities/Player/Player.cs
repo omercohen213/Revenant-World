@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Pool;
 
 [RequireComponent(typeof(PlayerDataManager))]
 [RequireComponent(typeof(Health))]
@@ -10,11 +11,15 @@ public class Player : GameEntity
     public Weapon ActiveWeapon;
     public Weapon StartingWeapon;
 
+    private ObjectPool<Player> _playerPool;
+
+
     protected override void Awake()
     {
         base.Awake();
         PlayerData = GetComponent<PlayerDataManager>();
         ActiveWeapon = StartingWeapon;
+        _playerPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
     }
 
     protected override void OnEnable()
@@ -31,6 +36,7 @@ public class Player : GameEntity
     protected override void Start()
     {
         base.Start();
+
     }
 
     public void GetRewardForKill(GameEntity entity)
@@ -39,7 +45,12 @@ public class Player : GameEntity
         PlayerData.AddScore(entity.GetEntityData().ScoreReward);
     }
 
-  
+    protected override void HandleDeath(Health health, GameObject killer)
+    {
+        _playerPool.Release(this);
+        base.HandleDeath(health, killer);
+    }
+
     private void OnLevelUp(int level)
     {
         StartLevelUpAnimation();

@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
 
     public float GetRatio() => CurrentHealth / MaxHealth;
 
-    private bool _isDead;
+    public bool IsDead { get; private set; }
 
     protected virtual void Awake()
     {
@@ -82,13 +82,13 @@ public class Health : MonoBehaviour
     // Check if the entity is dead and invoke OnKilled event
     protected virtual void CheckDeath(GameObject killer)
     {
-        if (_isDead)
+        if (IsDead)
             return;
 
         // invoke OnKilled event
         if (CurrentHealth <= 0f)
         {
-            _isDead = true;
+            IsDead = true;
             OnKilled?.Invoke(this, killer);
         }
     }

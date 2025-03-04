@@ -21,6 +21,7 @@ MonoBehaviour:
   ClipSize: 30
   ShootType: 0
   BulletPrefab: {fileID: -9056775269376815003, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
+  MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 9f671b22f25370048a18fb1f821294ec, type: 3}
   Damage: 20
   DelayBetweenShots: 0.1
   BulletsPerShot: 1

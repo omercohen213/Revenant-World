@@ -155,6 +155,8 @@ GameObject:
   - component: {fileID: 531250229}
   - component: {fileID: 531250228}
   - component: {fileID: 531250227}
+  - component: {fileID: 531250230}
+  - component: {fileID: 531250231}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -202,6 +204,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &531250230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531250226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d32906263695524cb8020bc7f28582d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &531250231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531250226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fad7ee7c73dccc4e8e78e36eaf64068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &565487104 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1105268252232054058, guid: 406914f8286f20d47b9e9188c9429f1c, type: 3}
@@ -731,6 +757,14 @@ PrefabInstance:
     - target: {fileID: 627222774165938015, guid: 9d41b9acf7dc4f94b8fb4c7aa2a3d86a, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 827070244297876825, guid: 9d41b9acf7dc4f94b8fb4c7aa2a3d86a, type: 3}
+      propertyPath: _hitVFX
+      value: 
+      objectReference: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
+    - target: {fileID: 827070244297876825, guid: 9d41b9acf7dc4f94b8fb4c7aa2a3d86a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2038737313871716095, guid: 9d41b9acf7dc4f94b8fb4c7aa2a3d86a, type: 3}
       propertyPath: m_Enabled
@@ -1480,6 +1514,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4867025738106305986, guid: 406914f8286f20d47b9e9188c9429f1c, type: 3}
+      propertyPath: _hitVFX
+      value: 
+      objectReference: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
     - target: {fileID: 5013597087279115457, guid: 406914f8286f20d47b9e9188c9429f1c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0

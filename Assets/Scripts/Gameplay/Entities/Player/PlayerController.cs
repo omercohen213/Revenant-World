@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Space(10)]
     [Tooltip("The height the player can jump")]
-    [SerializeField] private float _jumpHeight = 1.2f;
+    [SerializeField] private float _jumpHeight = 1f;
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
     [SerializeField] private float _gravity = -9.81f;
 
@@ -102,8 +102,6 @@ public class PlayerController : MonoBehaviour
         _isGrounded = true;
         _jumpTimeoutDelta = _jumpTimeout;
         _fallTimeoutDelta = _fallTimeout;
-
-
     }
 
     private void Update()

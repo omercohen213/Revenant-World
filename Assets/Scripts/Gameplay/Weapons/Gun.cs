@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 public class Gun : RangedWeapon
@@ -15,16 +18,11 @@ public class Gun : RangedWeapon
     [Header("Weapon Data")]
     [Tooltip("Reference to the ScriptableObject holding gun stats")]
     public GunData GunData;
-
     [Tooltip("Tip of the weapon, where the projectiles are shot")]
     public Transform WeaponMuzzle;
 
     [Header("Audio & Visual")]
-    [Tooltip("Prefab of the muzzle flash")]
-    public GameObject MuzzleFlashPrefab;
-
-    [Tooltip("Unparent the muzzle flash instance on spawn")]
-    public bool UnparentMuzzleFlash;
+    [SerializeField] private float muzzleFlashLifetime = 0.5f;
 
     private float _lastTimeShot = Mathf.NegativeInfinity;
     private Queue<Rigidbody> _physicalAmmoPool;
@@ -33,6 +31,10 @@ public class Gun : RangedWeapon
     private float _progressiveSpread = 0f;
     private Vector3 _accumulatedRecoil = Vector3.zero;
     private bool _isFiringContinuously = false;
+
+    // Object pools
+    public ObjectPool<Bullet> BulletPool;
+    private ObjectPool<GameObject> _muzzleFlashPool;
 
     public bool IsWeaponActive { get; private set; }
     public Vector3 MuzzleWorldVelocity { get; private set; }
@@ -47,6 +49,10 @@ public class Gun : RangedWeapon
 
         CurrentAmmo = GunData.ClipSize;
         Owner = DebugUtil.GetFirstParentOfType<Player>(gameObject);
+
+        // initialize object pools
+        BulletPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.BulletPrefab);
+        _muzzleFlashPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.MuzzleFlashPrefab);
     }
 
     private void Update()
@@ -109,6 +115,17 @@ public class Gun : RangedWeapon
 
     protected override void HandleShoot()
     {
+        _lastTimeShot = Time.time;
+        SpawnBullet();
+        SpawnMuzzleFlash();
+        ApplyRecoil();
+        ApplySpread();
+        InvokeShoot();
+    }
+
+    // Spawn a bullet
+    private void SpawnBullet()
+    {
         int bulletsPerShot = GetBulletsPerShot();
 
         // Spawn all bullets with random direction
@@ -116,18 +133,32 @@ public class Gun : RangedWeapon
         {
             Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle.forward);
 
-            // Instantiate bullet with calculated spread direction
-            Bullet newBullet = Instantiate(GunData.BulletPrefab, WeaponMuzzle.position, Quaternion.LookRotation(shotDirection));
+            // Spawn bullet with calculated spread direction
+            Bullet newBullet = BulletPool.Get();
+            newBullet.transform.position = WeaponMuzzle.position;
+            newBullet.transform.rotation = Quaternion.LookRotation(shotDirection);
+
+            // Call Shoot to apply initial properties or velocity; this resets the bullet as needed
             newBullet.Shoot(this);
         }
+    }
 
-        HandleMuzzleFlash();
-        _lastTimeShot = Time.time;
+    // Spawn muzzle flash effect
+    private void SpawnMuzzleFlash()
+    {
+        if (GunData.MuzzleFlashPrefab != null)
+        {
+            GameObject muzzleFlash = _muzzleFlashPool.Get();
+            muzzleFlash.transform.position = WeaponMuzzle.position;
+            muzzleFlash.transform.SetParent(WeaponMuzzle.transform);
+            StartCoroutine(SelfDestructCoroutine(muzzleFlash, muzzleFlashLifetime));
+        }
+    }
 
-        ApplyRecoil();
-        ApplySpread();
-
-        InvokeShoot();
+    private IEnumerator SelfDestructCoroutine(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _muzzleFlashPool.Release(obj);
     }
 
     private int GetBulletsPerShot()
@@ -185,17 +216,5 @@ public class Gun : RangedWeapon
 
     }
 
-    // Handles muzzle flash effect
-    private void HandleMuzzleFlash()
-    {
-        if (MuzzleFlashPrefab != null)
-        {
-            GameObject muzzleFlashInstance = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position, WeaponMuzzle.rotation, WeaponMuzzle.transform);
-            if (UnparentMuzzleFlash)
-            {
-                muzzleFlashInstance.transform.SetParent(null);
-            }
-            Destroy(muzzleFlashInstance, 2f);
-        }
-    }
+    
 }

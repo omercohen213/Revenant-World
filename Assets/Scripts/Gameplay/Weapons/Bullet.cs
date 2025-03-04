@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Pool;
+using UnityEngine.UIElements;
 
 public class Bullet : MonoBehaviour
 {
@@ -18,8 +21,9 @@ public class Bullet : MonoBehaviour
     [Tooltip("LifeTime of the projectile")]
     public float MaxLifeTime = 5f;
 
-    [Tooltip("VFX prefab to spawn upon impact")]
-    public GameObject ImpactVfx;
+    [Tooltip("Default VFX prefab to spawn upon impact on objects")]
+    public GameObject DefaultImpactVfx;
+    private ObjectPool<GameObject> _impactVFXPool;
 
     [Tooltip("LifeTime of the VFX before being destroyed")]
     public float ImpactVfxLifetime = 5f;
@@ -44,9 +48,6 @@ public class Bullet : MonoBehaviour
     [Tooltip("Determines if the projectile inherits the velocity that the weapon's muzzle had when firing")]
     public bool InheritWeaponVelocity = false;
 
-    [Header("Debug")]
-    [Tooltip("Color of the projectile radius debug view")]
-    public Color RadiusColor = Color.cyan * 0.2f;
 
     private Vector3 _lastRootPosition;
     private Vector3 _velocity;
@@ -64,51 +65,26 @@ public class Bullet : MonoBehaviour
     public Vector3 InitialDirection { get; private set; }
     public Vector3 InheritedMuzzleVelocity { get; private set; }
 
-    public UnityAction OnShoot;
+    private void Awake()
+    {
+        _impactVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(DefaultImpactVfx);
+    }
 
     void OnEnable()
     {
-        Destroy(gameObject, MaxLifeTime);
-        OnShoot?.Invoke();
+        ResetState();
+        StartCoroutine(SelfDestructCoroutine(MaxLifeTime));
     }
 
-    public void Shoot(Gun gun)
+    public void ResetState()
     {
-        GunParent = gun;
-        Owner = gun.Owner.gameObject;
-        Transform muzzleTransform = gun.WeaponMuzzle;
-
-        if (!DebugUtil.SafeGetComponent(Owner, out WeaponManager playerWeaponManager)) return;
-        
-        CinemachineCamera activeCamera = playerWeaponManager.Camera;
-
-        // Get aiming direction from the correct camera
-        Vector3 aimDirection = activeCamera.transform.forward;
-
-        // Set bullet position at the muzzle   
-        // Correct rotation: Align bullet's forward (Z-axis) with the aiming direction
-         transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f));
-
-        // Store the initial direction
-        InitialPosition = transform.position;
-        InitialDirection = aimDirection;
-
-        // Set the velocity in the new direction
-        _velocity = aimDirection * Speed;
-
-        // Apply inherited weapon velocity
-        InheritedMuzzleVelocity = gun.MuzzleWorldVelocity;
-        if (InheritWeaponVelocity)
-        {
-            _velocity += InheritedMuzzleVelocity;
-        }
-
-        // Ignore colliders of the weapon owner
-        Collider[] ownerColliders = Owner.GetComponentsInChildren<Collider>();
-        _ignoredColliders = new List<Collider>(ownerColliders);
-
-        // Trigger the shoot event
-        OnShoot?.Invoke();
+        _velocity = Vector3.zero;
+        _ignoredColliders?.Clear();
+        _hasTrajectoryOverride = false;
+        _consumedTrajectoryCorrectionVector = Vector3.zero;
+        _shootTime = Time.time;
+        _lastRootPosition = Root.position;
+        transform.rotation = Quaternion.identity;
     }
 
     void Update()
@@ -141,8 +117,8 @@ public class Bullet : MonoBehaviour
             transform.position += correctionThisFrame;
         }
 
-        /*// Orient towards velocity
-        transform.forward = _velocity.normalized;*/
+        // Orient towards velocity
+        //transform.forward = _velocity.normalized;
 
         // Maintain correct rotation (Prevents mid-flight rotation issues)
         if (_velocity.sqrMagnitude > 0.01f)  // Only rotate if moving
@@ -158,51 +134,82 @@ public class Bullet : MonoBehaviour
         }
 
         // Hit detection
+        RaycastHit closestHit = new RaycastHit();
+        closestHit.distance = Mathf.Infinity;
+        bool foundHit = false;
+
+        // Sphere cast
+        Vector3 displacementSinceLastFrame = Tip.position - _lastRootPosition;
+        RaycastHit[] hits = Physics.SphereCastAll(_lastRootPosition, Radius,
+            displacementSinceLastFrame.normalized, displacementSinceLastFrame.magnitude, HittableLayers,
+            k_TriggerInteraction);
+        foreach (var hit in hits)
         {
-            RaycastHit closestHit = new RaycastHit();
-            closestHit.distance = Mathf.Infinity;
-            bool foundHit = false;
-
-            // Sphere cast
-            Vector3 displacementSinceLastFrame = Tip.position - _lastRootPosition;
-            RaycastHit[] hits = Physics.SphereCastAll(_lastRootPosition, Radius,
-                displacementSinceLastFrame.normalized, displacementSinceLastFrame.magnitude, HittableLayers,
-                k_TriggerInteraction);
-            foreach (var hit in hits)
+            if (IsHitValid(hit) && hit.distance < closestHit.distance)
             {
-                if (IsHitValid(hit) && hit.distance < closestHit.distance)
-                {
-                    foundHit = true;
-                    closestHit = hit;
-                }
-            }
-
-            if (foundHit)
-            {
-                // Handle case of casting while already inside a collider
-                if (closestHit.distance <= 0f)
-                {
-                    closestHit.point = Root.position;
-                    closestHit.normal = -transform.forward;
-                }
-
-                OnHit(closestHit.point, closestHit.normal, closestHit.collider);
+                foundHit = true;
+                closestHit = hit;
             }
         }
+
+        if (foundHit)
+        {
+            // Handle case of casting while already inside a collider
+            if (closestHit.distance <= 0f)
+            {
+                closestHit.point = Root.position;
+                closestHit.normal = -transform.forward;
+            }
+
+            OnHit(closestHit.point, closestHit.normal, closestHit.collider);
+        }
+
 
         _lastRootPosition = Root.position;
     }
 
-    bool IsHitValid(RaycastHit hit)
+    public void Shoot(Gun gun)
     {
-        // ignore hits with an ignore component
-        if (hit.collider.GetComponent<IgnoreHitDetection>())
+        GunParent = gun;
+        Owner = gun.Owner.gameObject;
+        Transform muzzleTransform = gun.WeaponMuzzle;
+
+        if (!DebugUtil.SafeGetComponent(Owner, out WeaponManager playerWeaponManager)) return;
+
+        CinemachineCamera activeCamera = playerWeaponManager.Camera;
+
+        // Get aiming direction from the correct camera
+        Vector3 aimDirection = activeCamera.transform.forward;
+
+        // Set bullet position at the muzzle   
+        // Correct rotation: Align bullet's forward (Z-axis) with the aiming direction
+        transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f));
+
+        // Store the initial direction
+        InitialPosition = transform.position;
+        InitialDirection = aimDirection;
+
+        // Set the velocity in the new direction
+        _velocity = aimDirection * Speed;
+
+        // Apply inherited weapon velocity
+        InheritedMuzzleVelocity = gun.MuzzleWorldVelocity;
+        if (InheritWeaponVelocity)
         {
-            return false;
+            _velocity += InheritedMuzzleVelocity;
         }
 
-        // ignore hits with triggers that don't have a Damageable component
-        if (hit.collider.isTrigger && hit.collider.GetComponent<Damageable>() == null)
+        // Ignore colliders of the weapon owner
+        Collider[] ownerColliders = Owner.GetComponentsInChildren<Collider>();
+        _ignoredColliders = new List<Collider>(ownerColliders);
+    }
+
+    bool IsHitValid(RaycastHit hit)
+    {
+        if (hit.distance == 0) return false;
+
+        // ignore hits with an ignore component
+        if (hit.collider.GetComponent<IgnoreHitDetection>())
         {
             return false;
         }
@@ -216,38 +223,35 @@ public class Bullet : MonoBehaviour
         return true;
     }
 
-    void OnHit(Vector3 point, Vector3 normal, Collider collider)
+    void OnHit(Vector3 hitPoint, Vector3 normal, Collider collider)
     {
         // damage
         Damageable damageable = collider.GetComponent<Damageable>();
         if (damageable)
         {
-            damageable.InflictDamage(GunParent.GunData.Damage, Owner);
-            damageable.ShowImpacVFX(point);
+            damageable.InflictDamage(hitPoint, GunParent.GunData.Damage, Owner);
         }
 
         else
         {
             // impact vfx on objects
-            if (ImpactVfx)
+            if (DefaultImpactVfx)
             {
-                GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset),
-                    Quaternion.LookRotation(normal));
+                GameObject impactVFX = _impactVFXPool.Get();
+                impactVFX.transform.SetPositionAndRotation(hitPoint, Quaternion.LookRotation(normal));
 
-                if (ImpactVfxLifetime > 0)
-                {
-                    Destroy(impactVfxInstance, ImpactVfxLifetime);
-                }
+                // Start a coroutine on an active object (not the bullet)
+                ImpactVFXManager.Instance.ReleaseAfterTime(impactVFX, 1f);
             }
         }
-              
-        // Self Destruct
-        Destroy(gameObject);
+
+        // return the bullet to the pool
+        GunParent.BulletPool.Release(this);
     }
 
-    void OnDrawGizmosSelected()
+    private IEnumerator SelfDestructCoroutine(float lifetime)
     {
-        Gizmos.color = RadiusColor;
-        Gizmos.DrawSphere(transform.position, Radius);
+        yield return new WaitForSeconds(lifetime);
+        GunParent.BulletPool.Release(this);
     }
 }

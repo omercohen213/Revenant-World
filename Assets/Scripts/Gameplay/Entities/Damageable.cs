@@ -1,5 +1,7 @@
 using NaughtyAttributes;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 [RequireComponent(typeof(Health))]
 public class Damageable : MonoBehaviour
@@ -11,6 +13,7 @@ public class Damageable : MonoBehaviour
     [Required]
     [SerializeField] private GameObject _hitVFX;
     [SerializeField] private float _hitVFXLifetime = 0.3f;
+    [SerializeField] private ObjectPool<GameObject> _hitVFXPool;
 
     public Health Health { get; private set; }
 
@@ -22,9 +25,15 @@ public class Damageable : MonoBehaviour
         {
             Health = GetComponentInParent<Health>();
         }
+
     }
 
-    public void InflictDamage(float damage, GameObject damageSource)
+    private void Start()
+    {
+        _hitVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(_hitVFX);
+    }
+
+    public void InflictDamage(Vector3 hitPoint, float damage, GameObject damageSource)
     {
         if (Health)
         {
@@ -39,15 +48,25 @@ public class Damageable : MonoBehaviour
             // apply the damages
             Health.TakeDamage(totalDamage, damageSource);
         }
+        ShowImpacVFX(hitPoint);
     }
 
     public void ShowImpacVFX(Vector3 position)
     {
-        if (_hitVFX != null)
+        _hitVFX = _hitVFXPool.Get();
+        _hitVFX.transform.position = position;
+        _hitVFX.transform.SetParent(transform);
+
+        // Restart particle effects
+        foreach (var ps in _hitVFX.GetComponentsInChildren<ParticleSystem>())
         {
-            GameObject impactVfxInstance = Instantiate(_hitVFX, position, Quaternion.identity, transform);
-            Destroy(impactVfxInstance, _hitVFXLifetime);
-        }       
+            ps.Clear();
+            ps.Play();
+        }
+
+        // Start a coroutine on an active object (not this object)
+        ImpactVFXManager.Instance.ReleaseAfterTime(_hitVFX, _hitVFXLifetime);
+
     }
 }
 

@@ -6,6 +6,7 @@ public class GunData : RangedWeaponData
     [Header("Shooting")]
     public Gun.ShootType ShootType;
     public Bullet BulletPrefab;
+    public GameObject MuzzleFlashPrefab;
     public float Damage;
     public float DelayBetweenShots = 0.1f;
     public int BulletsPerShot = 1;

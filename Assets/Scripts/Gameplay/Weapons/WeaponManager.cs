@@ -1,4 +1,3 @@
-using GLTF.Schema;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -12,7 +11,7 @@ public class WeaponManager : MonoBehaviour
     [Tooltip("Main Camera")]
     public CinemachineCamera Camera;
     [Tooltip("Animator")]
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
     [Tooltip("Position for weapons when active but not actively aiming")]
     [SerializeField] private Transform _defaultWeaponPosition;
     [Tooltip("Crosshair")]
@@ -58,6 +57,11 @@ public class WeaponManager : MonoBehaviour
         if (!DebugUtil.SafeGetComponent(gameObject, out _playerInput)) return;
         if (!DebugUtil.SafeGetComponent(gameObject, out _inventoryManager)) return;
         if (!DebugUtil.SafeGetComponent(gameObject, out _player)) return;
+
+        Camera = transform.Find("PlayerFollowCamera").GetComponent<CinemachineCamera>();
+        _animator = GetComponentInChildren<Animator>(); 
+
+
         SetFov(_defaultFov);
         _currentFov = _defaultFov;
     }
@@ -68,7 +72,6 @@ public class WeaponManager : MonoBehaviour
         if (_activeWeapon == null) return;
         HandleWeaponActions();
     }
-
 
     void UpdateActiveWeapon()
     {

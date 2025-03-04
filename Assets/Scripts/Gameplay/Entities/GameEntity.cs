@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Damageable))]
 public abstract class GameEntity : MonoBehaviour
 {
     protected Health _health;
@@ -28,8 +30,6 @@ public abstract class GameEntity : MonoBehaviour
 
     protected virtual void HandleDeath(Health health, GameObject killer)
     {
-        gameObject.SetActive(false);
-        
         // If the killer is a player, they get rewards
         if (killer.TryGetComponent<Player>(out var killerPlayer))
         {
