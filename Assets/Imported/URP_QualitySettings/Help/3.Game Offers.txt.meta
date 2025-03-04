@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7c93210576df00443853dab8aab6945d
+timeCreated: 1488265537
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212696
+  packageName: URP Quality Settings
+  packageVersion: 1.2.2
+  assetPath: Assets/URP_QualitySettings/Help/3.Game Offers.txt
+  uploadId: 614188

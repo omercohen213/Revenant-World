@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
@@ -5,18 +6,19 @@ public class Dash : MonoBehaviour
 {
     [Header("Dash Settings")]
     [Tooltip("Force applied when dashing")]
-    public float DashForce = 15f;
+    [SerializeField] private float _dashForce = 15f;
 
     [Tooltip("Duration of the dash movement")]
-    public float DashDuration = 0.2f;
+    [SerializeField] private float _dashDuration = 0.2f;
 
     [Tooltip("Cooldown time per dash charge")]
-    public float DashCooldown = 5f;
+    [SerializeField] private float _dashCooldown = 5f;
 
     [Tooltip("Maximum number of dash charges")]
-    public int MaxDashCharges = 2;
+    [SerializeField] private int _maxDashCharges = 2;
 
-    private int _currentCharges;
+    [ProgressBar("_currentCharges", "_maxDashCharges", EColor.Gray)]
+    [SerializeField] private int _currentCharges;
     private bool _isDashing;
     private CharacterController _characterController;
     private Vector3 _dashDirection;
@@ -31,7 +33,7 @@ public class Dash : MonoBehaviour
 
     private void Start()
     {
-        _currentCharges = MaxDashCharges; // Start with full 
+        _currentCharges = _maxDashCharges; // Start with full 
     }
 
     void Update()
@@ -69,9 +71,9 @@ public class Dash : MonoBehaviour
         _dashDirection = moveDirection;
 
         float timer = 0f;
-        while (timer < DashDuration)
+        while (timer < _dashDuration)
         {
-            _characterController.Move(_dashDirection * DashForce * Time.deltaTime);
+            _characterController.Move(_dashDirection * _dashForce * Time.deltaTime);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -84,8 +86,8 @@ public class Dash : MonoBehaviour
 
     IEnumerator RecoverDashCharge()
     {
-        yield return new WaitForSeconds(DashCooldown);
-        if (_currentCharges < MaxDashCharges)
+        yield return new WaitForSeconds(_dashCooldown);
+        if (_currentCharges < _maxDashCharges)
         {
             _currentCharges++;
         }

@@ -1,9 +1,10 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class RangedWeapon : Weapon
 {
-    public RangedWeaponData RangedWeaponData;
+    [HideInInspector]public RangedWeaponData RangedWeaponData;
 
     public event Action OnShoot;
     public event Action OnReload;

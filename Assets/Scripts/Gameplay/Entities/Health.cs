@@ -1,10 +1,12 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
     public float MaxHealth;
-    public float CurrentHealth;
+    [ProgressBar("Health", "MaxHealth", EColor.Red)]
+    [SerializeField] private float CurrentHealth;
 
     private GameEntity Owner;
     public UnityAction<float, GameObject> OnDamaged;
@@ -12,7 +14,6 @@ public class Health : MonoBehaviour
     public UnityAction<Health, GameObject> OnKilled;
 
     public bool Invincible { get; set; }
-    public bool CanPickup() => CurrentHealth < MaxHealth;
 
     public float GetRatio() => CurrentHealth / MaxHealth;
 
@@ -30,11 +31,7 @@ public class Health : MonoBehaviour
         CurrentHealth = MaxHealth;
     }
 
-    protected virtual void Update()
-    {
-        //TakeDamage(1f, GetComponent<Entity>().gameObject);
-    }
-
+    // Heal for heal amount
     public virtual void Heal(float healAmount)
     {
         float healthBefore = CurrentHealth;
@@ -49,6 +46,7 @@ public class Health : MonoBehaviour
         }
     }
 
+    // Take damage from a damage source
     public virtual void TakeDamage(float damage, GameObject damageSource)
     {
         if (Invincible)
@@ -65,14 +63,13 @@ public class Health : MonoBehaviour
             OnDamaged?.Invoke(trueDamageAmount, damageSource);
         }
 
-        string damageTextToDisplay = $"-{Mathf.RoundToInt(damage)}";
-        
-        // CHANGE TO EVENT
-        FloatingTextManager.Instance.ShowFloatingText(gameObject,transform.position + Vector3.up, damageTextToDisplay); 
+        //string damageTextToDisplay = $"-{Mathf.RoundToInt(damage)}";
+        //ShowFloatingText(damageTextToDisplay);
 
         CheckDeath(damageSource);
     }
 
+    // Instantly kill the entity. Useful for testing
     public virtual void Kill()
     {
         CurrentHealth = 0f;
@@ -82,17 +79,25 @@ public class Health : MonoBehaviour
         CheckDeath(Owner.gameObject);
     }
 
+    // Check if the entity is dead and invoke OnKilled event
     protected virtual void CheckDeath(GameObject killer)
     {
         if (_isDead)
             return;
 
-        // call OnDie action
+        // invoke OnKilled event
         if (CurrentHealth <= 0f)
         {
             _isDead = true;
             OnKilled?.Invoke(this, killer);
         }
+    }
+
+    private void ShowFloatingText(string damageTextToDisplay)
+    {
+        // CHANGE TO EVENT
+        FloatingTextManager.Instance.ShowFloatingText(gameObject, transform.position + Vector3.up, damageTextToDisplay);
+
     }
 
     /*private IEnumerator RegenerateCoroutine()

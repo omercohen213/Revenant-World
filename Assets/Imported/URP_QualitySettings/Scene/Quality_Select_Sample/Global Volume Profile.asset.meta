@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3deec3be75465f948b7ff3a904eed9e4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212696
+  packageName: URP Quality Settings
+  packageVersion: 1.2.2
+  assetPath: Assets/URP_QualitySettings/Scene/Quality_Select_Sample/Global Volume
+    Profile.asset
+  uploadId: 614188

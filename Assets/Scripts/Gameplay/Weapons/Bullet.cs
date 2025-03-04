@@ -80,7 +80,6 @@ public class Bullet : MonoBehaviour
 
         if (!DebugUtil.SafeGetComponent(Owner, out WeaponManager playerWeaponManager)) return;
         
-        // Get the active camera
         CinemachineCamera activeCamera = playerWeaponManager.Camera;
 
         // Get aiming direction from the correct camera
@@ -220,25 +219,28 @@ public class Bullet : MonoBehaviour
     void OnHit(Vector3 point, Vector3 normal, Collider collider)
     {
         // damage
-        // point damage
         Damageable damageable = collider.GetComponent<Damageable>();
         if (damageable)
         {
-            damageable.InflictDamage(GunParent.GunData.Damage, false, Owner);
+            damageable.InflictDamage(GunParent.GunData.Damage, Owner);
+            damageable.ShowImpacVFX(point);
         }
 
-
-        // impact vfx
-        if (ImpactVfx)
+        else
         {
-            GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset),
-                Quaternion.LookRotation(normal));
-            if (ImpactVfxLifetime > 0)
+            // impact vfx on objects
+            if (ImpactVfx)
             {
-                Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
+                GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset),
+                    Quaternion.LookRotation(normal));
+
+                if (ImpactVfxLifetime > 0)
+                {
+                    Destroy(impactVfxInstance, ImpactVfxLifetime);
+                }
             }
         }
-
+              
         // Self Destruct
         Destroy(gameObject);
     }

@@ -19,6 +19,14 @@ public class PlayerInput : MonoBehaviour
     public bool reload;
     #endregion
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
 #if ENABLE_INPUT_SYSTEM
     public void OnMove(InputValue value) => move = value.Get<Vector2>();
     public void OnLook(InputValue value) { look = value.Get<Vector2>(); }

@@ -39,7 +39,7 @@ namespace Unity.FPS.Game
             {
                 float distance = Vector3.Distance(uniqueDamageable.transform.position, transform.position);
                 uniqueDamageable.InflictDamage(
-                    damage * DamageRatioOverDistance.Evaluate(distance / AreaOfEffectDistance), true, owner);
+                    damage * DamageRatioOverDistance.Evaluate(distance / AreaOfEffectDistance), owner);
             }
         }
 

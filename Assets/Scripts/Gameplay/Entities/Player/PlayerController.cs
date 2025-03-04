@@ -10,55 +10,54 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
     [Tooltip("Move speed of the character in m/s")]
-    public float MoveSpeed = 4.0f;
+    [SerializeField] private float _moveSpeed = 4.0f;
     [Tooltip("Sprint speed of the character in m/s")]
-    public float SprintSpeed = 6.0f;
+    [SerializeField] private float _sprintSpeed = 6.0f;
     [Tooltip("Rotation speed of the character")]
-    public float RotationSpeed = 1.0f;
+    [SerializeField] private float _rotationSpeed = 1.0f;
     [Tooltip("Acceleration and deceleration")]
-    public float SpeedChangeRate = 10.0f;
+    [SerializeField] private float _speedChangeRate = 10.0f;
 
     [Space(10)]
     [Tooltip("The height the player can jump")]
-    public float JumpHeight = 1.2f;
+    [SerializeField] private float _jumpHeight = 1.2f;
     [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-    public float Gravity = -15.0f;
+    [SerializeField] private float _gravity = -9.81f;
 
     [Space(10)]
     [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
-    public float JumpTimeout = 0.1f;
+    [SerializeField] private float _jumpTimeout = 0.1f;
     [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
-    public float FallTimeout = 0.15f;
+    [SerializeField] private float _fallTimeout = 0.15f;
 
     [Header("Player Grounded")]
     [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-    public bool IsGrounded = true;
+    [SerializeField] private bool _isGrounded = true;
     [Tooltip("Useful for rough ground")]
-    public float GroundedOffset = -0.14f;
+    [SerializeField] private float _groundedOffset = -0.14f;
     [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-    public float GroundedRadius = 0.5f;
+    [SerializeField] private float _groundedRadius = 0.5f;
     [Tooltip("What layers the character uses as ground")]
-    public LayerMask GroundLayers;
+    [SerializeField] private LayerMask _groundLayers;
 
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-    public GameObject CinemachineCameraTarget;
+    [SerializeField] private GameObject _cameraTarget;
     [Tooltip("How far in degrees can you move the camera up")]
-    public float TopClamp = 90.0f;
+    [SerializeField] private float _topClamp = 90.0f;
     [Tooltip("How far in degrees can you move the camera down")]
-    public float BottomClamp = -90.0f;
+    [SerializeField] private float _bottomClamp = -90.0f;
 
     [Header("Aim Rotation")]
     [Tooltip("The objects that should follow the player's aim")]
-    public GameObject Weapon;
+    [SerializeField] private GameObject _weapon;
     [Tooltip("The right arm that moves with the camera")]
-    public GameObject RightArm;
+    [SerializeField] private GameObject _rightArm;
     [Tooltip("The left arm that moves with the camera")]
-    public GameObject LeftArm;  
+    [SerializeField] private GameObject _leftArm;
 
     // Reference to camera
-    public CinemachineCamera Camera;
-
+    [SerializeField] private CinemachineCamera _camera;
 
     // Store initial rotations
     private Quaternion _initialWeaponRotation;
@@ -96,12 +95,15 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         // Parent arms and weapon to camera target for smooth 
-        RightArm.transform.SetParent(CinemachineCameraTarget.transform, true);
-        LeftArm.transform.SetParent(CinemachineCameraTarget.transform, true);
+        _rightArm.transform.SetParent(_cameraTarget.transform, true);
+        _leftArm.transform.SetParent(_cameraTarget.transform, true);
 
         // reset our timeouts on start
-        _jumpTimeoutDelta = JumpTimeout;
-        _fallTimeoutDelta = FallTimeout;
+        _isGrounded = true;
+        _jumpTimeoutDelta = _jumpTimeout;
+        _fallTimeoutDelta = _fallTimeout;
+
+
     }
 
     private void Update()
@@ -119,8 +121,8 @@ public class PlayerController : MonoBehaviour
     private void GroundedCheck()
     {
         // set sphere position, with offset
-        Vector3 spherePosition = new(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
-        IsGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+        Vector3 spherePosition = new(transform.position.x, transform.position.y - _groundedOffset, transform.position.z);
+        _isGrounded = Physics.CheckSphere(spherePosition, _groundedRadius, _groundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void CameraRotation()
@@ -131,14 +133,14 @@ public class PlayerController : MonoBehaviour
             // Don't multiply mouse input by Time.deltaTime
             float deltaTimeMultiplier = 1.0f;
 
-            _cinemachineTargetPitch += _playerInput.look.y * RotationSpeed * deltaTimeMultiplier;
-            _rotationVelocity = _playerInput.look.x * RotationSpeed * deltaTimeMultiplier;
+            _cinemachineTargetPitch += _playerInput.look.y * _rotationSpeed * deltaTimeMultiplier;
+            _rotationVelocity = _playerInput.look.x * _rotationSpeed * deltaTimeMultiplier;
 
             // Clamp our pitch rotation
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, _bottomClamp, _topClamp);
 
             // Apply rotation: Camera target controls pitch, player controls yaw
-            CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
+            _cameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
             transform.Rotate(Vector3.up * _rotationVelocity);
         }
     }
@@ -146,7 +148,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
-        float targetSpeed = _playerInput.sprint ? SprintSpeed : MoveSpeed;
+        float targetSpeed = _playerInput.sprint ? _sprintSpeed : _moveSpeed;
 
         // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -164,7 +166,7 @@ public class PlayerController : MonoBehaviour
         {
             // creates curved result rather than a linear one giving a more organic speed change
             // note T in Lerp is clamped, so we don't need to clamp our speed
-            _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed , Time.deltaTime * SpeedChangeRate);
+            _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed , Time.deltaTime * _speedChangeRate);
 
             // round speed to 3 decimal places
             _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -191,10 +193,10 @@ public class PlayerController : MonoBehaviour
 
     private void JumpAndGravity()
     {
-        if (IsGrounded)
+        if (_isGrounded)
         {
             // reset the fall timeout timer
-            _fallTimeoutDelta = FallTimeout;
+            _fallTimeoutDelta = _fallTimeout;
 
             // stop our velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
@@ -206,7 +208,7 @@ public class PlayerController : MonoBehaviour
             if (_playerInput.jump && _jumpTimeoutDelta <= 0.0f)
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
-                _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
             }
 
             // jump timeout
@@ -218,7 +220,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // reset the jump timeout timer
-            _jumpTimeoutDelta = JumpTimeout;
+            _jumpTimeoutDelta = _jumpTimeout;
 
             // fall timeout
             if (_fallTimeoutDelta >= 0.0f)
@@ -233,7 +235,7 @@ public class PlayerController : MonoBehaviour
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
         if (_verticalVelocity < _terminalVelocity)
         {
-            _verticalVelocity += Gravity * Time.deltaTime;
+            _verticalVelocity += _gravity * Time.deltaTime;
         }
     }
 

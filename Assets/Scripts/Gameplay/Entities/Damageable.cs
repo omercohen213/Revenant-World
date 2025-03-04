@@ -1,14 +1,16 @@
+using NaughtyAttributes;
 using UnityEngine;
 
-[RequireComponent (typeof(Health))]
+[RequireComponent(typeof(Health))]
 public class Damageable : MonoBehaviour
 {
-    [Tooltip("Multiplier to apply to the received damage")]
-    public float DamageMultiplier = 1f;
-
     [Range(0, 1)]
     [Tooltip("Multiplier to apply to self damage")]
     public float SelfDamageMultiplier = 0.5f;
+
+    [Required]
+    [SerializeField] private GameObject _hitVFX;
+    [SerializeField] private float _hitVFXLifetime = 0.3f;
 
     public Health Health { get; private set; }
 
@@ -22,17 +24,11 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
+    public void InflictDamage(float damage, GameObject damageSource)
     {
         if (Health)
         {
             var totalDamage = damage;
-
-            // skip the crit multiplier if it's from an explosion
-            if (!isExplosionDamage)
-            {
-                totalDamage *= DamageMultiplier;
-            }
 
             // potentially reduce damages if inflicted by self
             if (Health.gameObject == damageSource)
@@ -43,6 +39,15 @@ public class Damageable : MonoBehaviour
             // apply the damages
             Health.TakeDamage(totalDamage, damageSource);
         }
+    }
+
+    public void ShowImpacVFX(Vector3 position)
+    {
+        if (_hitVFX != null)
+        {
+            GameObject impactVfxInstance = Instantiate(_hitVFX, position, Quaternion.identity, transform);
+            Destroy(impactVfxInstance, _hitVFXLifetime);
+        }       
     }
 }
 

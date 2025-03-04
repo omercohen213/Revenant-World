@@ -10,13 +10,10 @@ public class Player : GameEntity
     public Weapon ActiveWeapon;
     public Weapon StartingWeapon;
 
-    private InventoryManager _inventoryManager;
-
     protected override void Awake()
     {
         base.Awake();
         PlayerData = GetComponent<PlayerDataManager>();
-        _inventoryManager = GetComponent<InventoryManager>();
         ActiveWeapon = StartingWeapon;
     }
 

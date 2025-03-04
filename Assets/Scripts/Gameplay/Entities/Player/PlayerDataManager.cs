@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,8 +7,10 @@ public class PlayerDataManager : GameEntityDataManager
 {
     public int Score = 0;
     public float Gold = 0f;
+    [ProgressBar("Xp", "XpToLevelUp", EColor.Violet)]
     public int Xp = 0;
     public int XpToLevelUp;
+
 
     public UnityAction<int, int> OnXpChanged;
     public UnityAction<int> OnLevelUp;

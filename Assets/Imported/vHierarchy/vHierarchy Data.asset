@@ -18,3 +18,4 @@ MonoBehaviour:
   bookmarks: []
   bookmarkedScenePaths:
   - Assets/Scenes/WorldExample.unity
+  - Assets/NaughtyAttributes/Samples/DemoScene/DemoScene.unity

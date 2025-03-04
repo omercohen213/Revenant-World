@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc51d14a2ba83dc41a2ecd9d39c29ebf, type: 3}
   m_Name: DarkDragonBaseData
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 1000
   HealthRegen: 1
   Speed: 5
   AttackDamage: 10
   AttackSpeed: 1
   Armor: 5
-  Level: 0
+  XpReward: 50
+  ScoreReward: 1
+  aggroRange: 0
+  attackPatternCooldown: 0
+  aiStateChangeRate: 0
+  isFlying: 0
+  specialAbilities: []
+  lootTable: {fileID: 0}

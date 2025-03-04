@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c68f8336dd37ab845b838032e188bdda
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212696
+  packageName: URP Quality Settings
+  packageVersion: 1.2.2
+  assetPath: Assets/URP_QualitySettings/Settings/Note.txt
+  uploadId: 614188

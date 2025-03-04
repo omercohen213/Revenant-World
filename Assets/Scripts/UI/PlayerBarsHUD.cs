@@ -1,113 +1,68 @@
-using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerBarsHUD : MonoBehaviour
+public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 {
-    [Header("Health Bar")]
-    public Image HealthBarFill;
+    [Header("Bars")]
+    [SerializeField] private Image HealthBarFill;
+    [SerializeField] private Image ArmorBarFill;
+    [SerializeField] private Image ManaBarFill;
+    [SerializeField] private Image XpBarFill;
+    [SerializeField] private TextMeshProUGUI XpBarText;
+    [SerializeField] private TextMeshProUGUI LevelText;
 
-    [Header("Shield Bar")]
-    //public Image ArmorBarFill;
-
-    [Header("Xp Bar")]
-    public Image XpBarFill;
-    public TextMeshProUGUI XpBarText;
-    public TextMeshProUGUI LevelText;
-
+    private Dictionary<string, Image> _bars;
     private Health _playerHealth;
-    private Player _player;
     private PlayerDataManager _playerData;
 
     private void Awake()
     {
+        // Health is a seperate class unlike other bar resources
         _playerHealth = GetComponentInParent<Health>();
-        _player = GetComponentInParent<Player>();
-        _playerData = _player.PlayerData;
+
+        Player player = GetComponentInParent<Player>();
+        _playerData = player.PlayerData;
+
+        _bars = new Dictionary<string, Image>
+        {
+            { "Health", HealthBarFill },
+            { "Armor", ArmorBarFill },
+            { "Mana", ManaBarFill },
+            { "XP", XpBarFill }
+        };
     }
 
-    private void Start()
-    {   
-        InitializeHealthBar();
-        InitializeArmorBar();
-        InitializeXpBar();
-        InitializeLevelText();
-    }
-
-  
     private void OnEnable()
     {
-        _playerHealth.OnDamaged += (damageAmount, damageSource) => UpdateHealthBar(_playerHealth.GetRatio());
-        _playerHealth.OnHealed += (healAmount) => UpdateHealthBar(healAmount);
+        _playerHealth.OnDamaged += (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnHealed += (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
         _playerHealth.OnKilled += HandleDeath;
 
-        _playerData.OnLevelUp += (level) => UpdateLevelText(level);
-        _playerData.OnLevelUp += (level) => UpdateXpBar(_playerData.Xp, _playerData.XpToLevelUp);
-        _playerData.OnXpChanged += (currentXp, requiredXp) => UpdateXpBar(currentXp, requiredXp);
+        _playerData.OnLevelUp += (level) => UpdateBar("XP", (float)_playerData.Xp / _playerData.XpToLevelUp);
+        _playerData.OnXpChanged += (currentXp, requiredXp) => UpdateBar("XP", (float)currentXp / requiredXp);
     }
 
     private void OnDisable()
     {
-        _playerHealth.OnDamaged -= (damageAmount, damageSource) => UpdateHealthBar(_playerHealth.GetRatio());
-        _playerHealth.OnHealed -= UpdateHealthBar;
+        _playerHealth.OnDamaged -= (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnHealed -= (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
         _playerHealth.OnKilled -= HandleDeath;
     }
 
-    private void InitializeHealthBar()
+    // Update bar fill according to ratio
+    public void UpdateBar(string barType, float ratio)
     {
-        UpdateHealthBar(_playerHealth.MaxHealth);
-    }
-
-    private void UpdateHealthBar(float healthRatio)
-    {
-        if (HealthBarFill != null)
+        if (_bars.TryGetValue(barType, out Image bar) && bar != null)
         {
-            HealthBarFill.fillAmount = healthRatio; 
-        }
-    }   
-
-    private void InitializeArmorBar()
-    {
-    }
-
-    private void InitializeXpBar()
-    {
-        int xpToLevelUp = _playerData.XpToLevelUp;
-        UpdateXpBar(0, xpToLevelUp);
-    }
-
-    private void InitializeLevelText()
-    {
-        LevelText.text = "1";
-    }
-
-    private void UpdateXpBar(int currentXp, int xpToLevelUp)
-    {
-        if (XpBarFill != null)
-        {
-            XpBarFill.fillAmount = (float) currentXp / xpToLevelUp;
-        }
-        if (XpBarText != null)
-        {
-            XpBarText.text = $"{currentXp} / {xpToLevelUp} XP";            
+            bar.fillAmount = ratio;
         }
     }
 
-    private void UpdateLevelText(int level)
-    {
-        if (LevelText != null)
-        {
-            LevelText.text = level.ToString();
-        }
-    }
-
+    // Update bar fill upon death
     private void HandleDeath(Health health, GameObject killer)
     {
-        if (HealthBarFill != null)
-        {
-            HealthBarFill.fillAmount = 0f;
-        }
+        UpdateBar("Health", 0f);
     }
-
 }
