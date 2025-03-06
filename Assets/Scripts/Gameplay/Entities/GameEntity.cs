@@ -8,6 +8,8 @@ public abstract class GameEntity : MonoBehaviour
 {
     protected Health _health;
 
+    public UnityAction<GameEntity, GameObject> OnKilled; // Monster killed, Killer
+
     protected virtual void Awake()
     {
         _health = GetComponent<Health>();
@@ -21,23 +23,24 @@ public abstract class GameEntity : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        _health.OnKilled += HandleDeath;
+        _health.OnHealthReachedZero += HandleDeath;
     }
 
     protected virtual void OnDisable()
     {
-        _health.OnKilled -= HandleDeath;
+        _health.OnHealthReachedZero -= HandleDeath;
     }
 
-    protected virtual void HandleDeath(Health health, GameObject killer)
+    protected virtual void HandleDeath(Health health, GameObject killerObject)
     {
         // If the killer is a player, they get rewards
-        if (killer.TryGetComponent<Player>(out var killerPlayer))
+        if (killerObject.TryGetComponent<Player>(out var killerPlayer))
         {
             killerPlayer.GetRewardForKill(this);
+            OnKilled.Invoke(this, killerPlayer.gameObject);
         }
     }
-       
+
 
     public virtual GameEntityDataManager GetEntityData()
     {

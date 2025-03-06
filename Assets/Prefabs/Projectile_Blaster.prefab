@@ -49,7 +49,7 @@ MonoBehaviour:
   Root: {fileID: 2787594106011184721, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
   Tip: {fileID: 6965400757647036215, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
   MaxLifeTime: 5
-  ImpactVfx: {fileID: 5781806936358044080, guid: fa498bfcbbc9707458a2c75334b150c8, type: 3}
+  DefaultImpactVfx: {fileID: 0}
   ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
   HittableLayers:
@@ -59,8 +59,6 @@ MonoBehaviour:
   GravityDownAcceleration: 0.1
   TrajectoryCorrectionDistance: 0
   InheritWeaponVelocity: 0
-  Damage: 40
-  RadiusColor: {r: 0, g: 0.2, b: 0.2, a: 0.2}
 --- !u!1 &5564024855854763701
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +131,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8402172112652879564}
-  m_Mesh: {fileID: 4300002, guid: dac2420a19d8c8e46b7d36c8e3817523, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 230bd8ab1da326b4da98e2b6e59b5b05, type: 2}
 --- !u!23 &8402172112654882828
 MeshRenderer:
   m_ObjectHideFlags: 0

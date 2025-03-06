@@ -9,9 +9,9 @@ public class Health : MonoBehaviour
     [SerializeField] private float CurrentHealth;
 
     private GameEntity Owner;
-    public UnityAction<float, GameObject> OnDamaged;
-    public UnityAction<float> OnHealed;
-    public UnityAction<Health, GameObject> OnKilled;
+    public UnityAction<float, GameObject> OnLostHealth;
+    public UnityAction<float> OnGainedHealth;
+    public UnityAction<Health, GameObject> OnHealthReachedZero;
 
     public bool Invincible { get; set; }
 
@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
         float trueHealAmount = CurrentHealth - healthBefore;
         if (trueHealAmount > 0f)
         {
-            OnHealed?.Invoke(trueHealAmount);
+            OnGainedHealth?.Invoke(trueHealAmount);
         }
     }
 
@@ -63,7 +63,7 @@ public class Health : MonoBehaviour
         float trueDamageAmount = healthBefore - CurrentHealth;
         if (trueDamageAmount > 0f)
         {
-            OnDamaged?.Invoke(trueDamageAmount, damageSource);
+            OnLostHealth?.Invoke(trueDamageAmount, damageSource);
         }
 
         CheckDeath(damageSource);
@@ -74,8 +74,7 @@ public class Health : MonoBehaviour
     {
         CurrentHealth = 0f;
 
-        // call OnDamage action
-        OnDamaged?.Invoke(MaxHealth, null);
+        OnLostHealth?.Invoke(MaxHealth, null);
         CheckDeath(Owner.gameObject);
     }
 
@@ -89,7 +88,7 @@ public class Health : MonoBehaviour
         if (CurrentHealth <= 0f)
         {
             IsDead = true;
-            OnKilled?.Invoke(this, killer);
+            OnHealthReachedZero?.Invoke(this, killer);
         }
     }
 

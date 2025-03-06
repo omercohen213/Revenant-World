@@ -49,9 +49,9 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 
     private void OnEnable()
     {
-        _playerHealth.OnDamaged += (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
-        _playerHealth.OnHealed += (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
-        _playerHealth.OnKilled += HandleDeath;
+        _playerHealth.OnLostHealth += (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnGainedHealth += (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnHealthReachedZero += HandleDeath;
 
         _playerData.OnLevelUp += (level) => UpdateBar("XP", (float)_playerData.Xp / _playerData.XpToLevelUp);
         _playerData.OnLevelUp += (level) => UpdateText("Level", level.ToString());
@@ -61,9 +61,9 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 
     private void OnDisable()
     {
-        _playerHealth.OnDamaged -= (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
-        _playerHealth.OnHealed -= (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
-        _playerHealth.OnKilled -= HandleDeath;
+        _playerHealth.OnLostHealth -= (damageAmount, damageSource) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnGainedHealth -= (healAmount) => UpdateBar("Health", _playerHealth.GetRatio());
+        _playerHealth.OnHealthReachedZero -= HandleDeath;
     }
 
     private void Start()

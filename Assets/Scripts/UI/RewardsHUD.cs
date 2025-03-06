@@ -1,7 +1,5 @@
 using NaughtyAttributes;
-using System;
 using System.Collections;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,9 +38,9 @@ public class RewardsHUD : MonoBehaviour
     }
 
     // Activate the rewards objects on the player hud
-    private void ShowRewards(string killedEntityName, int xp, int kp)
+    private void ShowRewards(GameEntity killedEntity, int xp, int kp)
     {
-        Debug.Log($"Kill Reward for {_player.name}: {xp} XP, {kp} Points");
+        string killedEntityName = killedEntity.GetEntityData().baseData.name;
 
         SetActive(true);
         SetAlpha(1f);

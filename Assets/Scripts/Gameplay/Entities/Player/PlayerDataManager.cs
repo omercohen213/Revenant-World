@@ -5,16 +5,15 @@ using UnityEngine.Events;
 
 public class PlayerDataManager : GameEntityDataManager
 {
-    public int Score = 0;
+    public int Kp = 0;
     public float Gold = 0f;
     [ProgressBar("Xp", "XpToLevelUp", EColor.Violet)]
     public int Xp = 0;
     public int XpToLevelUp;
 
-
     public UnityAction<int, int> OnXpChanged;
+    public UnityAction<int> OnKpChanged;
     public UnityAction<int> OnLevelUp;
-    public UnityAction<int> OnScoreChanged;
 
     private int[] _xpTable;
 
@@ -55,9 +54,9 @@ public class PlayerDataManager : GameEntityDataManager
         AttackDamage += 10;
     }
 
-    public void AddKp(int recievedScore)
+    public void AddKp(int recievedKp)
     {
-        Score += recievedScore;
-        OnScoreChanged?.Invoke(Score);
+        Kp += recievedKp;
+        OnKpChanged?.Invoke(Kp);
     }
 }

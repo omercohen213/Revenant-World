@@ -34,9 +34,9 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
     {
         if (_monsterHealth != null)
         {
-            _monsterHealth.OnDamaged += (damageAmount, damageSource) => UpdateBar("Health", _monsterHealth.GetRatio());
-            _monsterHealth.OnHealed += (healAmount) => UpdateBar("Health", _monsterHealth.GetRatio());
-            _monsterHealth.OnKilled += HandleDeath;
+            _monsterHealth.OnLostHealth += (damageAmount, damageSource) => UpdateBar("Health", _monsterHealth.GetRatio());
+            _monsterHealth.OnGainedHealth += (healAmount) => UpdateBar("Health", _monsterHealth.GetRatio());
+            _monsterHealth.OnHealthReachedZero += HandleDeath;
         }
     }
 
@@ -44,9 +44,9 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
     {
         if (_monsterHealth != null)
         {
-            _monsterHealth.OnDamaged -= (damageAmount, damageSource) => UpdateBar("Health", _monsterHealth.GetRatio());
-            _monsterHealth.OnHealed -= (healAmount) => UpdateBar("Health", _monsterHealth.GetRatio());
-            _monsterHealth.OnKilled -= HandleDeath;
+            _monsterHealth.OnLostHealth -= (damageAmount, damageSource) => UpdateBar("Health", _monsterHealth.GetRatio());
+            _monsterHealth.OnGainedHealth -= (healAmount) => UpdateBar("Health", _monsterHealth.GetRatio());
+            _monsterHealth.OnHealthReachedZero -= HandleDeath;
         }
     }
 
