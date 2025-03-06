@@ -12,12 +12,12 @@ public class Monster : GameEntity
     {
         base.Awake();
         MonsterData = GetComponent<MonsterDataManager>();
-        _monsterPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
     }
 
     protected override void Start()
     {
         base.Start();
+        _monsterPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
     }
 
     protected override void HandleDeath(Health health, GameObject killer)

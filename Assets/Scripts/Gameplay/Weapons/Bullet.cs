@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -89,17 +90,31 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        // Move
+        MoveBullet();
+        CorrectTrajectory();
+        HandleRotation();
+        HandleGravity();
+        HandleHitDetection();
+
+        _lastRootPosition = Root.position;
+    }
+
+   
+    private void MoveBullet()
+    {
         transform.position += _velocity * Time.deltaTime;
         if (InheritWeaponVelocity)
         {
             transform.position += InheritedMuzzleVelocity * Time.deltaTime;
         }
+    }
 
-        // Drift towards trajectory override (this is so that projectiles can be centered 
-        // with the camera center even though the actual weapon is offset)
+    // Drift towards trajectory override (this is so that projectiles can be centered 
+    // with the camera center even though the actual weapon is offset)
+    private void CorrectTrajectory()
+    {
         if (_hasTrajectoryOverride && _consumedTrajectoryCorrectionVector.sqrMagnitude <
-            _trajectoryCorrectionVector.sqrMagnitude)
+                    _trajectoryCorrectionVector.sqrMagnitude)
         {
             Vector3 correctionLeft = _trajectoryCorrectionVector - _consumedTrajectoryCorrectionVector;
             float distanceThisFrame = (Root.position - _lastRootPosition).magnitude;
@@ -116,24 +131,29 @@ public class Bullet : MonoBehaviour
 
             transform.position += correctionThisFrame;
         }
+    }
 
-        // Orient towards velocity
-        //transform.forward = _velocity.normalized;
-
-        // Maintain correct rotation (Prevents mid-flight rotation issues)
+    // Maintain correct rotation (Prevents mid-flight rotation issues)
+    private void HandleRotation()
+    {
         if (_velocity.sqrMagnitude > 0.01f)  // Only rotate if moving
         {
             transform.rotation = Quaternion.LookRotation(_velocity) * Quaternion.Euler(90f, 0f, 0f);
         }
+    }
 
-        // Gravity
+    // add gravity to the projectile velocity for ballistic effect
+    private void HandleGravity()
+    {
         if (GravityDownAcceleration > 0)
         {
-            // add gravity to the projectile velocity for ballistic effect
             _velocity += Vector3.down * GravityDownAcceleration * Time.deltaTime;
         }
+    }
 
-        // Hit detection
+    // Hit detection by casting a sphere
+    private void HandleHitDetection()
+    {
         RaycastHit closestHit = new RaycastHit();
         closestHit.distance = Mathf.Infinity;
         bool foundHit = false;
@@ -163,10 +183,8 @@ public class Bullet : MonoBehaviour
 
             OnHit(closestHit.point, closestHit.normal, closestHit.collider);
         }
-
-
-        _lastRootPosition = Root.position;
     }
+
 
     public void Shoot(Gun gun)
     {
@@ -204,7 +222,7 @@ public class Bullet : MonoBehaviour
         _ignoredColliders = new List<Collider>(ownerColliders);
     }
 
-    bool IsHitValid(RaycastHit hit)
+    private bool IsHitValid(RaycastHit hit)
     {
         if (hit.distance == 0) return false;
 
@@ -223,7 +241,7 @@ public class Bullet : MonoBehaviour
         return true;
     }
 
-    void OnHit(Vector3 hitPoint, Vector3 normal, Collider collider)
+    private void OnHit(Vector3 hitPoint, Vector3 normal, Collider collider)
     {
         // damage
         Damageable damageable = collider.GetComponent<Damageable>();

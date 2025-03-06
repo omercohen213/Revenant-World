@@ -6,15 +6,18 @@ using UnityEngine;
  /// </summary>
 public abstract class GameEntityBaseData : ScriptableObject
 {
+    public string Name;
+    // public EntityType EntityType
+
     [Header("Stats")]
-    public float MaxHealth = 100f;
-    public float HealthRegen = 1f;
-    public float Speed = 5f;
-    public float AttackDamage = 10f;
-    public float AttackSpeed = 1f;
-    public float Armor = 5f;
+    public float MaxHealth;
+    public float HealthRegen;
+    public float Speed;
+    public float AttackDamage;
+    public float AttackSpeed;
+    public float Armor;
 
     [Header("Kill Rewards")]
-    public int XpReward = 50; 
-    public int ScoreReward = 1;  
+    public int XpReward; 
+    public int KpReward;  
 }

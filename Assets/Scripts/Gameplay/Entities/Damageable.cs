@@ -30,9 +30,15 @@ public class Damageable : MonoBehaviour
 
     private void Start()
     {
+        if (_hitVFX == null)
+        {
+            Debug.LogError("Hit VFX is not initialized properly.");
+            return;
+        }
         _hitVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(_hitVFX);
     }
 
+    // Call the damage handling of health component
     public void InflictDamage(Vector3 hitPoint, float damage, GameObject damageSource)
     {
         if (Health)
@@ -48,10 +54,10 @@ public class Damageable : MonoBehaviour
             // apply the damages
             Health.TakeDamage(totalDamage, damageSource);
         }
-        ShowImpacVFX(hitPoint);
+        ShowImpactVFX(hitPoint);
     }
 
-    public void ShowImpacVFX(Vector3 position)
+    public void ShowImpactVFX(Vector3 position)
     {
         _hitVFX = _hitVFXPool.Get();
         _hitVFX.transform.position = position;

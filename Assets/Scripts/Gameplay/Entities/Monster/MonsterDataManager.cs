@@ -11,4 +11,10 @@ public class MonsterDataManager : GameEntityDataManager
 
     // Specific loot or rewards dropped by this monster
     public LootTable lootTable;  // A list of item names this monster can drop
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
 }

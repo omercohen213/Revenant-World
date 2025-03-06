@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    public float MaxHealth;
+    public float MaxHealth { get; private set; }
     [ProgressBar("Health", "MaxHealth", EColor.Red)]
     [SerializeField] private float CurrentHealth;
 
@@ -22,7 +22,10 @@ public class Health : MonoBehaviour
     protected virtual void Awake()
     {
         Owner = GetComponent<GameEntity>();
-
+        if (Owner == null)
+        {
+            Debug.LogError("GameEntity component not found. Health cannot be initialized properly.");
+        }
     }
 
     private void Start()
@@ -63,9 +66,6 @@ public class Health : MonoBehaviour
             OnDamaged?.Invoke(trueDamageAmount, damageSource);
         }
 
-        //string damageTextToDisplay = $"-{Mathf.RoundToInt(damage)}";
-        //ShowFloatingText(damageTextToDisplay);
-
         CheckDeath(damageSource);
     }
 
@@ -91,13 +91,6 @@ public class Health : MonoBehaviour
             IsDead = true;
             OnKilled?.Invoke(this, killer);
         }
-    }
-
-    private void ShowFloatingText(string damageTextToDisplay)
-    {
-        // CHANGE TO EVENT
-        FloatingTextManager.Instance.ShowFloatingText(gameObject, transform.position + Vector3.up, damageTextToDisplay);
-
     }
 
     /*private IEnumerator RegenerateCoroutine()

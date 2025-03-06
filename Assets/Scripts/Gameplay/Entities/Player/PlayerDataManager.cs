@@ -31,7 +31,7 @@ public class PlayerDataManager : GameEntityDataManager
         XpToLevelUp = _xpTable[Level-1];
     }
 
-    public void AddXP(int recievedXp)
+    public void AddXp(int recievedXp)
     {
         Xp += recievedXp;
         CheckLevelUp();
@@ -55,7 +55,7 @@ public class PlayerDataManager : GameEntityDataManager
         AttackDamage += 10;
     }
 
-    public void AddScore(int recievedScore)
+    public void AddKp(int recievedScore)
     {
         Score += recievedScore;
         OnScoreChanged?.Invoke(Score);

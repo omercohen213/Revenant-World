@@ -1,4 +1,6 @@
+using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,14 +8,18 @@ using UnityEngine.UI;
 public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 {
     [Header("Bars")]
-    [SerializeField] private Image HealthBarFill;
-    [SerializeField] private Image ArmorBarFill;
-    [SerializeField] private Image ManaBarFill;
-    [SerializeField] private Image XpBarFill;
-    [SerializeField] private TextMeshProUGUI XpBarText;
-    [SerializeField] private TextMeshProUGUI LevelText;
+
+    [Required][SerializeField] private Image _healthBarFill;
+    [SerializeField] private TextMeshProUGUI _healthBarText;
+    [Required][SerializeField] private Image _xpBarFill;
+    [Required][SerializeField] private TextMeshProUGUI _xpBarText;
+    [Required][SerializeField] private TextMeshProUGUI _levelText;
+
+    [SerializeField] private Image _armorBarFill;
+    [SerializeField] private Image _manaBarFill;
 
     private Dictionary<string, Image> _bars;
+    private Dictionary<string, TextMeshProUGUI> _texts;
     private Health _playerHealth;
     private PlayerDataManager _playerData;
 
@@ -27,10 +33,17 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 
         _bars = new Dictionary<string, Image>
         {
-            { "Health", HealthBarFill },
-            { "Armor", ArmorBarFill },
-            { "Mana", ManaBarFill },
-            { "XP", XpBarFill }
+            { "Health", _healthBarFill },
+            { "Armor", _armorBarFill },
+            { "Mana", _manaBarFill },
+            { "XP", _xpBarFill }
+        };
+
+        _texts = new Dictionary<string, TextMeshProUGUI>
+        {
+            { "Health", _healthBarText },
+            { "Level", _levelText },
+            { "XP", _xpBarText }
         };
     }
 
@@ -41,7 +54,9 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
         _playerHealth.OnKilled += HandleDeath;
 
         _playerData.OnLevelUp += (level) => UpdateBar("XP", (float)_playerData.Xp / _playerData.XpToLevelUp);
+        _playerData.OnLevelUp += (level) => UpdateText("Level", level.ToString());
         _playerData.OnXpChanged += (currentXp, requiredXp) => UpdateBar("XP", (float)currentXp / requiredXp);
+        _playerData.OnXpChanged += (currentXp, requiredXp) => UpdateText("XP", $"{currentXp}/{requiredXp}");
     }
 
     private void OnDisable()
@@ -51,12 +66,48 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
         _playerHealth.OnKilled -= HandleDeath;
     }
 
-    // Update bar fill according to ratio
+    private void Start()
+    {
+        InitializeHealthBar();
+        InitializeArmorBar();
+        InitializeXpBar();
+
+        string startingLevelText = "1";
+        UpdateText("Level", startingLevelText);
+    }
+
+    private void InitializeHealthBar()
+    {
+        UpdateBar("Health", _playerHealth.MaxHealth);
+    }
+
+    private void InitializeArmorBar()
+    {
+
+    }
+
+    private void InitializeXpBar()
+    {
+        int currentXp = 0;
+        int requiredXp = _playerData.XpToLevelUp;
+        UpdateBar("XP", currentXp / requiredXp);
+    }
+
+    // Update a bar fill according to ratio
     public void UpdateBar(string barType, float ratio)
     {
         if (_bars.TryGetValue(barType, out Image bar) && bar != null)
         {
             bar.fillAmount = ratio;
+        }
+    }
+
+    // Update a text
+    public void UpdateText(string textType, string text)
+    {
+        if (_texts.TryGetValue(textType, out TextMeshProUGUI textMesh) && textMesh != null)
+        {
+            textMesh.text = text;
         }
     }
 

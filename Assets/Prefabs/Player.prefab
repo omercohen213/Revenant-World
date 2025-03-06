@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 674840494443234357}
   - component: {fileID: 2374994866161530228}
   - component: {fileID: 7828531249051854069}
+  - component: {fileID: 4867025738106305986}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -239,9 +240,6 @@ MonoBehaviour:
   aim: 0
   crouch: 0
   reload: 0
-  analogMovement: 0
-  cursorLocked: 1
-  cursorInputForLook: 1
 --- !u!114 &3641011870917666852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,27 +252,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6a1cf865e63454b92ad45655d72785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
-  SprintSpeed: 6
-  RotationSpeed: 1
-  SpeedChangeRate: 10
-  JumpHeight: 1.2
-  Gravity: -15
-  JumpTimeout: 0.1
-  FallTimeout: 0.15
-  IsGrounded: 1
-  GroundedOffset: -0.14
-  GroundedRadius: 0.5
-  GroundLayers:
+  _moveSpeed: 4
+  _sprintSpeed: 6
+  _rotationSpeed: 1
+  _speedChangeRate: 10
+  _jumpHeight: 1
+  _gravity: -9.81
+  _jumpTimeout: 0.1
+  _fallTimeout: 0.15
+  _isGrounded: 1
+  _groundedOffset: -0.14
+  _groundedRadius: 0.5
+  _groundLayers:
     serializedVersion: 2
-    m_Bits: 1
-  CinemachineCameraTarget: {fileID: 8924806298460691845}
-  TopClamp: 30
-  BottomClamp: -60
-  Weapon: {fileID: 0}
-  RightArm: {fileID: 0}
-  LeftArm: {fileID: 0}
-  Camera: {fileID: 0}
+    m_Bits: 0
+  _cameraTarget: {fileID: 0}
+  _topClamp: 90
+  _bottomClamp: -90
+  _weapon: {fileID: 0}
+  _rightArm: {fileID: 0}
+  _leftArm: {fileID: 0}
+  _camera: {fileID: 0}
 --- !u!114 &8653426675960947379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,11 +286,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
-  animator: {fileID: 0}
-  DefaultWeaponPosition: {fileID: 0}
-  crosshair: {fileID: 0}
+  _defaultWeaponPosition: {fileID: 0}
+  _crosshair: {fileID: 0}
   IsReloading: 0
-  DefaultFov: 60
+  _defaultFov: 60
   WeaponFovMultiplier: 0.5
   AimingAnimationSpeed: 10
   WeaponSwitchDelay: 1
@@ -325,10 +322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb158e790c16d454aae466047375b47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DashForce: 15
-  DashDuration: 0.2
-  DashCooldown: 0.5
-  MaxDashCharges: 2
+  _dashForce: 15
+  _dashDuration: 0.2
+  _dashCooldown: 5
+  _maxDashCharges: 2
+  _currentCharges: 0
 --- !u!114 &2374994866161530228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +346,7 @@ MonoBehaviour:
   Armor: 0
   AttackSpeed: 0
   XpReward: 0
-  ScoreReward: 0
+  KpReward: 0
   Score: 0
   Gold: 0
   Xp: 0
@@ -365,8 +363,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a475e911f4d6f704fb93456215f95ece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 0
   CurrentHealth: 0
+--- !u!114 &4867025738106305986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173669236065002479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02db9e9537fca204795d1ac093b12b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelfDamageMultiplier: 0.5
+  _hitVFX: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
+  _hitVFXLifetime: 0.3
 --- !u!1 &3394633367889055299
 GameObject:
   m_ObjectHideFlags: 0
