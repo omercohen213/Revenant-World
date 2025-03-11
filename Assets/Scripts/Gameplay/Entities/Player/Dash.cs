@@ -42,7 +42,7 @@ public class Dash : MonoBehaviour
 
 
         // Dash input check
-        if (_playerInput.dash && _currentCharges > 0 && !_isDashing)
+        if (_playerInput.GetDashInputDown() && _currentCharges > 0 && !_isDashing)
         {
             StartCoroutine(PerformDash());
         }
@@ -54,7 +54,7 @@ public class Dash : MonoBehaviour
         _currentCharges--;
 
         // Get movement direction (if not moving, dash forward)
-        Vector3 moveDirection = new Vector3(_playerInput.move.x, 0, _playerInput.move.y).normalized;
+        Vector3 moveDirection = new Vector3(_playerInput.Move.x, 0, _playerInput.Move.y).normalized;
 
         // If no movement input, dash forward (relative to player’s current facing direction)
         if (moveDirection == Vector3.zero)

@@ -126,13 +126,13 @@ public class PlayerController : MonoBehaviour
     private void CameraRotation()
     {
         // if there is an input
-        if (_playerInput.look.sqrMagnitude >= _threshold)
+        if (_playerInput.Look.sqrMagnitude >= _threshold)
         {
             // Don't multiply mouse input by Time.deltaTime
             float deltaTimeMultiplier = 1.0f;
 
-            _cinemachineTargetPitch += _playerInput.look.y * _rotationSpeed * deltaTimeMultiplier;
-            _rotationVelocity = _playerInput.look.x * _rotationSpeed * deltaTimeMultiplier;
+            _cinemachineTargetPitch += _playerInput.Look.y * _rotationSpeed * deltaTimeMultiplier;
+            _rotationVelocity = _playerInput.Look.x * _rotationSpeed * deltaTimeMultiplier;
 
             // Clamp our pitch rotation
             _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, _bottomClamp, _topClamp);
@@ -146,13 +146,13 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
-        float targetSpeed = _playerInput.sprint ? _sprintSpeed : _moveSpeed;
+        float targetSpeed = _playerInput.Sprint ? _sprintSpeed : _moveSpeed;
 
         // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
         // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is no input, set the target speed to 0
-        if (_playerInput.move == Vector2.zero) targetSpeed = 0.0f;
+        if (_playerInput.Move == Vector2.zero) targetSpeed = 0.0f;
 
         // a reference to the players current horizontal velocity
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -175,14 +175,14 @@ public class PlayerController : MonoBehaviour
         }
 
         // normalise input direction
-        Vector3 inputDirection = new Vector3(_playerInput.move.x, 0.0f, _playerInput.move.y).normalized;
+        Vector3 inputDirection = new Vector3(_playerInput.Move.x, 0.0f, _playerInput.Move.y).normalized;
 
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (_playerInput.move != Vector2.zero)
+        if (_playerInput.Move != Vector2.zero)
         {
             // move
-            inputDirection = transform.right * _playerInput.move.x + transform.forward * _playerInput.move.y;
+            inputDirection = transform.right * _playerInput.Move.x + transform.forward * _playerInput.Move.y;
         }
 
         // move the player
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Jump
-            if (_playerInput.jump && _jumpTimeoutDelta <= 0.0f)
+            if (_playerInput.GetJumpInputDown() && _jumpTimeoutDelta <= 0.0f)
             {
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // if we are not grounded, do not jump
-            _playerInput.jump = false;
+            _playerInput.Jump = false;
         }
 
         // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)

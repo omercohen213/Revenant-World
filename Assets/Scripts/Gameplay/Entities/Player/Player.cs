@@ -6,6 +6,7 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(PlayerDataManager))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(InventoryManager))]
+[RequireComponent(typeof(PlayerInput))]
 public class Player : GameEntity
 {
     public PlayerDataManager PlayerData;

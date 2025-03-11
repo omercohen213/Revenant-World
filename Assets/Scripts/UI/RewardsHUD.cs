@@ -40,7 +40,7 @@ public class RewardsHUD : MonoBehaviour
     // Activate the rewards objects on the player hud
     private void ShowRewards(GameEntity killedEntity, int xp, int kp)
     {
-        string killedEntityName = killedEntity.GetEntityData().baseData.name;
+        string killedEntityName = killedEntity.GetEntityData().baseData.Name;
 
         SetActive(true);
         SetAlpha(1f);

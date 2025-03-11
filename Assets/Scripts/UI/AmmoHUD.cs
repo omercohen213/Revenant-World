@@ -56,7 +56,7 @@ public class AmmoHUD: MonoBehaviour
             return;
 
         InMagAmmo.text = _activeWeapon.CurrentAmmo.ToString();
-        OutMagAmmo.text = _inventoryManager.GetTotalAmmo(_activeWeapon).ToString();
+        OutMagAmmo.text = _inventoryManager.GetTotalQuantityOfItem(_activeWeapon.RangedWeaponData.RequiredAmmo).ToString();
     }
 
     /// <summary>
