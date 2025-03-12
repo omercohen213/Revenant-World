@@ -37,7 +37,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Check if item does not exceed the capacity
-    private bool CanBeAdded(ItemData itemData, int quantity)
+    public bool CanBeAdded(ItemData itemData, int quantity)
     {
         int weightToAdd = Mathf.RoundToInt(itemData.Weight * quantity);
         int totalWeight = CurrentWeight + weightToAdd;
@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Adds an item to the inventory
-    public void AddItemToInventory(ItemData itemData, int quantity, bool isInfinite)
+    public void AddItemToInventory(ItemData itemData, int quantity, bool isInfinite = false)
     {
         if (isInfinite)
         {
@@ -131,7 +131,6 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Uses an item from the topmost slot containing the item
-    // **************** change *********
     public void ReduceItemQuantity(ItemData itemData, int quantity)
     {
         // If item is infinite, don't reduce quantity
@@ -187,11 +186,14 @@ public class InventoryManager : MonoBehaviour
 
     public void PrintInventory()
     {
-        Debug.Log("Current Inventory:");
+        string inventoryText = "Current Inventory: ";
+
         foreach (InventorySlot slot in InventorySlots)
         {
-            Debug.Log($"Item: {slot.ItemData.ItemName}, Quantity: {slot.Quantity}, Weight: {slot.Weight}");
+            inventoryText += $"{slot.ItemData.ItemName}, Quantity: {slot.Quantity}, Weight: {slot.Weight} | ";
         }
+
+        Debug.Log(inventoryText);
     }
 
     // Get the total quantity of the item across all inventory slots

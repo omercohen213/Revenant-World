@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public interface IWeapon : IItem
+public interface IWeapon
 {
     void Equip();
     void Unequip();
-    void HandleActions();
 }

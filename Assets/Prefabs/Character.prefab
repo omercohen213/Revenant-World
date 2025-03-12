@@ -201,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 214460707532730877}
   - component: {fileID: 1302971169969215105}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_89
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2880113805832467658}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Soldier_body.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +752,7 @@ GameObject:
   m_Component:
   - component: {fileID: 758730403899626857}
   - component: {fileID: 3017311982257681396}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_75
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -997,7 +997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5675419176672943715}
   - component: {fileID: 4946899959470551729}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_83
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1360,7 +1360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2555054007799831982}
   - component: {fileID: 3692845032941910332}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_93
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1701,7 +1701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8373935469429555321}
   - component: {fileID: 8532193772586385712}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_81
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1828,7 +1828,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6125482441989385971}
   - component: {fileID: 2704733133200347111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_73
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2018,7 +2018,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7706609900938727111}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mixamorig_RightUpLeg_028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2053,7 +2053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1334647900272618868}
   - component: {fileID: 7500937682225661171}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_79
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2277,7 +2277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4515649299045512690}
   - component: {fileID: 2780384281666451651}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_87
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2467,7 +2467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3305728523476680669}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mixamorig_Neck_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2586,7 +2586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6885328321026857698}
   - component: {fileID: 3967615335138908144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_97
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2809,7 +2809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1022355094163043274}
   - component: {fileID: 5623189143647502854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2999,7 +2999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1052536134344510318}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mixamorig_LeftUpLeg_023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3098,7 +3098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7795532505984731385}
   - component: {fileID: 1474605508566768993}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_91
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3225,7 +3225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6487877983054904099}
   - component: {fileID: 1186508004319097376}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_95
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3351,7 +3351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8744509212017158157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Soldier_body.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3629,7 +3629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7514755226012683633}
   - component: {fileID: 8275478132311290754}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3842,7 +3842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 790588140199639328}
   - component: {fileID: 596859915831869811}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_99
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3969,7 +3969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6062521778658366273}
   - component: {fileID: 7052505221140734243}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Object_85
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,71 +1,102 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    #region Character Input Values
-    [Header("Character Input Values")]
-    public Vector2 Move;
-    public Vector2 Look;
-    public bool Jump;
-    public bool Sprint;
-    public bool Dash;
+    public event Action<Vector2> OnMoveInput;
+    public event Action<Vector2> OnLookInput;
+    public event Action<bool> OnSprintHeld;
+    public event Action OnFireDown;
+    public event Action OnFireHeld;
+    public event Action OnFireReleased;
 
-    public bool FireDown;
-    public bool FireHeld;
-    public bool FireReleased;
-    public bool AimDown;
-    public bool Crouch;
-    public bool Reload;
-    #endregion
+    public event Action OnJumpPressed;
+    public event Action OnDashPressed;
+    public event Action OnCrouchPressed;
+    public event Action OnReloadPressed;
+    public event Action OnAimPressed;
+    public event Action OnPickUpPressed;
+
+    private Vector2 _move;
+    private Vector2 _look;
+    private bool _sprintHeld;
+    private bool _fireDown;
+    private bool _fireHeld;
+    private bool _fireReleased;
 
     private void Update()
+    {
+        LockCursor();
+        InvokeMoveInput();
+        InvokeLookInput();
+        CheckFireHeld();
+        CheckSprintHeld();
+    }
+
+    private void LockCursor()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
+    private void InvokeMoveInput()
+    {
+        OnMoveInput?.Invoke(_move);
+    }
+    private void InvokeLookInput()
+    {
+        OnLookInput?.Invoke(_look);
+    }
+
+    private void CheckSprintHeld()
+    {
+        if (_sprintHeld)
+        {
+            OnSprintHeld?.Invoke(true);
+        }
+        else
+        {
+            OnSprintHeld?.Invoke(false);
+        }
+    }
+    private void CheckFireHeld()
+    {
+        if (_fireHeld)
+        {
+            OnFireHeld?.Invoke();
+        }
+    }
 
 #if ENABLE_INPUT_SYSTEM
-    public void OnMove(InputValue value) => Move = value.Get<Vector2>();
-    public void OnLook(InputValue value) { Look = value.Get<Vector2>(); Debug.Log("ss"); }
-    public void OnJump(InputValue value) => Jump = value.isPressed;
-    public bool GetJumpInputDown()
-    {
-        // Capture the current jump state and reset it so it only lasts one frame.
-        bool wasPressed = Jump;
-        Jump = false;
-        return wasPressed;
-    }
-    public void OnSprint(InputValue value) => Sprint = value.isPressed;
-    public void OnDash(InputValue value) => Dash = value.isPressed;
-    public bool GetDashInputDown()
-    {
-        // Capture the current jump state and reset it so it only lasts one frame.
-        bool wasPressed = Dash;
-        Dash = false;
-        return wasPressed;
-    }
+    // Continous actions
+    public void OnMove(InputValue value) => _move = value.Get<Vector2>();
+    public void OnLook(InputValue value) => _look = value.Get<Vector2>();
+    public void OnSprint(InputValue value) => _sprintHeld = value.isPressed;
     public void OnFire(InputValue value)
     {
-        FireReleased = FireHeld && !value.isPressed;
-        FireDown = !FireHeld && value.isPressed;
-        FireHeld = value.isPressed;
-    }
-    public bool GetFireInputDown() => FireDown;
-    public bool GetFireInputHeld() => FireHeld;
-    public bool GetFireInputReleased() => FireReleased;
-    public void OnAim(InputValue value) => AimDown = value.isPressed;
-    public bool GetAimInputDown()
-    {
-        // Capture the current aimDown state and reset it so it only lasts one frame.
-        bool wasPressed = AimDown;
-        AimDown = false;
-        return wasPressed;
-    }
-    public void OnCrouch(InputValue value) => Crouch = value.isPressed;
-    public void OnReload(InputValue value) => Reload = value.isPressed;
-#endif
+        _fireDown = !_fireHeld && value.isPressed;
+        _fireHeld = value.isPressed;
+        _fireReleased = _fireHeld && !value.isPressed;
 
+        // Trigger events based on input state
+        if (_fireDown) OnFireDown?.Invoke();
+        if (_fireHeld) _fireHeld = true;
+        if (_fireReleased)
+        {
+            OnFireReleased?.Invoke();
+            _fireHeld = false;
+        }
+    }
+
+    // One-Frame actions
+    public void OnJump(InputValue value) { if (value.isPressed) OnJumpPressed?.Invoke(); }
+    public void OnDash(InputValue value) { if (value.isPressed) OnDashPressed?.Invoke(); }
+    public void OnCrouch(InputValue value) { if (value.isPressed) OnCrouchPressed?.Invoke(); }
+    public void OnReload(InputValue value) { if (value.isPressed) OnReloadPressed?.Invoke(); }
+    public void OnAim(InputValue value) { if (value.isPressed) OnAimPressed?.Invoke(); }
+    public void OnPickUp(InputValue value) { if (value.isPressed) OnPickUpPressed?.Invoke(); }
+
+#endif
 }

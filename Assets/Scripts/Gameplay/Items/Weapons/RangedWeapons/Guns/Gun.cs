@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 public class Gun : RangedWeapon
 {
+    public GunData GunData => ItemData as GunData;
+
     public enum ShootType
     {
         Automatic,
@@ -15,9 +16,6 @@ public class Gun : RangedWeapon
         Single
     }
 
-    [Header("Weapon Data")]
-    [Tooltip("Reference to the ScriptableObject holding gun stats")]
-    public GunData GunData;
     [Tooltip("Tip of the weapon, where the projectiles are shot")]
     public Transform WeaponMuzzle;
 
@@ -49,35 +47,43 @@ public class Gun : RangedWeapon
         }
 
         CurrentAmmo = 0;
-        Owner = DebugUtil.GetFirstParentOfType<Player>(gameObject);
 
         // initialize object pools
         BulletPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.BulletPrefab);
         _muzzleFlashPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.MuzzleFlashPrefab);
     }
 
-    protected void Update()
+    protected override void OnEnable()
     {
-        //_accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * WeaponData.RecoilRecoverySpeed);
+        base.OnEnable();
+        Owner = GetComponentInParent<Player>();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
         _accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * GunData.RecoilRecoverySpeed);
     }
 
-    public override void StartShooting()
+    public override void HandleFireDown()
     {
-        _progressiveSpread = 0f; // Reset spread
+        base.HandleFireDown();
+        ResetSpread();
+        TryShoot();
+    }
+
+    public override void HandleFireHeld()
+    {
+        base.HandleFireHeld();
         _isFiringContinuously = true;
         TryShoot();
     }
 
-    public override void ContinueShooting()
+    public override void HandleFireReleased()
     {
-        _isFiringContinuously = true;
-    }
-
-    public override void StopShooting()
-    {
-        //_isFiringContinuously = false;
-        //ResetSpread();
+        base.HandleFireReleased();
+        _isFiringContinuously = false;
+        ResetSpread();
     }
 
     public override void Reload(int ammoToReload)
@@ -204,6 +210,5 @@ public class Gun : RangedWeapon
     public void ResetSpread()
     {
         _progressiveSpread = GunData.BaseSpread;
-
     }
 }

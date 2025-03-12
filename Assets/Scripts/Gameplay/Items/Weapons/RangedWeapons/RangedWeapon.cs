@@ -1,79 +1,89 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class RangedWeapon : Weapon, IRangedWeapon
 {
-    [HideInInspector] public RangedWeaponData RangedWeaponData;
+    [HideInInspector] public RangedWeaponData RangedWeaponData => ItemData as RangedWeaponData;
 
     public event Action OnShoot;
     public event Action OnReload;
 
-    public bool IsAiming { get; private set; }
     public int CurrentAmmo { get; set; }
 
-    private bool _canAim = true;
+    protected bool _isReloading = false;
     protected float _weaponFovMultiplier = 0.5f; //change to scope
-    private readonly float _aimingAnimDuration = 0.3f;
 
+    private bool _isAiming = false;
+    private bool _canAim = true;
+    private readonly float _aimingAnimDuration = 0.3f;
     private Coroutine _reloadCoroutine;
     private Coroutine _aimCoroutine;
 
     protected void InvokeShoot() => OnShoot?.Invoke();
     protected void InvokeReload() => OnReload?.Invoke();
 
-    // Main method to handle weapon actions
-    public override void HandleActions()
+    protected virtual void OnEnable()
     {
-        // Prevent actions while reloading
-        if (IsReloading)
+        _playerInput.OnReloadPressed += HandleReloadPressed;
+        _playerInput.OnAimPressed += HandleAimPressed;
+        _playerInput.OnFireDown += HandleFireDown;
+        _playerInput.OnFireHeld += HandleFireHeld;
+        _playerInput.OnFireReleased += HandleFireReleased;
+    }
+
+    protected virtual void OnDisable()
+    {
+        _playerInput.OnReloadPressed -= HandleReloadPressed;
+        _playerInput.OnAimPressed -= HandleAimPressed;
+        _playerInput.OnFireDown -= HandleFireDown;
+        _playerInput.OnFireHeld -= HandleFireHeld;
+        _playerInput.OnFireReleased -= HandleFireReleased;
+
+    }
+
+    protected override void Update()
+    {
+        CheckReloading();
+        CheckAutomaticReload();
+    }
+
+    // Prevent actions while reloading
+    private void CheckReloading()
+    {
+        if (_isReloading)
         {
-            if (IsAiming)
+            if (_isAiming)
             {
                 StopAiming();
             }
             return;
         }
+    }
 
-        // Reload automatically if no ammo left
+    // Reload automatically if no ammo left
+    private void CheckAutomaticReload()
+    {
         if (CurrentAmmo <= 0)
         {
             StartReloading();
             return;
         }
-        CheckInput();
     }
 
-    // Check for player input
-    private void CheckInput()
+    private void HandleReloadPressed()
     {
-        // Fire input
-        if (_playerInput.GetFireInputDown())
-        {
-            StartShooting();
-        }
-
-        if (_playerInput.GetFireInputHeld())
-        {
-            ContinueShooting();
-        }
-
-        if (_playerInput.GetFireInputReleased())
-        {
-            StopShooting();
-        }
-
-        // Reload input
-        if (CanReload() && _playerInput.Reload)
+        if (CanReload())
         {
             StartReloading();
         }
+    }
 
-        // Aim input
-        if (_canAim && _playerInput.GetAimInputDown())
+    private void HandleAimPressed()
+    {
+        if (_canAim && !_isReloading)
         {
-            if (!IsAiming)
+            if (!_isAiming)
             {
                 StartAiming();
             }
@@ -84,19 +94,16 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         }
     }
 
-    public virtual void StartShooting()
+    public virtual void HandleFireDown()
     {
-
     }
 
-    public virtual void ContinueShooting()
+    public virtual void HandleFireHeld()
     {
-
     }
 
-    public virtual void StopShooting()
+    public virtual void HandleFireReleased()
     {
-
     }
 
     public virtual bool TryShoot()
@@ -121,7 +128,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     public void StopReloadAnimation()
     {
         //GetComponent<Animator>().SetTrigger("Idle");
-    } 
+    }
 
     // Check if reload is allowed
     private bool CanReload()
@@ -130,7 +137,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         {
             int totalAmmo = _inventoryManager.GetTotalQuantityOfItem(RangedWeaponData.RequiredAmmo);
             int ammoNeeded = RangedWeaponData.ClipSize - CurrentAmmo;
-            return !IsReloading && totalAmmo > 0 && ammoNeeded > 0 || CurrentAmmo <= 0 && totalAmmo > 0;
+            return !_isReloading && totalAmmo > 0 && ammoNeeded > 0 || CurrentAmmo <= 0 && totalAmmo > 0;
         }
         else return false;
     }
@@ -141,13 +148,13 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         if (_reloadCoroutine != null) return; // Prevent multiple reloads at once
 
         // Stop aiming
-        if (IsAiming)
+        if (_isAiming)
         {
             StopAiming();
-            IsAiming = false;
+            _isAiming = false;
         }
 
-        IsReloading = true;
+        _isReloading = true;
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
     }
 
@@ -172,14 +179,14 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     // Properly stops the reloading process
     private void StopReloading()
     {
-        IsReloading = false;
+        _isReloading = false;
         _reloadCoroutine = null;
         StopReloadAnimation();
     }
 
     private void UpdateFov()
     {
-        float targetFov = IsAiming ? _weaponFovMultiplier * _defaultFov : _defaultFov;
+        float targetFov = _isAiming ? _weaponFovMultiplier * _defaultFov : _defaultFov;
         _cameraManager.StartFovTransition(targetFov, _aimingAnimDuration);
     }
 
@@ -188,7 +195,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         // Toggle state only if allowed
         if (!_canAim) return;
 
-        IsAiming = true;
+        _isAiming = true;
         _canAim = false;
         _crosshair.DisableCrosshair();
         _animator.SetBool("Aim", true);
@@ -205,7 +212,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         // Toggle state only if allowed
         if (!_canAim) return;
 
-        IsAiming = false;
+        _isAiming = false;
         _canAim = false;
         _crosshair.EnableCrosshair();
         _animator.SetBool("Aim", false);

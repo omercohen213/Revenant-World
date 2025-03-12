@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ammo : Item, IItem
+public class Ammo : Item
 {
     public AmmoData AmmoData;
 }

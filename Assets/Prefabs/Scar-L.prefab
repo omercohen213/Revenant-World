@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1370883996030892580}
   - component: {fileID: 5375884123069142101}
   - component: {fileID: 3787800803669364905}
+  - component: {fileID: 1629858901333886822}
   m_Layer: 8
   m_Name: Scar-L
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.96, y: 1.35, z: 1.78}
-  m_LocalScale: {x: 0.22218, y: 0.22218, z: 0.22218}
+  m_LocalScale: {x: 1.2402309, y: 1.2402309, z: 1.2402309}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6496897881067924071}
@@ -55,13 +56,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5aaff2ee06a89418e01d4b3a6e15f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
   Owner: {fileID: 0}
-  RangedWeaponData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
-  CurrentAmmo: 0
-  gunData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
+  _weaponType: 0
+  _defaultWeaponPosition: {fileID: 0}
+  _crosshair: {fileID: 0}
+  _defaultFov: 60
   WeaponMuzzle: {fileID: 1171665404314480440}
-  MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 9f671b22f25370048a18fb1f821294ec, type: 3}
-  UnparentMuzzleFlash: 0
+  muzzleFlashLifetime: 0.5
+--- !u!65 &1629858901333886822
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170424340172562550}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.71184444, z: 1.9728682}
+  m_Center: {x: 0.24, y: 0.1385297, z: 0}
 --- !u!1001 &598082886981806951
 PrefabInstance:
   m_ObjectHideFlags: 0

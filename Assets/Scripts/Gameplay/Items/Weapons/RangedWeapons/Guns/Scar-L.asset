@@ -20,8 +20,7 @@ MonoBehaviour:
   IsSignleInstance: 1
   HasAmmo: 1
   RequiredAmmo: {fileID: 11400000, guid: 1bbb1d25c7f51f343a626963c0601c05, type: 2}
-  ReloadDelay: 2
-  ReloadTime: 3
+  ReloadTime: 2
   ClipSize: 30
   ShootType: 0
   BulletPrefab: {fileID: -9056775269376815003, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}

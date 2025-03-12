@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 
@@ -19,19 +17,21 @@ public abstract class Weapon : Item, IWeapon
     [SerializeField] protected Crosshair _crosshair;
 
 
-    [SerializeField] protected bool IsReloading = false;
     [SerializeField] protected float _defaultFov = 60f;
     protected float _currentFov;
 
-
     protected virtual void Awake()
     {
-        if (!DebugUtil.SafeGetComponentInParent(gameObject, out _playerInput)) return;
-        if (!DebugUtil.SafeGetComponentInParent(gameObject, out _inventoryManager)) return;
-        if (!DebugUtil.SafeGetComponentInParent(gameObject, out _player)) return;
-
+        _playerInput = GetComponentInParent<PlayerInput>();
+        _inventoryManager = GetComponentInParent<InventoryManager>();
+        _player = GetComponentInParent<Player>();
         _animator = GetComponentInParent<Animator>();
         _cameraManager = GetComponentInParent<CameraManager>();
+    }
+
+
+    protected virtual void Update()
+    {
     }
 
     public void Equip()
@@ -42,11 +42,6 @@ public abstract class Weapon : Item, IWeapon
     public void Unequip()
     {
         throw new System.NotImplementedException();
-    }
-
-    public virtual void HandleActions()
-    {
-        
     }
 }
 

@@ -3,9 +3,9 @@ using UnityEngine;
 public interface IRangedWeapon : IWeapon
 {
     // Basic shooting methods
-    void StartShooting();
-    void ContinueShooting();
-    void StopShooting();
+    void HandleFireDown();
+    void HandleFireHeld();
+    void HandleFireReleased();
     void HandleShoot();
     void Reload(int ammoToReload);
 

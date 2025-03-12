@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -20,14 +21,29 @@ public class Dash : MonoBehaviour
     [ProgressBar("_currentCharges", "_maxDashCharges", EColor.Gray)]
     [SerializeField] private int _currentCharges;
     private bool _isDashing;
-    private CharacterController _characterController;
+    private Vector3 _movementDirection;
     private Vector3 _dashDirection;
+
     private PlayerInput _playerInput;
+    private CharacterController _characterController;
 
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
-        if(DebugUtil.SafeGetComponent(gameObject, out _playerInput)) return;
+        _playerInput = GetComponent<PlayerInput>();
+
+    }
+
+    private void OnEnable()
+    {
+        _playerInput.OnDashPressed += HandleDashPressed;
+        _playerInput.OnMoveInput += HandleMoveInput;
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.OnDashPressed -= HandleDashPressed;
+        _playerInput.OnMoveInput -= HandleMoveInput;
 
     }
 
@@ -36,25 +52,31 @@ public class Dash : MonoBehaviour
         _currentCharges = _maxDashCharges; // Start with full 
     }
 
-    void Update()
+    private void HandleDashPressed()
     {
-        if (_playerInput == null) return;
-
-
-        // Dash input check
-        if (_playerInput.GetDashInputDown() && _currentCharges > 0 && !_isDashing)
+        if (CanDash())
         {
             StartCoroutine(PerformDash());
         }
     }
 
-    IEnumerator PerformDash()
+    private void HandleMoveInput(Vector2 moveInput)
+    {
+        _movementDirection = moveInput;
+    }
+
+    public bool CanDash()
+    {
+        return _currentCharges > 0 && !_isDashing;
+    }
+
+    private IEnumerator PerformDash()
     {
         _isDashing = true;
         _currentCharges--;
 
         // Get movement direction (if not moving, dash forward)
-        Vector3 moveDirection = new Vector3(_playerInput.Move.x, 0, _playerInput.Move.y).normalized;
+        Vector3 moveDirection = new Vector3(_movementDirection.x, 0, _movementDirection.y).normalized;
 
         // If no movement input, dash forward (relative to player’s current facing direction)
         if (moveDirection == Vector3.zero)
@@ -84,7 +106,7 @@ public class Dash : MonoBehaviour
         StartCoroutine(RecoverDashCharge());
     }
 
-    IEnumerator RecoverDashCharge()
+    private IEnumerator RecoverDashCharge()
     {
         yield return new WaitForSeconds(_dashCooldown);
         if (_currentCharges < _maxDashCharges)
@@ -93,12 +115,5 @@ public class Dash : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Checks if the player can dash (useful for UI indicators).
-    /// </summary>
-    public bool CanDash()
-    {
-        return _currentCharges > 0 && !_isDashing;
-    }
 }
 

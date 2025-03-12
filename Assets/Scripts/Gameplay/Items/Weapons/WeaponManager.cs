@@ -30,11 +30,6 @@ public class WeaponManager : MonoBehaviour
         SetActiveWeapon(_player.ActiveWeapon);
     }
 
-    void Update()
-    {
-        if (_activeWeapon == null) return;
-        _activeWeapon.HandleActions();
-    }
     public void SetActiveWeapon(IWeapon weapon)
     {
         _activeWeapon = weapon;
