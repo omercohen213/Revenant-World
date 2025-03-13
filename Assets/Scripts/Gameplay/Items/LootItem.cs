@@ -4,7 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class LootItem : MonoBehaviour, ILootItem
 {
-    [SerializeField] private ItemData ItemData;
+    public ItemData ItemData;
+    public int Quantity;
+
     [SerializeField] private Player _owner;
 
     public void PickUp(Player player)
@@ -13,10 +15,10 @@ public class LootItem : MonoBehaviour, ILootItem
 
         if (player.TryGetComponent<InventoryManager>(out var inventory))
         {
-            if (inventory.CanBeAdded(ItemData, 1))
+            if (inventory.CanBeAdded(ItemData, Quantity))
             {
                 Debug.Log("pick up");
-                inventory.AddItemToInventory(ItemData, 1);
+                inventory.AddItemToInventory(ItemData, Quantity);
                 Destroy(gameObject); // Remove from the scene after pickup
             }
             else

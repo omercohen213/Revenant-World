@@ -1,24 +1,16 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewGunData", menuName = "Inventory/Gun Data")]
+[CreateAssetMenu(fileName = "NewGunData", menuName = "Items/Gun Data")]
 public class GunData : RangedWeaponData
 {
     [Header("Shooting")]
     public Gun.ShootType ShootType;
-    public Bullet BulletPrefab;
     public GameObject MuzzleFlashPrefab;
-    public float Damage;
-    public float DelayBetweenShots = 0.1f;
     public int BulletsPerShot = 1;
     //public float BulletSpreadAngle = 0f;
     public float BaseSpread = 0.05f;          // Default spread when standing still
     public float SpreadIncreasePerShot = 0.01f; // Added spread per shot fired
     public float MaxSpread = 0.2f;           // Maximum allowed spread
-
-    [Header("Aiming")]
-    public float AimZoomRatio = 1.5f;
-    public Vector3 AimOffset;
-    public float AimingAnimationSpeed = 10f;
 
     [Header("Recoil")]
     public float RecoilForce = 1.0f;

@@ -7592,7 +7592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d405954ebc0eb42840fa6cb5a815db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visibilityDistance: 10
+  _visibilityDistance: 12
   _barsParent: {fileID: 2465127843831747422}
 --- !u!1 &6142687318859290345
 GameObject:

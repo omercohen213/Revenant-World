@@ -37,9 +37,9 @@ public class ObjectPoolingManager : MonoBehaviour
             actionOnGet: obj =>
             {
                 obj.gameObject.SetActive(true);
-                if (obj is Bullet bullet)
+                if (obj is Projectile projectile)
                 {
-                    bullet.ResetState();
+                    projectile.ResetState();
                 }
             },
             actionOnRelease: obj => obj.gameObject.SetActive(false),

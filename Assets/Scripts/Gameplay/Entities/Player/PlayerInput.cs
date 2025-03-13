@@ -18,6 +18,9 @@ public class PlayerInput : MonoBehaviour
     public event Action OnAimPressed;
     public event Action OnPickUpPressed;
 
+    public event Action OnInventoryPressed;
+    public event Action OnSettingsPressed;
+
     private Vector2 _move;
     private Vector2 _look;
     private bool _sprintHeld;
@@ -25,22 +28,34 @@ public class PlayerInput : MonoBehaviour
     private bool _fireHeld;
     private bool _fireReleased;
 
+    private bool _isUIOpen = false;
+    /*
+        private UICursor _uiCursor;
+
+        private void Awake()
+        {
+            _uiCursor = GetComponentInChildren<UICursor>();
+        }*/
+
     private void Update()
     {
-        LockCursor();
         InvokeMoveInput();
-        InvokeLookInput();
-        CheckFireHeld();
         CheckSprintHeld();
-    }
 
-    private void LockCursor()
-    {
-        if (Input.GetMouseButtonDown(0))
+        // Block input when UI is open
+        if (_isUIOpen)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            // When UI is open, reset look input to zero so camera stops rotating.
+            _look = Vector2.zero;
+            InvokeLookInput();
+        }
+        else
+        {
+            InvokeLookInput();
+            CheckFireHeld();
         }
     }
+
     private void InvokeMoveInput()
     {
         OnMoveInput?.Invoke(_move);
@@ -49,7 +64,6 @@ public class PlayerInput : MonoBehaviour
     {
         OnLookInput?.Invoke(_look);
     }
-
     private void CheckSprintHeld()
     {
         if (_sprintHeld)
@@ -69,13 +83,20 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-#if ENABLE_INPUT_SYSTEM
     // Continous actions
     public void OnMove(InputValue value) => _move = value.Get<Vector2>();
-    public void OnLook(InputValue value) => _look = value.Get<Vector2>();
+    public void OnLook(InputValue value)
+    {
+        if (_isUIOpen)
+            _look = Vector2.zero;
+        else
+            _look = value.Get<Vector2>();
+    }
     public void OnSprint(InputValue value) => _sprintHeld = value.isPressed;
     public void OnFire(InputValue value)
     {
+        if (_isUIOpen) return; // Block input when UI is open
+
         _fireDown = !_fireHeld && value.isPressed;
         _fireHeld = value.isPressed;
         _fireReleased = _fireHeld && !value.isPressed;
@@ -95,8 +116,31 @@ public class PlayerInput : MonoBehaviour
     public void OnDash(InputValue value) { if (value.isPressed) OnDashPressed?.Invoke(); }
     public void OnCrouch(InputValue value) { if (value.isPressed) OnCrouchPressed?.Invoke(); }
     public void OnReload(InputValue value) { if (value.isPressed) OnReloadPressed?.Invoke(); }
-    public void OnAim(InputValue value) { if (value.isPressed) OnAimPressed?.Invoke(); }
+    public void OnAim(InputValue value)
+    {
+        if (_isUIOpen) return; // Block input when UI is open
+        if (value.isPressed)
+        {
+            OnAimPressed?.Invoke();
+        }
+    }
     public void OnPickUp(InputValue value) { if (value.isPressed) OnPickUpPressed?.Invoke(); }
+    public void OnInventory(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            _isUIOpen = !_isUIOpen;
+            OnInventoryPressed?.Invoke();
+        }
+    }
+    public void OnSettings(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            _isUIOpen = !_isUIOpen;
+            OnSettingsPressed?.Invoke();
+        }
+    }
 
-#endif
+
 }

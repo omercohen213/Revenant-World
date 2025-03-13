@@ -7,17 +7,19 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class PickUpManager : MonoBehaviour
 {
+    public event Action<bool,LootItem> OnLootInRangeChanged;
+
     private Player _player;
     private PlayerInput _playerInput;
 
     // List of loot items in range
-    private List<LootItem> lootItemsInRange;
+    private List<LootItem> _lootItemsInRange;
 
     private void Awake()
     {
         _player = GetComponent<Player>();
         _playerInput = GetComponent<PlayerInput>();
-        lootItemsInRange = new List<LootItem>();
+        _lootItemsInRange = new List<LootItem>();
     }
 
     private void OnEnable()
@@ -33,7 +35,7 @@ public class PickUpManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (LootItem loot in lootItemsInRange)
+        foreach (LootItem loot in _lootItemsInRange)
         {
             Debug.Log(loot);
         }
@@ -42,7 +44,7 @@ public class PickUpManager : MonoBehaviour
     private void HandlePickUpPressed()
     {
         // Check if there are any loot items in range
-        if (lootItemsInRange.Count > 0)
+        if (_lootItemsInRange.Count > 0)
         {
             LootItem closestLoot = FindClosestItemInRange();
            
@@ -50,7 +52,11 @@ public class PickUpManager : MonoBehaviour
             if (closestLoot != null)
             {
                 closestLoot.PickUp(_player);
-                lootItemsInRange.Remove(closestLoot);
+                _lootItemsInRange.Remove(closestLoot);
+            }
+            if (_lootItemsInRange.Count == 0)
+            {
+                OnLootInRangeChanged?.Invoke(false,null); // Fire event when no more loot is in range
             }
         }
     }
@@ -61,7 +67,7 @@ public class PickUpManager : MonoBehaviour
         LootItem closestLoot = null;
         float closestDistance = float.MaxValue;
 
-        foreach (LootItem loot in lootItemsInRange)
+        foreach (LootItem loot in _lootItemsInRange)
         {
             float distance = Vector3.Distance(_player.transform.position, loot.transform.position);
 
@@ -77,10 +83,14 @@ public class PickUpManager : MonoBehaviour
     // Called when a loot item enters the player's pickup range
     private void OnTriggerEnter(Collider other)
     {
-        LootItem loot = other.GetComponent<LootItem>();
-        if (loot != null && !lootItemsInRange.Contains(loot))
+        LootItem lootItem = other.GetComponent<LootItem>();
+        if (lootItem != null && !_lootItemsInRange.Contains(lootItem))
         {
-            lootItemsInRange.Add(loot);
+            _lootItemsInRange.Add(lootItem);
+        }
+        if (_lootItemsInRange.Count == 1)
+        {
+            OnLootInRangeChanged?.Invoke(true,lootItem); // Fire event when first loot enters range
         }
     }
 
@@ -88,9 +98,13 @@ public class PickUpManager : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         LootItem loot = other.GetComponent<LootItem>();
-        if (loot != null && lootItemsInRange.Contains(loot))
+        if (loot != null && _lootItemsInRange.Contains(loot))
         {
-            lootItemsInRange.Remove(loot);
+            _lootItemsInRange.Remove(loot);
+        }
+        if (_lootItemsInRange.Count == 0)
+        {
+            OnLootInRangeChanged?.Invoke(false, null); // Fire event when first loot enters range
         }
     }
 }

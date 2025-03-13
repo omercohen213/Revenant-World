@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Ammo", menuName = "Inventory/Ammo")]
+[CreateAssetMenu(fileName = "Ammo", menuName = "Items/Ammo")]
 public class AmmoData : ItemData
 {
     public AmmoType Type;

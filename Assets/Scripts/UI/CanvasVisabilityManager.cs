@@ -1,5 +1,7 @@
 using System;
+using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CanvasVisabilityManager : MonoBehaviour
@@ -12,8 +14,21 @@ public class CanvasVisabilityManager : MonoBehaviour
 
     private void Start()
     {
-        GameObject targetPlayerGameObject = GameObject.FindGameObjectWithTag("Player");
-        _targetPlayer = targetPlayerGameObject.transform;
+        GameObject currentObject = GameObject.FindGameObjectWithTag("Player");
+
+        while (currentObject.transform.parent != null)
+        {
+            GameObject parentObject = currentObject.transform.parent.gameObject;
+
+            if (currentObject.CompareTag("Player") && !parentObject.CompareTag("Player"))
+            {
+                break;
+            }
+
+            currentObject = parentObject;
+        }
+
+        _targetPlayer = currentObject.transform;
     }
 
     private void Update()
@@ -21,9 +36,9 @@ public class CanvasVisabilityManager : MonoBehaviour
         if (_targetPlayer != null)
         {
             HandleBarVisability();
-            RotateCanvas();          
+            RotateCanvas();
         }
-    }   
+    }
 
     // Show/hide the health bar based on distance
     private void HandleBarVisability()
@@ -46,7 +61,6 @@ public class CanvasVisabilityManager : MonoBehaviour
     private void RotateCanvas()
     {
         _targetPlayerCamera = _targetPlayer.GetComponentInChildren<CinemachineCamera>();
-
         if (_targetPlayerCamera != null)
         {
             transform.LookAt(transform.position + _targetPlayerCamera.transform.rotation * Vector3.forward,

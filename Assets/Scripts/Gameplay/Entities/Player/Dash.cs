@@ -20,7 +20,9 @@ public class Dash : MonoBehaviour
 
     [ProgressBar("_currentCharges", "_maxDashCharges", EColor.Gray)]
     [SerializeField] private int _currentCharges;
+
     private bool _isDashing;
+    private Vector3 _dashVelocity;
     private Vector3 _movementDirection;
     private Vector3 _dashDirection;
 
@@ -75,35 +77,37 @@ public class Dash : MonoBehaviour
         _isDashing = true;
         _currentCharges--;
 
-        // Get movement direction (if not moving, dash forward)
+        // Determine dash direction
         Vector3 moveDirection = new Vector3(_movementDirection.x, 0, _movementDirection.y).normalized;
-
-        // If no movement input, dash forward (relative to player’s current facing direction)
         if (moveDirection == Vector3.zero)
         {
             moveDirection = transform.forward; // Dash forward if no movement input
         }
         else
         {
-            // If there's movement input, use that to determine dash direction relative to the character's facing
-            moveDirection = transform.TransformDirection(moveDirection); // Transform local direction to world direction
+            moveDirection = transform.TransformDirection(moveDirection); // Convert local to world direction
         }
 
-        // Dash in the correct direction
-        _dashDirection = moveDirection;
+        // Apply dash force
+        _dashVelocity = moveDirection * _dashForce;
 
-        float timer = 0f;
-        while (timer < _dashDuration)
-        {
-            _characterController.Move(_dashDirection * _dashForce * Time.deltaTime);
-            timer += Time.deltaTime;
-            yield return null;
-        }
+        // Wait for dash duration
+        yield return new WaitForSeconds(_dashDuration);
 
+        _dashVelocity = Vector3.zero; // Reset dash movement
         _isDashing = false;
 
-        // Start cooldown to regain charge
+        // Recover charge
         StartCoroutine(RecoverDashCharge());
+    }
+
+    private void FixedUpdate()
+    {
+        // Apply dash velocity in FixedUpdate
+        if (_isDashing)
+        {
+            _characterController.Move(_dashVelocity * Time.fixedDeltaTime);
+        }
     }
 
     private IEnumerator RecoverDashCharge()

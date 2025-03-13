@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sci-Fi Crate
+* source:	https://sketchfab.com/3d-models/sci-fi-crate-882252461e174fbc910f5ab9940bb8ab
+* author:	DarkAaron999 (https://sketchfab.com/Aaron999)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sci-Fi Crate" (https://sketchfab.com/3d-models/sci-fi-crate-882252461e174fbc910f5ab9940bb8ab) by DarkAaron999 (https://sketchfab.com/Aaron999) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

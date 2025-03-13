@@ -58,11 +58,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemData: {fileID: 11400000, guid: 7e3cab3af1c5d4344ad6751f4c80646d, type: 2}
   Owner: {fileID: 0}
+  WeaponTip: {fileID: 1171665404314480440}
+  WeaponVelocity: {x: 0, y: 0, z: 0}
   _weaponType: 0
   _defaultWeaponPosition: {fileID: 0}
   _crosshair: {fileID: 0}
   _defaultFov: 60
-  WeaponMuzzle: {fileID: 1171665404314480440}
   muzzleFlashLifetime: 0.5
 --- !u!65 &1629858901333886822
 BoxCollider:
@@ -159,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1733400206114620511, guid: 4fe028943d8d5414bbbba173f30a2c85, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.028
+      value: 0.023
       objectReference: {fileID: 0}
     - target: {fileID: 1733400206114620511, guid: 4fe028943d8d5414bbbba173f30a2c85, type: 3}
       propertyPath: m_LocalPosition.y
@@ -167,7 +168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1733400206114620511, guid: 4fe028943d8d5414bbbba173f30a2c85, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.936
+      value: -1.906
       objectReference: {fileID: 0}
     - target: {fileID: 1774353855765536830, guid: 4fe028943d8d5414bbbba173f30a2c85, type: 3}
       propertyPath: m_IsActive

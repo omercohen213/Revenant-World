@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2787594106011184721}
-  - component: {fileID: -9056775269376815003}
+  - component: {fileID: 7728145403999352646}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 6251240033828099011}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-9056775269376815003
+--- !u!114 &7728145403999352646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,12 +43,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2086261179823682334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4228658ceb3085f438021112d884f2ee, type: 3}
+  m_Script: {fileID: 11500000, guid: c39adbe21cda6994ba59a6a621db0fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Radius: 0.01
   Root: {fileID: 2787594106011184721}
-  Tip: {fileID: 6965400757647036215}
+  Tip: {fileID: 6251240033828099011}
   MaxLifeTime: 5
   DefaultImpactVfx: {fileID: 5781806936358044080, guid: fa498bfcbbc9707458a2c75334b150c8, type: 3}
   ImpactVfxLifetime: 5
@@ -56,9 +56,9 @@ MonoBehaviour:
   HittableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  Speed: 50
-  GravityDownAcceleration: 0.1
-  TrajectoryCorrectionDistance: 0
+  Speed: 30
+  GravityDownAcceleration: 3
+  TrajectoryCorrectionDistance: -1
   InheritWeaponVelocity: 0
 --- !u!1 &8155758887353419079
 GameObject:

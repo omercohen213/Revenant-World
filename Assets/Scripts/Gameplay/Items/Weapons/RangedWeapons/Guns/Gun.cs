@@ -16,13 +16,8 @@ public class Gun : RangedWeapon
         Single
     }
 
-    [Tooltip("Tip of the weapon, where the projectiles are shot")]
-    public Transform WeaponMuzzle;
-
-    [Header("Audio & Visual")]
     [SerializeField] private float muzzleFlashLifetime = 0.5f;
 
-    private float _lastTimeShot = Mathf.NegativeInfinity;
     private Queue<Rigidbody> _physicalAmmoPool;
 
     // Variables for recoil and spread control
@@ -30,12 +25,9 @@ public class Gun : RangedWeapon
     private Vector3 _accumulatedRecoil = Vector3.zero;
     private bool _isFiringContinuously = false;
 
-    // Object pools
-    public ObjectPool<Bullet> BulletPool;
     private ObjectPool<GameObject> _muzzleFlashPool;
 
     public bool IsWeaponActive { get; private set; }
-    public Vector3 MuzzleWorldVelocity { get; private set; }
 
     protected override void Awake()
     {
@@ -46,17 +38,7 @@ public class Gun : RangedWeapon
             return;
         }
 
-        CurrentAmmo = 0;
-
-        // initialize object pools
-        BulletPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.BulletPrefab);
         _muzzleFlashPool = ObjectPoolingManager.Instance.GetOrCreatePool(GunData.MuzzleFlashPrefab);
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        Owner = GetComponentInParent<Player>();
     }
 
     protected override void Update()
@@ -74,69 +56,36 @@ public class Gun : RangedWeapon
 
     public override void HandleFireHeld()
     {
-        base.HandleFireHeld();
         _isFiringContinuously = true;
-        TryShoot();
+        base.HandleFireHeld();
     }
 
     public override void HandleFireReleased()
     {
-        base.HandleFireReleased();
         _isFiringContinuously = false;
         ResetSpread();
-    }
-
-    public override void Reload(int ammoToReload)
-    {
-        CurrentAmmo = Mathf.Min(CurrentAmmo + ammoToReload, GunData.ClipSize);
-        InvokeReload();
-    }
-
-    public override bool TryShoot()
-    {
-        if (GunData == null)
-        {
-            Debug.LogError("WeaponData is missing!");
-            return false;
-        }
-
-        if (CurrentAmmo > 0 && Time.time - _lastTimeShot >= GunData.DelayBetweenShots)
-        {
-            _lastTimeShot = Time.time;
-            CurrentAmmo--;
-            HandleShoot();
-            return true;
-        }
-        return false;
+        base.HandleFireReleased();
     }
 
     public override void HandleShoot()
     {
-        _lastTimeShot = Time.time;
-        SpawnBullet();
+        SpawnProjectiles();
         SpawnMuzzleFlash();
         ApplyRecoil();
         ApplySpread();
         InvokeShoot();
     }
 
-    // Spawn a bullet
-    private void SpawnBullet()
+    // Spawn projectiles
+    protected void SpawnProjectiles()
     {
         int bulletsPerShot = GetBulletsPerShot();
 
         // Spawn all bullets with random direction
         for (int i = 0; i < bulletsPerShot; i++)
         {
-            Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle.forward);
-
-            // Spawn bullet with calculated spread direction
-            Bullet newBullet = BulletPool.Get();
-            newBullet.transform.position = WeaponMuzzle.position;
-            newBullet.transform.rotation = Quaternion.LookRotation(shotDirection);
-
-            // Call Shoot to apply initial properties or velocity; this resets the bullet as needed
-            newBullet.Shoot(this);
+            Vector3 direction = GetShotDirectionWithinSpread(WeaponTip.forward);
+            base.SpawnProjectile(direction);
         }
     }
 
@@ -146,8 +95,8 @@ public class Gun : RangedWeapon
         if (GunData.MuzzleFlashPrefab != null)
         {
             GameObject muzzleFlash = _muzzleFlashPool.Get();
-            muzzleFlash.transform.position = WeaponMuzzle.position;
-            muzzleFlash.transform.SetParent(WeaponMuzzle.transform);
+            muzzleFlash.transform.position = WeaponTip.position;
+            muzzleFlash.transform.SetParent(WeaponTip.transform);
             StartCoroutine(SelfDestructCoroutine(muzzleFlash, muzzleFlashLifetime));
         }
     }

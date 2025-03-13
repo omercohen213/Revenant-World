@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a70c0277f9014f447a2efdbdb407ea73, type: 3}
+  m_Name: GreenForest
+  m_EditorClassIdentifier: 
+  WorldName: Green Forest
+  Objective: {fileID: 11400000, guid: 229d33f84202fbc4fa49ff6b6631a7cd, type: 2}
+  MonsterSpawnData:
+  - MonsterPrefab: {fileID: 4616211505216702690, guid: 5d95869919b1b954eaa0d2f19e944224, type: 3}
+    IntialAmountToSpawn: 4
+  MaxMonsterAmount: 10
+  EnvironmentPrefab: {fileID: 0}

@@ -14,6 +14,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     protected bool _isReloading = false;
     protected float _weaponFovMultiplier = 0.5f; //change to scope
 
+    private float _lastTimeShot = Mathf.NegativeInfinity;
     private bool _isAiming = false;
     private bool _canAim = true;
     private readonly float _aimingAnimDuration = 0.3f;
@@ -21,7 +22,6 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     private Coroutine _aimCoroutine;
 
     protected void InvokeShoot() => OnShoot?.Invoke();
-    protected void InvokeReload() => OnReload?.Invoke();
 
     protected virtual void OnEnable()
     {
@@ -30,6 +30,12 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         _playerInput.OnFireDown += HandleFireDown;
         _playerInput.OnFireHeld += HandleFireHeld;
         _playerInput.OnFireReleased += HandleFireReleased;
+
+        // should be here?????
+        Owner = GetComponentInParent<Player>(); 
+        CurrentAmmo = 0;
+
+
     }
 
     protected virtual void OnDisable()
@@ -100,6 +106,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
 
     public virtual void HandleFireHeld()
     {
+        TryShoot();
     }
 
     public virtual void HandleFireReleased()
@@ -108,16 +115,33 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
 
     public virtual bool TryShoot()
     {
+        if (RangedWeaponData == null)
+        {
+            Debug.LogError("RangedWeaponData is missing!");
+            return false;
+        }
+
+        if (CurrentAmmo > 0 && Time.time - _lastTimeShot >= RangedWeaponData.DelayBetweenShots)
+        {
+            _lastTimeShot = Time.time;
+            CurrentAmmo--;
+            HandleShoot();
+            return true;
+        }
         return false;
     }
 
     public virtual void HandleShoot()
     {
-
+        _lastTimeShot = Time.time;
+        SpawnProjectile(WeaponTip.forward);
+        OnShoot?.Invoke();
     }
+
     public virtual void Reload(int ammoToReload)
     {
-
+        CurrentAmmo = Mathf.Min(CurrentAmmo + ammoToReload, RangedWeaponData.ClipSize);
+        OnReload?.Invoke();
     }
 
     public void StartReloadAnimation()

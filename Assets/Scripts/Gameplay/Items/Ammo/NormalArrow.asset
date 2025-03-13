@@ -16,7 +16,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 53fceab6f0c60804690492027ebca903, type: 3}
   Weight: 1
   ShowInInventory: 0
+  IsInfinite: 1
   IsSignleInstance: 0
   Type: 3
   CompatibleWeapons: 02000000
-  IsInfinte: 1

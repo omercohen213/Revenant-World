@@ -40,6 +40,7 @@ public class PlayerMovementController : MonoBehaviour
     [Tooltip("What layers the character uses as ground")]
     [SerializeField] private LayerMask _groundLayers;
 
+    private bool _jumpRequested = false;
     private Vector2 _currentMovement;
     private bool _isSprinting;
     private float _currentSpeed;
@@ -61,7 +62,7 @@ public class PlayerMovementController : MonoBehaviour
         _playerInput.OnJumpPressed += HandleJumpPressed;
         _playerInput.OnSprintHeld += HandleSprintHeld;
     }
-  
+
     private void OnDisable()
     {
         _playerInput.OnMoveInput -= HandleMoveInput;
@@ -80,8 +81,15 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        JumpAndGravity(false);
+        ProcessJumpAndGravity();
         GroundedCheck();
+
+        // Reset jump request after processing
+        _jumpRequested = false;
+    }
+
+    private void FixedUpdate()
+    {
         Move();
     }
 
@@ -89,52 +97,57 @@ public class PlayerMovementController : MonoBehaviour
     {
         _currentMovement = moveInput;
     }
+
+    // Only set jump request; process it in Update
     private void HandleJumpPressed()
     {
-        JumpAndGravity(true);
+        _jumpRequested = true;
     }
     private void HandleSprintHeld(bool sprintValue)
     {
-        _isSprinting = sprintValue;
+        // Prevent sprinting if moving backward
+        if (_currentMovement.y < 0)
+        {
+            _isSprinting = false;
+        }
+        else
+        {
+            _isSprinting = sprintValue;
+        }
     }
-    private void JumpAndGravity(bool jumpPressed)
+    private void ProcessJumpAndGravity()
     {
         if (_isGrounded)
         {
-            // Reset the fall timeout timer
             _fallTimeoutDelta = _fallTimeout;
 
-            // Stop velocity from going infinitely down when grounded
             if (_verticalVelocity < 0.0f)
             {
                 _verticalVelocity = -2f;
             }
 
-            // Jump (only if triggered by event)
-            if (jumpPressed && _jumpTimeoutDelta <= 0.0f)
+            if (_jumpRequested && _jumpTimeoutDelta <= 0.0f)
             {
                 _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
             }
 
-            // Jump timeout
-            if (_jumpTimeoutDelta >= 0.0f)
+            // Count down jump timeout
+            if (_jumpTimeoutDelta > 0.0f)
             {
                 _jumpTimeoutDelta -= Time.deltaTime;
             }
         }
         else
         {
-            // Reset the jump timeout timer
             _jumpTimeoutDelta = _jumpTimeout;
 
-            // Fall timeout
-            if (_fallTimeoutDelta >= 0.0f)
+            if (_fallTimeoutDelta > 0.0f)
             {
                 _fallTimeoutDelta -= Time.deltaTime;
             }
         }
 
-        // Apply gravity over time if under terminal velocity
+        // Apply gravity if under terminal velocity
         if (_verticalVelocity < _maxVelocity)
         {
             _verticalVelocity += _gravity * Time.deltaTime;
@@ -148,32 +161,32 @@ public class PlayerMovementController : MonoBehaviour
         _isGrounded = Physics.CheckSphere(spherePosition, _groundedRadius, _groundLayers, QueryTriggerInteraction.Ignore);
     }
 
-   
-
     private void Move()
     {
-        // set target speed based on move speed, sprint speed and if sprint is pressed
+        // Calculate the movement direction using the character's transform
+        Vector3 inputDirection = (transform.right * _currentMovement.x + transform.forward * _currentMovement.y).normalized;
+
+        // Prevent sprinting if moving backward
+        if (_currentMovement.y < 0)
+        {
+            _isSprinting = false;
+        }
+
+        // Determine target speed based on whether sprinting
         float targetSpeed = _isSprinting ? _sprintSpeed : _moveSpeed;
+        if (_currentMovement == Vector2.zero)
+        {
+            targetSpeed = 0.0f;
+        }
 
-        // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-        // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        // if there is no movement, set the target speed to 0
-        if (_currentMovement == Vector2.zero) targetSpeed = 0.0f;
-
-        // a reference to the players current horizontal velocity
+        // Calculate current horizontal speed (ignoring vertical velocity)
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
         float speedOffset = 0.1f;
 
-        // accelerate or decelerate to target speed
+        // Smoothly adjust the current speed towards the target speed.
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
-            // creates curved result rather than a linear one giving a more organic speed change
-            // note T in Lerp is clamped, so we don't need to clamp our speed
-            _currentSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed , Time.deltaTime * _speedChangeRate);
-
-            // round speed to 3 decimal places
+            _currentSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed, Time.deltaTime * _speedChangeRate);
             _currentSpeed = Mathf.Round(_currentSpeed * 1000f) / 1000f;
         }
         else
@@ -181,19 +194,12 @@ public class PlayerMovementController : MonoBehaviour
             _currentSpeed = targetSpeed;
         }
 
-        // normalise input direction
-        Vector3 inputDirection = new Vector3(_currentMovement.x, 0.0f, _currentMovement.y).normalized;
+        // Construct the final velocity vector including vertical movement.
+        Vector3 velocity = inputDirection * _currentSpeed;
+        velocity.y = _verticalVelocity;
 
-        // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        // if there is a move input rotate player when the player is moving
-        if (_currentMovement != Vector2.zero)
-        {
-            // move
-            inputDirection = transform.right * _currentMovement.x + transform.forward * _currentMovement.y;
-        }
-
-        // move the player
-        _controller.Move(inputDirection.normalized * (_currentSpeed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        // Use FixedDeltaTime for consistent movement in FixedUpdate.
+        _controller.Move(velocity * Time.fixedDeltaTime);
     }
 
 }
