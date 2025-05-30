@@ -137,7 +137,7 @@ public class Projectile : MonoBehaviour
     {
         if (_velocity.sqrMagnitude > 0.01f)  // Only rotate if moving
         {
-            transform.rotation = Quaternion.LookRotation(_velocity) * Quaternion.Euler(90f, 0f, 0f);
+            transform.rotation = Quaternion.LookRotation(_velocity * -1);
         }
     }
 
@@ -200,7 +200,7 @@ public class Projectile : MonoBehaviour
 
         // Set projectile position at the muzzle   
         // Correct rotation: Align projectile's forward (Z-axis) with the aiming direction
-        transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection) * Quaternion.Euler(90f, 0f, 0f));
+        transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection));
 
         // Store the initial direction
         InitialPosition = transform.position;

@@ -29,11 +29,12 @@ public class Dash : MonoBehaviour
     private PlayerInput _playerInput;
     private CharacterController _characterController;
 
+    public event Action<float, int> OnDashRecovery; // Invoke the event with cooldown and currentDashes
+
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
-
     }
 
     private void OnEnable()
@@ -46,12 +47,12 @@ public class Dash : MonoBehaviour
     {
         _playerInput.OnDashPressed -= HandleDashPressed;
         _playerInput.OnMoveInput -= HandleMoveInput;
-
     }
 
     private void Start()
     {
-        _currentCharges = _maxDashCharges; // Start with full 
+        _currentCharges = 0; // Start with no charges
+        StartCoroutine(RecoverAllDashCharges());
     }
 
     private void HandleDashPressed()
@@ -98,6 +99,7 @@ public class Dash : MonoBehaviour
         _isDashing = false;
 
         // Recover charge
+        OnDashRecovery?.Invoke(_dashCooldown, _currentCharges);
         StartCoroutine(RecoverDashCharge());
     }
 
@@ -112,12 +114,28 @@ public class Dash : MonoBehaviour
 
     private IEnumerator RecoverDashCharge()
     {
+
         yield return new WaitForSeconds(_dashCooldown);
         if (_currentCharges < _maxDashCharges)
         {
             _currentCharges++;
         }
     }
+    private IEnumerator RecoverAllDashCharges()
+    {
+        while (_currentCharges < _maxDashCharges)
+        {
+            OnDashRecovery?.Invoke(_dashCooldown, _currentCharges);
 
+            // Wait for cooldown before adding one charge
+            yield return new WaitForSeconds(_dashCooldown);
+
+            // Only recover a charge if it's not already full
+            if (_currentCharges < _maxDashCharges)
+            {
+                _currentCharges++;
+            }
+        }
+    }
 }
 

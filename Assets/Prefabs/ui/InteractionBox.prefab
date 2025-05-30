@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b820574d032663e40adbddf1780f4b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _text: {fileID: 5251251839692424601}
+  _interactionText: {fileID: 5251251839692424601}
   _buttonText: {fileID: 7490710854884572475}
 --- !u!225 &8540271370910840946
 CanvasGroup:

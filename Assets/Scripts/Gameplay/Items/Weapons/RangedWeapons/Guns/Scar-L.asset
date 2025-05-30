@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e925344b2c4f44aba6de4d4f52baf4, type: 3}
   m_Name: Scar-L
   m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 1170424340172562550, guid: 29a092aa7cde87f43a685eb4fb14785d, type: 3}
   ItemName: Scar-L
   Icon: {fileID: 21300000, guid: 3783143a434cb514081e6fa4c71b9016, type: 3}
+  DefaultPosition: {x: 0, y: 0, z: -0.356}
+  DefaultLocalEulerAngles: {x: 0, y: 0, z: 0}
   Weight: 10
   ShowInInventory: 1
   IsInfinite: 0
   IsSignleInstance: 1
   ProjectilePrefab: {fileID: 7728145403999352646, guid: 1471e98bb0946d847a15230e4b8cb13c, type: 3}
-  DelayBetweenShots: 0.1
   ProjectileDamage: 10
+  DelayBetweenShots: 0.1
   AimZoomRatio: 1.5
   AimOffset: {x: 0, y: 0, z: 0}
   AimingAnimationSpeed: 10

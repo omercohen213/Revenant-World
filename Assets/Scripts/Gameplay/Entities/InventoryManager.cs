@@ -14,6 +14,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<StartingItemEntry> _startingItems;
     [SerializeField] private ItemDataBase _itemDataBase; // A reference to the item database
 
+    public Action<Weapon> OnWeaponAdded;
+
     private void Awake()
     {
         InventorySlots = new List<InventorySlot>();
@@ -184,18 +186,6 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
-    public void PrintInventory()
-    {
-        string inventoryText = "Current Inventory: ";
-
-        foreach (InventorySlot slot in InventorySlots)
-        {
-            inventoryText += $"{slot.ItemData.ItemName}, Quantity: {slot.Quantity}, Weight: {slot.Weight} | ";
-        }
-
-        Debug.Log(inventoryText);
-    }
-
     // Get the total quantity of the item across all inventory slots
     public int GetTotalQuantityOfItem(ItemData itemData)
     {
@@ -209,6 +199,19 @@ public class InventoryManager : MonoBehaviour
         }
         return total;
     }
+
+    public void PrintInventory()
+    {
+        string inventoryText = "Current Inventory: ";
+
+        foreach (InventorySlot slot in InventorySlots)
+        {
+            inventoryText += $"{slot.ItemData.ItemName}, Quantity: {slot.Quantity}, Weight: {slot.Weight} | ";
+        }
+
+        Debug.Log(inventoryText);
+    }
+    
 }
 
 public class InventorySlot

@@ -55,7 +55,7 @@ MonoBehaviour:
   ImpactVfxSpawnOffset: 0.1
   HittableLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483767
   Speed: 30
   GravityDownAcceleration: 3
   TrajectoryCorrectionDistance: -1

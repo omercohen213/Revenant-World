@@ -32,10 +32,8 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         _playerInput.OnFireReleased += HandleFireReleased;
 
         // should be here?????
-        Owner = GetComponentInParent<Player>(); 
-        CurrentAmmo = 0;
-
-
+        Owner = GetComponentInParent<Player>();
+        CurrentAmmo = RangedWeaponData.HasInfiniteAmmo ? int.MaxValue : 0;
     }
 
     protected virtual void OnDisable()
@@ -121,12 +119,15 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
             return false;
         }
 
-        if (CurrentAmmo > 0 && Time.time - _lastTimeShot >= RangedWeaponData.DelayBetweenShots)
+        if (CurrentAmmo > 0 || RangedWeaponData.HasInfiniteAmmo)
         {
-            _lastTimeShot = Time.time;
-            CurrentAmmo--;
-            HandleShoot();
-            return true;
+            if (Time.time - _lastTimeShot >= RangedWeaponData.DelayBetweenShots)
+            {
+                _lastTimeShot = Time.time;
+                CurrentAmmo--;
+                HandleShoot();
+                return true;
+            }
         }
         return false;
     }
@@ -157,13 +158,14 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     // Check if reload is allowed
     private bool CanReload()
     {
-        if (RangedWeaponData.HasAmmo)
+        if (RangedWeaponData.HasInfiniteAmmo)
         {
-            int totalAmmo = _inventoryManager.GetTotalQuantityOfItem(RangedWeaponData.RequiredAmmo);
-            int ammoNeeded = RangedWeaponData.ClipSize - CurrentAmmo;
-            return !_isReloading && totalAmmo > 0 && ammoNeeded > 0 || CurrentAmmo <= 0 && totalAmmo > 0;
+            return false;
         }
-        else return false;
+
+        int totalAmmo = _inventoryManager.GetTotalQuantityOfItem(RangedWeaponData.RequiredAmmo);
+        int ammoNeeded = RangedWeaponData.ClipSize - CurrentAmmo;
+        return !_isReloading && totalAmmo > 0 && ammoNeeded > 0 || CurrentAmmo <= 0 && totalAmmo > 0;
     }
 
     // Handle the start of a reload
@@ -221,7 +223,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
 
         _isAiming = true;
         _canAim = false;
-        _crosshair.DisableCrosshair();
+        //_crosshair.DisableCrosshair();
         _animator.SetBool("Aim", true);
 
         UpdateFov();

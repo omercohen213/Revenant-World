@@ -38,11 +38,6 @@ public class CameraManager : MonoBehaviour
         _playerInput.OnLookInput -= HandleLookInput;
     }
 
-    private void HandleLookInput(Vector2 lookInput)
-    {
-        _currentLookDirection = lookInput;
-    }
-
     void Start()
     {
         SetFov(_defaultFov);
@@ -52,11 +47,18 @@ public class CameraManager : MonoBehaviour
         _leftArm.transform.SetParent(_cameraTarget.transform, true);
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         CameraRotation();
     }
 
+    // Receive current look input
+    private void HandleLookInput(Vector2 lookInput)
+    {
+        _currentLookDirection = lookInput;
+    }
+
+    // Rotate camera
     private void CameraRotation()
     {
         // if there is an input

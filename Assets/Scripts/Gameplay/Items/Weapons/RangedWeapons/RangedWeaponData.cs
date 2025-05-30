@@ -12,7 +12,7 @@ public abstract class RangedWeaponData : WeaponData
     public float AimingAnimationSpeed = 10f;
 
     [Header("Reload")]
-    public bool HasAmmo = true;
+    public bool HasInfiniteAmmo = false;
     public AmmoData RequiredAmmo;
     public float ReloadTime = 3f;
     public int ClipSize = 30;

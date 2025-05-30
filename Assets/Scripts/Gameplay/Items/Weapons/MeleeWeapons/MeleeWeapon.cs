@@ -2,12 +2,12 @@ using UnityEngine;
 
 public abstract class MeleeWeapon : Weapon, IMeleeWeapon
 {
-    public void HandleBasicAttack()
+    public void BasicAttack()
     {
         throw new System.NotImplementedException();
     }
 
-    public void HandleHeavyAttack()
+    public void HeavyAttack()
     {
         throw new System.NotImplementedException();
     }

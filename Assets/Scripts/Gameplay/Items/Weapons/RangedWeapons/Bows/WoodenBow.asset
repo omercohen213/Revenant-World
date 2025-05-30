@@ -12,19 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b553307e53614144944b4b7ddefc354, type: 3}
   m_Name: WoodenBow
   m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 686382096036070647, guid: fd7e108984da1324f981ca51da5ea6f4, type: 3}
   ItemName: Wooden Bow
   Icon: {fileID: 21300000, guid: 9031ddff7d13d6c4fad61bb77e53414f, type: 3}
+  DefaultPosition: {x: 0.403, y: -1.352, z: 0.085}
+  DefaultLocalEulerAngles: {x: 7.909997, y: 264.11002, z: 345.163}
   Weight: 20
   ShowInInventory: 0
   IsInfinite: 0
   IsSignleInstance: 1
   ProjectilePrefab: {fileID: 296941351677146672, guid: 2cc80d9718bda3b4f845278f1161bd56, type: 3}
-  ProjectileDamage: 20
-  DelayBetweenShots: 1
+  ProjectileDamage: 2000
+  DelayBetweenShots: 0.5
   AimZoomRatio: 1.5
   AimOffset: {x: 0, y: 0, z: 0}
   AimingAnimationSpeed: 10
-  HasAmmo: 1
+  HasInfiniteAmmo: 1
   RequiredAmmo: {fileID: 11400000, guid: 5384521c32edb1d449c05746a6aed433, type: 2}
   ReloadTime: 1
   ClipSize: 30

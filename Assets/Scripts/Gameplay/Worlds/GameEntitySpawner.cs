@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class GameEntitySpawner : MonoBehaviour
 {
-    public GameObject MonsterPrefab;
+    [SerializeField] private GameObject _monsterPrefab;
+    [SerializeField] private GameObject _monstersParent;
     public World World; // Assign via inspector or find at runtime
 
     private void Start()
@@ -12,7 +13,7 @@ public class GameEntitySpawner : MonoBehaviour
 
     public void SpawnMonster(Vector3 position)
     {
-        GameObject monsterInstance = Instantiate(MonsterPrefab, position, Quaternion.identity);
+        GameObject monsterInstance = Instantiate(_monsterPrefab, position, Quaternion.identity);
         Monster monster = monsterInstance.GetComponent<Monster>();
         if (World != null && monster != null)
         {

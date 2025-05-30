@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21115107fb3b64046b5499ad06c7f006, type: 3}
   m_Name: LightAmmo
   m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 1728619453497436, guid: e7152d23c09aee845a9594ff1308f6a8, type: 3}
   ItemName: Light Ammo
   Icon: {fileID: 21300000, guid: 53fceab6f0c60804690492027ebca903, type: 3}
   Weight: 0.15

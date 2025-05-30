@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CanvasGroup))]
 public class PlayerInteractionBox : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private TextMeshProUGUI _interactionText;
     [SerializeField] private TextMeshProUGUI _buttonText;
 
     private CanvasGroup _canvasGroup;
@@ -30,12 +30,16 @@ public class PlayerInteractionBox : MonoBehaviour
 
     }
 
-    private void HandleLootRangeChange(bool isLootInRange, LootItem lootItem)
+    // Handle when the interaction box is shown 
+    private void HandleLootRangeChange(LootItem lootItem)
     {
-        if (isLootInRange)
+        // There is loot in range
+        if (lootItem != null)
         {
             ShowLootItem(lootItem);
         }
+
+        // LootItem is null - No loot in range
         else
         {
             Hide();
@@ -45,7 +49,7 @@ public class PlayerInteractionBox : MonoBehaviour
     public void ShowLootItem(LootItem lootItem)
     {
         string interactionText = "PICK UP"; // change dynamically
-        _text.text = $"{interactionText} {lootItem.ItemData.name}";
+        _interactionText.text = $"{interactionText} {lootItem.ItemData.name}";
 
         _buttonText.text = "F";  // change dynamically
         Show();

@@ -160,4 +160,16 @@ public class Gun : RangedWeapon
     {
         _progressiveSpread = GunData.BaseSpread;
     }
+
+    public override void StartAiming()
+    {
+        _crosshair.DisableCrosshair();
+        base.StartAiming();
+    }
+
+    public override void StopAiming()
+    {
+        _crosshair.EnableCrosshair();
+        base.StopAiming();
+    }
 }

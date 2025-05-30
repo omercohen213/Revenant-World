@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
@@ -15,15 +16,15 @@ public abstract class Weapon : Item, IWeapon
     [HideInInspector] public Vector3 WeaponVelocity; // Current velocity of the weapon object
 
     [Header("Misc")]
+    [Layer][SerializeField] private LayerMask _defaultWeaponLayer;
     [SerializeField] protected WeaponType _weaponType;
-    [SerializeField] protected Transform _defaultWeaponPosition;
-    [SerializeField] protected Crosshair _crosshair;
     [SerializeField] protected float _defaultFov = 60f;
 
     protected Player _player;
     protected PlayerInput _playerInput;
     protected InventoryManager _inventoryManager;
     protected CameraManager _cameraManager;
+    protected Crosshair _crosshair;
     protected Animator _animator;
     protected float _currentFov;
 
@@ -34,6 +35,7 @@ public abstract class Weapon : Item, IWeapon
         _player = GetComponentInParent<Player>();
         _animator = GetComponentInParent<Animator>();
         _cameraManager = GetComponentInParent<CameraManager>();
+        _crosshair = _player.GetComponentInChildren<Crosshair>();
 
         if (WeaponData.ProjectilePrefab != null)
         {
@@ -49,14 +51,25 @@ public abstract class Weapon : Item, IWeapon
     {
     }
 
+    //
     public void Equip()
     {
-        throw new System.NotImplementedException();
+        SetLayer(gameObject, _defaultWeaponLayer);
     }
 
     public void Unequip()
     {
-        throw new System.NotImplementedException();
+        LayerMask hiddenLayer = LayerMask.NameToLayer("Hidden");
+        SetLayer(gameObject, hiddenLayer);
+    }
+
+    private void SetLayer(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayer(child.gameObject, newLayer);
+        }
     }
 
     // Spawn a projectile
@@ -64,15 +77,6 @@ public abstract class Weapon : Item, IWeapon
     {
         if (ProjectilePool != null) {
             Projectile newProjectile = ProjectilePool.Get();
-            // Calculate the correct rotation
-            Quaternion baseRotation = Quaternion.LookRotation(direction);
-
-            // Apply an additional offset if needed (change the values as necessary)
-            Quaternion rotationOffset = Quaternion.Euler(0, 90, 0); // Example offset if the forward is wrong
-
-            // Set position and corrected rotation
-            newProjectile.transform.SetPositionAndRotation(WeaponTip.position, baseRotation * rotationOffset);
-            //newProjectile.transform.SetPositionAndRotation(WeaponTip.position, Quaternion.LookRotation(direction));
             newProjectile.Shoot(this);
         }
     }

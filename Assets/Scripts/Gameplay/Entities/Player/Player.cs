@@ -10,8 +10,6 @@ using UnityEngine.Pool;
 public class Player : GameEntity
 {
     public PlayerDataManager PlayerData;
-    public Weapon ActiveWeapon;
-    public Weapon StartingWeapon;
     public World CurrentWorld;
 
     public event Action<GameEntity, int, int> OnKillRewarded;  // Killed entity, XP, KP
@@ -21,7 +19,6 @@ public class Player : GameEntity
     {
         base.Awake();
         PlayerData = GetComponent<PlayerDataManager>();
-        ActiveWeapon = StartingWeapon;
         _playerPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
         CurrentWorld = GetComponentInParent<World>();
     }

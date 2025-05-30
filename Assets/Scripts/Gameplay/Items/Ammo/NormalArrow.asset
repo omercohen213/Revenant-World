@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21115107fb3b64046b5499ad06c7f006, type: 3}
   m_Name: NormalArrow
   m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 0}
   ItemName: Normal Arrows
-  Icon: {fileID: 21300000, guid: 53fceab6f0c60804690492027ebca903, type: 3}
+  Icon: {fileID: 21300000, guid: 033b53303ba57294d8c7ed106be23d97, type: 3}
+  DefaultPosition: {x: 0, y: 0, z: 0}
+  DefaultLocalEulerAngles: {x: 0, y: 0, z: 0}
   Weight: 1
   ShowInInventory: 0
   IsInfinite: 1
