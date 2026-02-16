@@ -49,12 +49,12 @@ public class InventoryManager : MonoBehaviour
     // Adds an item to the inventory
     public void AddItemToInventory(ItemData itemData, int quantity, bool isInfinite = false)
     {
+        Debug.Log(CurrentWeight);
         if (isInfinite)
         {
             CreateInventorySlot(itemData, 999);
             return;
         }
-
         if (!CanBeAdded(itemData, quantity))
         {
             Debug.LogWarning("Cannot add item " + itemData + " : Exceeds total weight capacity.");
@@ -202,7 +202,10 @@ public class InventoryManager : MonoBehaviour
 
     public void PrintInventory()
     {
+        Debug.Log("Total Capacity: " + Capacity + " Current Weight: " + CurrentWeight);
+
         string inventoryText = "Current Inventory: ";
+
 
         foreach (InventorySlot slot in InventorySlots)
         {
@@ -211,7 +214,7 @@ public class InventoryManager : MonoBehaviour
 
         Debug.Log(inventoryText);
     }
-    
+
 }
 
 public class InventorySlot

@@ -17,6 +17,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 033b53303ba57294d8c7ed106be23d97, type: 3}
   DefaultPosition: {x: 0, y: 0, z: 0}
   DefaultLocalEulerAngles: {x: 0, y: 0, z: 0}
+  ItemType: 1
   Weight: 1
   ShowInInventory: 0
   IsInfinite: 1

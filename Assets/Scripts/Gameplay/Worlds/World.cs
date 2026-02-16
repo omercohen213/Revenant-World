@@ -9,8 +9,11 @@ using Random = UnityEngine.Random;
 public class World : MonoBehaviour
 {
     public WorldData WorldData;
+
+    [SerializeField] private GameEntitySpawner _entitySpawner;
+    [SerializeField] private Transform _monstersParent;
     [SerializeField] private List<GameObject> _monsterSpawnPoints;
-    [SerializeField] private List<GameObject> _playerSpawnPoints;
+
     [SerializeField] public List<Monster> _monstersAlive;
     [SerializeField] private List<Portal> _portals;
 
@@ -42,91 +45,20 @@ public class World : MonoBehaviour
     private void Start()
     {
         SetupWorld();
-        SpawnInitialMonsters();
     }
+
     private void SetupWorld()
     {
         if (WorldData.Objective != null)
         {
             WorldData.Objective.Initialize();
         }
+
+        // Spawn initial monsters and register them
+        var monsters = _entitySpawner.SpawnInitialMonsters(_monsterSpawnPoints, WorldData.MonsterSpawnData, _monstersParent, RegisterMonster);
+        _monstersAlive.AddRange(monsters);
     }
-
-    // Spawn the initial monsters randomally distributed across the deditated spawn points
-    private void SpawnInitialMonsters()
-    {
-        if (WorldData == null || WorldData.MonsterSpawnData == null || _monsterSpawnPoints.Count == 0)
-        {
-            Debug.LogWarning("WorldData or MonsterSpawnData is missing, or no spawn points available.");
-            return;
-        }
-
-        List<GameObject> availableSpawnPoints = new List<GameObject>(_monsterSpawnPoints);
-
-        foreach (var monsterData in WorldData.MonsterSpawnData)
-        {
-            for (int i = 0; i < monsterData.IntialAmountToSpawn; i++)
-            {
-                if (availableSpawnPoints.Count == 0)
-                {
-                    Debug.LogWarning("Not enough spawn points available for all monsters.");
-                    return;
-                }
-
-                // Pick a random available spawn point
-                int spawnIndex = Random.Range(0, availableSpawnPoints.Count);
-                GameObject spawnPoint = availableSpawnPoints[spawnIndex];
-
-                // Spawn the monster
-                GameObject monsterInstance = Instantiate(monsterData.MonsterPrefab, spawnPoint.transform.position, Quaternion.identity);
-
-                if (monsterInstance.TryGetComponent<Monster>(out var monsterComponent))
-                {
-                    RegisterMonster(monsterComponent);
-                }
-                else
-                {
-                    Debug.LogError($"Spawned object {monsterInstance.name} does not have a Monster component.");
-                }
-
-                // Remove the spawn point to avoid reusing it
-                availableSpawnPoints.RemoveAt(spawnIndex);
-            }
-        }
-    }
-
-
-    // Spawn a player in a random deditated spawn point
-    private void SpawnPlayer(List<GameObject> players)
-    {
-        if (players == null || players.Count == 0 || _playerSpawnPoints.Count == 0)
-        {
-            Debug.LogWarning("No players to spawn or no spawn points available.");
-            return;
-        }
-
-        List<GameObject> availableSpawnPoints = new List<GameObject>(_playerSpawnPoints);
-
-        foreach (var player in players)
-        {
-            if (availableSpawnPoints.Count == 0)
-            {
-                Debug.LogWarning("Not enough unique spawn points available; some players may share a location.");
-                availableSpawnPoints = new List<GameObject>(_playerSpawnPoints); // Reset spawn points to allow reuse.
-            }
-
-            int spawnIndex = Random.Range(0, availableSpawnPoints.Count);
-            GameObject spawnPoint = availableSpawnPoints[spawnIndex];
-
-            // Spawn player at the chosen spawn point
-            player.transform.position = spawnPoint.transform.position;
-            player.transform.rotation = spawnPoint.transform.rotation;
-            player.SetActive(true);
-
-            // Remove the spawn point from the list to avoid reuse (unless all are used)
-            availableSpawnPoints.RemoveAt(spawnIndex);
-        }
-    }
+ 
 
     public void RegisterMonster(Monster monster)
     {

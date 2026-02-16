@@ -17,6 +17,7 @@ public class PlayerInput : MonoBehaviour
     public event Action OnReloadPressed;
     public event Action OnAimPressed;
     public event Action OnPickUpPressed;
+    public event Action<WeaponSwitchCommand> OnWeaponSwitched;
 
     public event Action OnInventoryPressed;
     public event Action OnSettingsPressed;
@@ -141,6 +142,63 @@ public class PlayerInput : MonoBehaviour
             OnSettingsPressed?.Invoke();
         }
     }
+    public void OnSwitchToItem1(InputValue value) { if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 1)); }
+    public void OnSwitchToItem2(InputValue value)
+    {
+        if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 2));
+    }
+    public void OnSwitchToItem3(InputValue value)
+    {
+        if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 3));
+    }
+    public void OnSwitchToItem4(InputValue value)
+    {
+        if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 4));
+    }
+    public void OnSwitchToItem5(InputValue value)
+    {
+        if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 5));
+    }
+    public void OnSwitchToItem6(InputValue value)
+    {
+        if (value.isPressed) OnWeaponSwitched?.Invoke(
+        new WeaponSwitchCommand(WeaponSwitchType.DirectSelect, 6));
+    }
+    public void OnScrollWheel(InputValue value)
+    {
+        float scrollDelta = value.Get<float>();
 
+        if (scrollDelta > 0)
+        {
+            OnWeaponSwitched?.Invoke(new WeaponSwitchCommand(WeaponSwitchType.ScrollUp));
+        }
+        else if (scrollDelta < 0)
+        {
+            OnWeaponSwitched?.Invoke(new WeaponSwitchCommand(WeaponSwitchType.ScrollDown));
+        }
+    }
+}
 
+public enum WeaponSwitchType
+{
+    ScrollUp,
+    ScrollDown,
+    DirectSelect
+}
+
+public struct WeaponSwitchCommand
+{
+    public WeaponSwitchType Type;
+    public int Index; // Only used when Type == DirectSelect
+
+    public WeaponSwitchCommand(WeaponSwitchType type, int index = -1)
+    {
+        Type = type;
+        Index = index;
+    }
 }

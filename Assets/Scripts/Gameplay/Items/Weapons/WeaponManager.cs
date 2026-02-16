@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class WeaponManager : MonoBehaviour
@@ -14,7 +12,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private WeaponData _defaultWeaponData;
     [SerializeField] private Transform _weaponSocket; // Parent of the weapon to instantiate into
 
-    private List<Weapon> _weapons;
+    private List<InventorySlot> _equippedWeaponSlots;
     private int _currentWeaponIndex = 0;
 
     private ObjectPool<GameObject> _WeaponsPool;
@@ -29,11 +27,11 @@ public class WeaponManager : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
         _inventoryManager = GetComponent<InventoryManager>();
-        _weapons = new List<Weapon>();
     }
 
     void Start()
     {
+        _equippedWeaponSlots = _inventoryManager.InventorySlots.FindAll(slot => slot.ItemData.IsEquippable);
         CreateDefaultWeapon();
     }
 
@@ -50,6 +48,19 @@ public class WeaponManager : MonoBehaviour
     // Create the first weapon at the start of the game
     private void CreateDefaultWeapon()
     {
+
+
+/*        _currentWeaponIndex = 0;
+        _weapons.Add(defualtWeapon);
+        ActivateWeapon(_currentWeaponIndex);
+        OnWeaponChanged?.Invoke(_weapons[_currentWeaponIndex]);
+
+*/
+        // Make sure the default weapon is in the inventory
+        if (!_inventoryManager.Items.Contains(_defaultWeaponData))
+        {
+            _inventoryManager.AddItemToInventory(_defaultWeaponData, 1);
+        }
         GameObject defaultWeaponPrefab = _defaultWeaponData.ItemPrefab;
         Weapon defualtWeapon = defaultWeaponPrefab.GetComponent<Weapon>();
         GameObject weaponGameObject = Instantiate(defaultWeaponPrefab, _weaponSocket);
@@ -58,49 +69,113 @@ public class WeaponManager : MonoBehaviour
         Vector3 rotation = defualtWeapon.WeaponData.DefaultLocalEulerAngles;
         weaponGameObject.transform.SetLocalPositionAndRotation(position, Quaternion.Euler(rotation));
 
+        // Refresh the current weapon list from inventory
+        var weaponSlots = _equippedWeaponSlots;
+        if (weaponSlots.Count == 0)
+        {
+            Debug.LogWarning("No weapons available to equip after adding default weapon.");
+            return;
+        }
+
         _currentWeaponIndex = 0;
-        _weapons.Add(defualtWeapon);
         ActivateWeapon(_currentWeaponIndex);
-        OnWeaponChanged?.Invoke(_weapons[_currentWeaponIndex]);
     }
 
-    // Get index of the numpad pressed (1-9) and change the current weapon based on it
-    private void SwitchWeapon(int indexChange)
+    // Get the command to check wether it's a scroll or a direct selection, and call the corrusponding method
+    private void SwitchWeapon(WeaponSwitchCommand command)
     {
-        int newWeaponIndex = _currentWeaponIndex;
+        switch (command.Type)
+        {
+            case WeaponSwitchType.ScrollUp:
+                ScrollWeapon(1);
+                break;
+            case WeaponSwitchType.ScrollDown:
+                ScrollWeapon(-1);
+                break;
+            case WeaponSwitchType.DirectSelect:
+                SelectWeaponByIndex(command.Index);
+                break;
+        }
+        _inventoryManager.AddItemToInventory(_defaultWeaponData, 1);
 
-        if (indexChange > 0) // Scrolling up or selecting next weapon
-        {
-            newWeaponIndex = (_currentWeaponIndex + 1) % _weapons.Count;
-        }
-        else if (indexChange < 0) // Scrolling down or selecting previous weapon
-        {
-            newWeaponIndex = _currentWeaponIndex - 1;
-            if (newWeaponIndex < 0)
-                newWeaponIndex = _weapons.Count - 1;
-        }
-        else if (indexChange >= 1 && indexChange <= _weapons.Count) // Direct selection (1-4)
-        {
-            newWeaponIndex = indexChange - 1;
-        }
+        Debug.Log(_currentWeaponIndex);
+
+    }
+
+    // Direct weapon selection
+    private void SelectWeaponByIndex(int index)
+    {
+        var weapons = _equippedWeaponSlots;
+        if (index < 0 || index >= weapons.Count) return;
 
         // Only activate the weapon if the index has changed
-        if (newWeaponIndex != _currentWeaponIndex)
+        if (_currentWeaponIndex != index)
         {
-            _currentWeaponIndex = newWeaponIndex;
             ActivateWeapon(_currentWeaponIndex);
         }
     }
 
+    // Weapon switching by scrolling
+    private void ScrollWeapon(int direction)
+    {
+        var weapons = _equippedWeaponSlots;
+        if (weapons.Count == 0) return;
+
+        _currentWeaponIndex = (_currentWeaponIndex + direction + weapons.Count) % weapons.Count;
+        Debug.Log(_currentWeaponIndex);
+        ActivateWeapon(_currentWeaponIndex);
+    }
+
     private void ActivateWeapon(int index)
     {
+        /* Debug.Log(_weapons.Count + "len");
+
+         // Activate only if there is a weapon in the given index
+         if (_weapons.Count <= index)
+             return;
+
+         if (ActiveWeapon != null)
+         {
+             ActiveWeapon.Unequip();
+             Debug.Log(ActiveWeapon);
+         }
+         ActiveWeapon = _weapons[index];
+         ActiveWeapon.Equip();
+         OnWeaponChanged?.Invoke(ActiveWeapon);*/
+
+        var weaponSlots = _equippedWeaponSlots;
+        if (index >= weaponSlots.Count)
+            return;
+
+        var itemData = weaponSlots[index].ItemData;
+        if (itemData.ItemPrefab == null)
+        {
+            Debug.LogWarning($"Weapon prefab missing for item: {itemData.ItemName}");
+            return;
+        }
+
         if (ActiveWeapon != null)
         {
             ActiveWeapon.Unequip();
-            Debug.Log(ActiveWeapon);
+            Destroy(ActiveWeapon.gameObject); // Optionally pool this instead
         }
-        ActiveWeapon = _weapons[index];
+
+        GameObject weaponObj = Instantiate(itemData.ItemPrefab, _weaponSocket);
+        Weapon newWeapon = weaponObj.GetComponent<Weapon>();
+        if (newWeapon == null)
+        {
+            Debug.LogError($"Item prefab {itemData.name} does not contain a Weapon component.");
+            return;
+        }
+
+        weaponObj.transform.SetLocalPositionAndRotation(
+            newWeapon.WeaponData.DefaultPosition,
+            Quaternion.Euler(newWeapon.WeaponData.DefaultLocalEulerAngles)
+        );
+
+        ActiveWeapon = newWeapon;
         ActiveWeapon.Equip();
         OnWeaponChanged?.Invoke(ActiveWeapon);
+
     }
 }
