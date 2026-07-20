@@ -8,8 +8,9 @@ using UnityEngine.Pool;
 public abstract class Weapon : Item, IWeapon
 {
     [HideInInspector] public WeaponData WeaponData => ItemData as WeaponData;
-    [HideInInspector] public GameEntity Owner;
+    [HideInInspector] public Entity Owner;
     public ObjectPool<Projectile> ProjectilePool;
+
 
     [Header("Projectile Spawning")]
     public Transform WeaponTip; //Tip of the weapon, where the projectiles are shot
@@ -24,9 +25,10 @@ public abstract class Weapon : Item, IWeapon
     protected PlayerInput _playerInput;
     protected InventoryManager _inventoryManager;
     protected CameraManager _cameraManager;
-    protected Crosshair _crosshair;
     protected Animator _animator;
     protected float _currentFov;
+    protected Crosshair _crosshair;
+    public Crosshair Crosshair => _crosshair;
 
     protected virtual void Awake()
     {
@@ -44,6 +46,17 @@ public abstract class Weapon : Item, IWeapon
         else
         {
             Debug.Log("Projectile prefab not assigned");
+        }
+    }
+
+
+    private void Start()
+    {
+
+        // *****************************
+        if (_player != null)
+        {
+            Owner = _player;
         }
     }
 
@@ -72,10 +85,16 @@ public abstract class Weapon : Item, IWeapon
         }
     }
 
+    public virtual void TryAttack()
+    {
+        
+    }
+
     // Spawn a projectile
     protected virtual void SpawnProjectile(Vector3 direction)
     {
-        if (ProjectilePool != null) {
+        if (ProjectilePool != null)
+        {
             Projectile newProjectile = ProjectilePool.Get();
             newProjectile.Shoot(this);
         }

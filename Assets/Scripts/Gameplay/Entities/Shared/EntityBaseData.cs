@@ -3,7 +3,7 @@ using UnityEngine;
  /// <summary>
  /// Contains all of the base data for the entity
  /// </summary>
-public abstract class GameEntityBaseData : ScriptableObject
+public abstract class EntityBaseData : ScriptableObject
 {
     public string Name;
     // public EntityType EntityType

@@ -7,9 +7,9 @@ public class PlayerInput : MonoBehaviour
     public event Action<Vector2> OnMoveInput;
     public event Action<Vector2> OnLookInput;
     public event Action<bool> OnSprintHeld;
-    public event Action OnFireDown;
-    public event Action OnFireHeld;
-    public event Action OnFireReleased;
+    public event Action OnAttackDown;
+    public event Action OnAttackHeld;
+    public event Action OnAttackReleased;
 
     public event Action OnJumpPressed;
     public event Action OnDashPressed;
@@ -25,9 +25,9 @@ public class PlayerInput : MonoBehaviour
     private Vector2 _move;
     private Vector2 _look;
     private bool _sprintHeld;
-    private bool _fireDown;
-    private bool _fireHeld;
-    private bool _fireReleased;
+    private bool _attackDown;
+    private bool _attackHeld;
+    private bool _attackReleased;
 
     private bool _isUIOpen = false;
     /*
@@ -78,9 +78,9 @@ public class PlayerInput : MonoBehaviour
     }
     private void CheckFireHeld()
     {
-        if (_fireHeld)
+        if (_attackHeld)
         {
-            OnFireHeld?.Invoke();
+            OnAttackHeld?.Invoke();
         }
     }
 
@@ -98,17 +98,17 @@ public class PlayerInput : MonoBehaviour
     {
         if (_isUIOpen) return; // Block input when UI is open
 
-        _fireDown = !_fireHeld && value.isPressed;
-        _fireHeld = value.isPressed;
-        _fireReleased = _fireHeld && !value.isPressed;
+        _attackDown = !_attackHeld && value.isPressed;
+        _attackHeld = value.isPressed;
+        _attackReleased = _attackHeld && !value.isPressed;
 
         // Trigger events based on input state
-        if (_fireDown) OnFireDown?.Invoke();
-        if (_fireHeld) _fireHeld = true;
-        if (_fireReleased)
+        if (_attackDown) OnAttackDown?.Invoke();
+        if (_attackHeld) _attackHeld = true;
+        if (_attackReleased)
         {
-            OnFireReleased?.Invoke();
-            _fireHeld = false;
+            OnAttackReleased?.Invoke();
+            _attackHeld = false;
         }
     }
 

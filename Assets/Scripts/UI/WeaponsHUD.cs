@@ -11,13 +11,13 @@ public class WeaponsHUD : MonoBehaviour
     [SerializeField] private Image _weaponIcon;
 
     private InventoryManager _inventoryManager;
-    private WeaponManager _weaponManager;
+    private WeaponController _weaponManager;
     private Weapon _activeWeapon;
 
     private void Awake()
     {
         _inventoryManager = GetComponentInParent<InventoryManager>();
-        _weaponManager = GetComponentInParent<WeaponManager>();
+        _weaponManager = GetComponentInParent<WeaponController>();
     }
 
     private void OnEnable()

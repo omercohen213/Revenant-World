@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     [ProgressBar("Health", "MaxHealth", EColor.Red)]
     [SerializeField] private float CurrentHealth;
 
-    private GameEntity Owner;
+    private Entity Owner;
     public UnityAction<float, GameObject> OnLostHealth;
     public UnityAction<float> OnGainedHealth;
     public UnityAction<Health, GameObject> OnHealthReachedZero;
@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Owner = GetComponent<GameEntity>();
+        Owner = GetComponent<Entity>();
         if (Owner == null)
         {
             Debug.LogError("GameEntity component not found. Health cannot be initialized properly.");

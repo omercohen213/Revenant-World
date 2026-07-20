@@ -16,7 +16,7 @@ public class Crosshair : MonoBehaviour
         public Color CrosshairColor;
     }
 
-    WeaponManager _weaponManager;
+    WeaponController _weaponManager;
     InventoryManager _inventoryManager;
 
     void Start()

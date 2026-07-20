@@ -1,15 +1,15 @@
 using UnityEngine;
 
 /// Contains all of the data for the entity; this data can be changed during the game
-public abstract class GameEntityDataManager : MonoBehaviour
+public abstract class EntityRuntimeData : MonoBehaviour
 {
-    public GameEntityBaseData baseData;
+    public EntityBaseData baseData;
 
     public int Level;
-    public float Speed;
+    public float MovementSpeed;
     public float AttackDamage;
-    public float Armor;
     public float AttackSpeed;
+    public float Armor;
     public int XpReward;
     public int KpReward;
 
@@ -37,7 +37,7 @@ public abstract class GameEntityDataManager : MonoBehaviour
     protected virtual void ResetToBaseData()
     {
         Level = 1;
-        Speed = baseData.Speed;
+        MovementSpeed = baseData.Speed;
         AttackDamage = baseData.AttackDamage;
         Armor = baseData.Armor;
         AttackSpeed = baseData.AttackSpeed;

@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerDataManager : GameEntityDataManager
+public class PlayerRuntimeData : EntityRuntimeData
 {
     public int Kp = 0;
     public float Gold = 0f;

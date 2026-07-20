@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 [RequireComponent(typeof(MonsterDataManager))]
 [RequireComponent(typeof(Health))]
-public class Monster : GameEntity
+public class Monster : Entity
 {
     public MonsterDataManager MonsterData;
     private ObjectPool<Monster> _monsterPool;
@@ -26,7 +26,7 @@ public class Monster : GameEntity
         _monsterPool.Release(this);
     }
 
-    public override GameEntityDataManager GetEntityData()
+    public override EntityRuntimeData GetEntityData()
     {
         return MonsterData;
     }

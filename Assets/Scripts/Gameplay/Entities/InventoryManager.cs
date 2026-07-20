@@ -49,7 +49,6 @@ public class InventoryManager : MonoBehaviour
     // Adds an item to the inventory
     public void AddItemToInventory(ItemData itemData, int quantity, bool isInfinite = false)
     {
-        Debug.Log(CurrentWeight);
         if (isInfinite)
         {
             CreateInventorySlot(itemData, 999);

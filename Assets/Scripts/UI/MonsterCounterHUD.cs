@@ -62,7 +62,7 @@ public class MonsterCounterHUD : MonoBehaviour
     }
 
     // Update the HUD after a kill
-    public void HandleMonsterKilled(GameEntity killedEntity)
+    public void HandleMonsterKilled(Entity killedEntity)
     {
         if (_currentObjective is KillObjective)
         {

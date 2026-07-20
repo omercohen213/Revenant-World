@@ -4,11 +4,11 @@ using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Damageable))]
-public abstract class GameEntity : MonoBehaviour
+public abstract class Entity : MonoBehaviour
 {
     protected Health _health;
 
-    public UnityAction<GameEntity, GameObject> OnKilled; // Monster killed, Killer
+    public UnityAction<Entity, GameObject> OnKilled; // Monster killed, Killer
 
     protected virtual void Awake()
     {
@@ -42,7 +42,7 @@ public abstract class GameEntity : MonoBehaviour
     }
 
 
-    public virtual GameEntityDataManager GetEntityData()
+    public virtual EntityRuntimeData GetEntityData()
     {
         return null;
     }

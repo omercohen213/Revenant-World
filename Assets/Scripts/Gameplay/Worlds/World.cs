@@ -17,7 +17,7 @@ public class World : MonoBehaviour
     [SerializeField] public List<Monster> _monstersAlive;
     [SerializeField] private List<Portal> _portals;
 
-    public UnityAction<GameEntity> OnMonsterKilled;
+    public UnityAction<Entity> OnMonsterKilled;
 
     private void Awake()
     {
@@ -70,7 +70,7 @@ public class World : MonoBehaviour
     }
 
     // Register the kill in the world and in the objective
-    public void HandleMonsterKilled(GameEntity monster, GameObject killer)
+    public void HandleMonsterKilled(Entity monster, GameObject killer)
     {
         monster.OnKilled -= HandleMonsterKilled;
 

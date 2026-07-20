@@ -47,11 +47,11 @@ public class Gun : RangedWeapon
         _accumulatedRecoil = Vector3.Lerp(_accumulatedRecoil, Vector3.zero, Time.deltaTime * GunData.RecoilRecoverySpeed);
     }
 
-    public override void HandleFireDown()
+    /*public override void HandleFireDown()
     {
         base.HandleFireDown();
         ResetSpread();
-        TryShoot();
+        //TryShoot();
     }
 
     public override void HandleFireHeld()
@@ -65,7 +65,7 @@ public class Gun : RangedWeapon
         _isFiringContinuously = false;
         ResetSpread();
         base.HandleFireReleased();
-    }
+    }*/
 
     public override void HandleShoot()
     {
@@ -161,15 +161,15 @@ public class Gun : RangedWeapon
         _progressiveSpread = GunData.BaseSpread;
     }
 
-    public override void StartAiming()
+    /*public void StartAiming()
     {
-        _crosshair.DisableCrosshair();
+        Crosshair.DisableCrosshair();
         base.StartAiming();
     }
 
-    public override void StopAiming()
+    public void StopAiming()
     {
-        _crosshair.EnableCrosshair();
+        Crosshair.EnableCrosshair();
         base.StopAiming();
-    }
+    }*/
 }

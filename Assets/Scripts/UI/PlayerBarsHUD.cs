@@ -21,7 +21,7 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
     private Dictionary<string, Image> _bars;
     private Dictionary<string, TextMeshProUGUI> _texts;
     private Health _playerHealth;
-    private PlayerDataManager _playerData;
+    private PlayerRuntimeData _playerData;
 
     private void Awake()
     {

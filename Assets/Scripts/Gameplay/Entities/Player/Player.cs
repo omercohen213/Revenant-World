@@ -3,22 +3,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Pool;
 
-[RequireComponent(typeof(PlayerDataManager))]
+[RequireComponent(typeof(PlayerRuntimeData))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(InventoryManager))]
 [RequireComponent(typeof(PlayerInput))]
-public class Player : GameEntity
+public class Player : Entity
 {
-    public PlayerDataManager PlayerData;
+    public PlayerRuntimeData PlayerData;
     public World CurrentWorld;
 
-    public event Action<GameEntity, int, int> OnKillRewarded;  // Killed entity, XP, KP
+    public event Action<Entity, int, int> OnKillRewarded;  // Killed entity, XP, KP
     private ObjectPool<Player> _playerPool;
 
     protected override void Awake()
     {
         base.Awake();
-        PlayerData = GetComponent<PlayerDataManager>();
+        PlayerData = GetComponent<PlayerRuntimeData>();
         _playerPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
         CurrentWorld = GetComponentInParent<World>();
     }
@@ -39,7 +39,7 @@ public class Player : GameEntity
     }
 
     // Add the rewards to the player data
-    public void GetRewardForKill(GameEntity killedEntity)
+    public void GetRewardForKill(Entity killedEntity)
     {
         int xp = killedEntity.GetEntityData().XpReward;
         int kp = killedEntity.GetEntityData().KpReward;
@@ -66,7 +66,7 @@ public class Player : GameEntity
 
     }
 
-    public override GameEntityDataManager GetEntityData()
+    public override EntityRuntimeData GetEntityData()
     {
         return PlayerData;
     }

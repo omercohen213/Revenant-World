@@ -40,7 +40,7 @@ public class RewardsHUD : MonoBehaviour
     }
 
     // Activate the rewards objects on the player hud
-    private void ShowKillRewards(GameEntity killedEntity, int xp, int kp)
+    private void ShowKillRewards(Entity killedEntity, int xp, int kp)
     {
         GameObject killRewardObj = _killRewardsPool.Get();
         killRewardObj.transform.SetParent(_killRewardsParent, false);

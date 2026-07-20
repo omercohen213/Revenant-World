@@ -12,47 +12,25 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     public int CurrentAmmo { get; set; }
 
     protected bool _isReloading = false;
-    protected float _weaponFovMultiplier = 0.5f; //change to scope
+    public bool IsReloading => _isReloading;
 
     private float _lastTimeShot = Mathf.NegativeInfinity;
-    private bool _isAiming = false;
-    private bool _canAim = true;
-    private readonly float _aimingAnimDuration = 0.3f;
     private Coroutine _reloadCoroutine;
-    private Coroutine _aimCoroutine;
 
     protected void InvokeShoot() => OnShoot?.Invoke();
 
     protected virtual void OnEnable()
     {
-        _playerInput.OnReloadPressed += HandleReloadPressed;
-        _playerInput.OnAimPressed += HandleAimPressed;
-        _playerInput.OnFireDown += HandleFireDown;
-        _playerInput.OnFireHeld += HandleFireHeld;
-        _playerInput.OnFireReleased += HandleFireReleased;
-
-        // should be here?????
-        Owner = GetComponentInParent<Player>();
         CurrentAmmo = RangedWeaponData.HasInfiniteAmmo ? int.MaxValue : 0;
-    }
-
-    protected virtual void OnDisable()
-    {
-        _playerInput.OnReloadPressed -= HandleReloadPressed;
-        _playerInput.OnAimPressed -= HandleAimPressed;
-        _playerInput.OnFireDown -= HandleFireDown;
-        _playerInput.OnFireHeld -= HandleFireHeld;
-        _playerInput.OnFireReleased -= HandleFireReleased;
-
     }
 
     protected override void Update()
     {
-        CheckReloading();
+        //CheckReloading();
         CheckAutomaticReload();
     }
 
-    // Prevent actions while reloading
+    /*// Prevent actions while reloading
     private void CheckReloading()
     {
         if (_isReloading)
@@ -63,7 +41,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
             }
             return;
         }
-    }
+    }*/
 
     // Reload automatically if no ammo left
     private void CheckAutomaticReload()
@@ -74,51 +52,14 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
             return;
         }
     }
-
-    private void HandleReloadPressed()
+    
+    public override void TryAttack()
     {
-        if (CanReload())
-        {
-            StartReloading();
-        }
+        TryShoot();  
     }
 
-    private void HandleAimPressed()
+    private void TryShoot()
     {
-        if (_canAim && !_isReloading)
-        {
-            if (!_isAiming)
-            {
-                StartAiming();
-            }
-            else
-            {
-                StopAiming();
-            }
-        }
-    }
-
-    public virtual void HandleFireDown()
-    {
-    }
-
-    public virtual void HandleFireHeld()
-    {
-        TryShoot();
-    }
-
-    public virtual void HandleFireReleased()
-    {
-    }
-
-    public virtual bool TryShoot()
-    {
-        if (RangedWeaponData == null)
-        {
-            Debug.LogError("RangedWeaponData is missing!");
-            return false;
-        }
-
         if (CurrentAmmo > 0 || RangedWeaponData.HasInfiniteAmmo)
         {
             if (Time.time - _lastTimeShot >= RangedWeaponData.DelayBetweenShots)
@@ -126,10 +67,8 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
                 _lastTimeShot = Time.time;
                 CurrentAmmo--;
                 HandleShoot();
-                return true;
             }
         }
-        return false;
     }
 
     public virtual void HandleShoot()
@@ -156,7 +95,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
     }
 
     // Check if reload is allowed
-    private bool CanReload()
+    public bool CanReload()
     {
         if (RangedWeaponData.HasInfiniteAmmo)
         {
@@ -168,17 +107,18 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         return !_isReloading && totalAmmo > 0 && ammoNeeded > 0 || CurrentAmmo <= 0 && totalAmmo > 0;
     }
 
+
     // Handle the start of a reload
-    private void StartReloading()
+    public void StartReloading()
     {
         if (_reloadCoroutine != null) return; // Prevent multiple reloads at once
 
         // Stop aiming
-        if (_isAiming)
+        /*if (_isAiming)
         {
             StopAiming();
             _isAiming = false;
-        }
+        }*/
 
         _isReloading = true;
         _reloadCoroutine = StartCoroutine(ReloadCoroutine());
@@ -209,51 +149,5 @@ public abstract class RangedWeapon : Weapon, IRangedWeapon
         _reloadCoroutine = null;
         StopReloadAnimation();
     }
-
-    private void UpdateFov()
-    {
-        float targetFov = _isAiming ? _weaponFovMultiplier * _defaultFov : _defaultFov;
-        _cameraManager.StartFovTransition(targetFov, _aimingAnimDuration);
-    }
-
-    public virtual void StartAiming()
-    {
-        // Toggle state only if allowed
-        if (!_canAim) return;
-
-        _isAiming = true;
-        _canAim = false;
-        //_crosshair.DisableCrosshair();
-        _animator.SetBool("Aim", true);
-
-        UpdateFov();
-
-        // Start coroutine to re-enable aiming after animation
-        if (_aimCoroutine != null) StopCoroutine(_aimCoroutine);
-        _aimCoroutine = StartCoroutine(WaitForAimingAnimation());
-    }
-
-    public virtual void StopAiming()
-    {
-        // Toggle state only if allowed
-        if (!_canAim) return;
-
-        _isAiming = false;
-        _canAim = false;
-        _crosshair.EnableCrosshair();
-        _animator.SetBool("Aim", false);
-
-        UpdateFov();
-
-        // Start coroutine to re-enable aiming after animation
-        if (_aimCoroutine != null) StopCoroutine(_aimCoroutine);
-        _aimCoroutine = StartCoroutine(WaitForAimingAnimation());
-    }
-
-    // Re-enable aiming after aiming animation ends
-    private IEnumerator WaitForAimingAnimation()
-    {
-        yield return new WaitForSeconds(_aimingAnimDuration);
-        _canAim = true;
-    }
+   
 }

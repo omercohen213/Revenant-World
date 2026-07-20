@@ -15,6 +15,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float _topClamp = 50f;
     [SerializeField] private float _bottomClamp = -60.0f;
     [SerializeField] private float _defaultFov = 60f;
+    public float DefaultFov => _defaultFov;
 
     private PlayerInput _playerInput;
     private Coroutine _fovCoroutine;

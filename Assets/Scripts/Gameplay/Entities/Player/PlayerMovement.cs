@@ -5,10 +5,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovement : EntityMovement
 {
     private PlayerInput _playerInput;
-    private CharacterController _controller;
 
     [Header("Player")]
     [Tooltip("Move speed of the character in m/s")]
@@ -21,9 +20,6 @@ public class PlayerMovementController : MonoBehaviour
     [Space(10)]
     [Tooltip("The height the player can jump")]
     [SerializeField] private float _jumpHeight = 1f;
-    [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-    [SerializeField] private float _gravity = -9.81f;
-
     [Space(10)]
     [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
     [SerializeField] private float _jumpTimeout = 0.1f;
@@ -41,10 +37,8 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask _groundLayers;
 
     private bool _jumpRequested = false;
-    private Vector2 _currentMovement;
     private bool _isSprinting;
     private float _currentSpeed;
-    private float _verticalVelocity;
     private float _jumpTimeoutDelta;
     private float _fallTimeoutDelta;
 
@@ -74,23 +68,20 @@ public class PlayerMovementController : MonoBehaviour
     private void Start()
     {
         // reset timeouts on start
-        _isGrounded = true;
         _jumpTimeoutDelta = _jumpTimeout;
         _fallTimeoutDelta = _fallTimeout;
+        GroundedCheck();
     }
 
     private void Update()
     {
-        ProcessJumpAndGravity();
+        ApplyGravity();
+        ProcessJump();
         GroundedCheck();
+        Move();
 
         // Reset jump request after processing
         _jumpRequested = false;
-    }
-
-    private void FixedUpdate()
-    {
-        Move();
     }
 
     private void HandleMoveInput(Vector2 moveInput)
@@ -115,16 +106,11 @@ public class PlayerMovementController : MonoBehaviour
             _isSprinting = sprintValue;
         }
     }
-    private void ProcessJumpAndGravity()
+    private void ProcessJump()
     {
         if (_isGrounded)
         {
             _fallTimeoutDelta = _fallTimeout;
-
-            if (_verticalVelocity < 0.0f)
-            {
-                _verticalVelocity = -2f;
-            }
 
             if (_jumpRequested && _jumpTimeoutDelta <= 0.0f)
             {
@@ -145,12 +131,6 @@ public class PlayerMovementController : MonoBehaviour
             {
                 _fallTimeoutDelta -= Time.deltaTime;
             }
-        }
-
-        // Apply gravity if under terminal velocity
-        if (_verticalVelocity < _maxVelocity)
-        {
-            _verticalVelocity += _gravity * Time.deltaTime;
         }
     }
 
@@ -194,12 +174,7 @@ public class PlayerMovementController : MonoBehaviour
             _currentSpeed = targetSpeed;
         }
 
-        // Construct the final velocity vector including vertical movement.
-        Vector3 velocity = inputDirection * _currentSpeed;
-        velocity.y = _verticalVelocity;
-
-        // Use FixedDeltaTime for consistent movement in FixedUpdate.
-        _controller.Move(velocity * Time.fixedDeltaTime);
+        base.Move(inputDirection, _currentSpeed);
     }
 
 }

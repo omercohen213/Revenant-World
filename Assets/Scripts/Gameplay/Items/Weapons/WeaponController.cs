@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.Pool;
 using static UnityEngine.Rendering.DebugUI;
 
 
-public class WeaponManager : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
     public Weapon ActiveWeapon;
 
@@ -49,13 +50,12 @@ public class WeaponManager : MonoBehaviour
     private void CreateDefaultWeapon()
     {
 
+        //_currentWeaponIndex = 0;
+        //_weapons.Add(defualtWeapon);
+        //ActivateWeapon(_currentWeaponIndex);
+        //OnWeaponChanged?.Invoke(_weapons[_currentWeaponIndex]);
 
-/*        _currentWeaponIndex = 0;
-        _weapons.Add(defualtWeapon);
-        ActivateWeapon(_currentWeaponIndex);
-        OnWeaponChanged?.Invoke(_weapons[_currentWeaponIndex]);
 
-*/
         // Make sure the default weapon is in the inventory
         if (!_inventoryManager.Items.Contains(_defaultWeaponData))
         {
@@ -64,6 +64,13 @@ public class WeaponManager : MonoBehaviour
         GameObject defaultWeaponPrefab = _defaultWeaponData.ItemPrefab;
         Weapon defualtWeapon = defaultWeaponPrefab.GetComponent<Weapon>();
         GameObject weaponGameObject = Instantiate(defaultWeaponPrefab, _weaponSocket);
+
+        if (!weaponGameObject.TryGetComponent<Weapon>(out var newWeapon))
+        {
+            Debug.LogError($"Item prefab does not contain a Weapon component.");
+            return;
+        }
+        ActiveWeapon = newWeapon;
 
         Vector3 position = defualtWeapon.WeaponData.DefaultPosition;
         Vector3 rotation = defualtWeapon.WeaponData.DefaultLocalEulerAngles;
@@ -74,7 +81,7 @@ public class WeaponManager : MonoBehaviour
         if (weaponSlots.Count == 0)
         {
             Debug.LogWarning("No weapons available to equip after adding default weapon.");
-            return;
+            //return;
         }
 
         _currentWeaponIndex = 0;
@@ -97,9 +104,6 @@ public class WeaponManager : MonoBehaviour
                 break;
         }
         _inventoryManager.AddItemToInventory(_defaultWeaponData, 1);
-
-        Debug.Log(_currentWeaponIndex);
-
     }
 
     // Direct weapon selection
@@ -122,7 +126,6 @@ public class WeaponManager : MonoBehaviour
         if (weapons.Count == 0) return;
 
         _currentWeaponIndex = (_currentWeaponIndex + direction + weapons.Count) % weapons.Count;
-        Debug.Log(_currentWeaponIndex);
         ActivateWeapon(_currentWeaponIndex);
     }
 
@@ -144,6 +147,7 @@ public class WeaponManager : MonoBehaviour
          OnWeaponChanged?.Invoke(ActiveWeapon);*/
 
         var weaponSlots = _equippedWeaponSlots;
+
         if (index >= weaponSlots.Count)
             return;
 
@@ -161,8 +165,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         GameObject weaponObj = Instantiate(itemData.ItemPrefab, _weaponSocket);
-        Weapon newWeapon = weaponObj.GetComponent<Weapon>();
-        if (newWeapon == null)
+        if (!weaponObj.TryGetComponent<Weapon>(out var newWeapon))
         {
             Debug.LogError($"Item prefab {itemData.name} does not contain a Weapon component.");
             return;
@@ -173,9 +176,22 @@ public class WeaponManager : MonoBehaviour
             Quaternion.Euler(newWeapon.WeaponData.DefaultLocalEulerAngles)
         );
 
+        Debug.Log(newWeapon);
+
         ActiveWeapon = newWeapon;
         ActiveWeapon.Equip();
+        Debug.Log("sssssss " + ActiveWeapon);
         OnWeaponChanged?.Invoke(ActiveWeapon);
+    }
 
+    public void HandleWeaponReload()
+    {
+        if (ActiveWeapon is not RangedWeapon rangedWeapon)
+            return;
+
+        if (rangedWeapon.CanReload())
+        {
+            rangedWeapon.StartReloading();
+        }
     }
 }
