@@ -1,17 +1,32 @@
 using UnityEngine;
 
 /// Contains all of the data for the entity; this data can be changed during the game
+
 public abstract class EntityRuntimeData : MonoBehaviour
 {
-    public EntityBaseData baseData;
+    public abstract EntityBaseData BaseData { get; }
 
-    public int Level;
-    public float MovementSpeed;
-    public float AttackDamage;
-    public float AttackSpeed;
-    public float Armor;
-    public int XpReward;
-    public int KpReward;
+    public int CurrentLevel;
+    public int CurrentMaxHealth;
+    public int CurrentHealth;
+    public float CurrentMovementSpeed;
+    public float CurrentAttackDamage;
+    public float CurrentAttackSpeed;    
+    public float CurrentArmor;
+    public int CurrentXpReward;
+    public int CurrentKpReward;
+}
+
+
+public abstract class EntityRuntimeData<TBaseData> : EntityRuntimeData
+    where TBaseData : EntityBaseData
+{
+    [SerializeField]
+    private TBaseData _baseData;
+
+    public override EntityBaseData BaseData => _baseData;
+
+    protected TBaseData TypedBaseData => _baseData;
 
     protected virtual void Awake()
     {
@@ -23,25 +38,12 @@ public abstract class EntityRuntimeData : MonoBehaviour
         ResetToBaseData();
     }
 
-    protected virtual void OnEnable()
-    {
-        
-    }
-
-    protected virtual void OnDisable()
-    {
-
-    }
-
     // Reset data to base values
     protected virtual void ResetToBaseData()
     {
-        Level = 1;
-        MovementSpeed = baseData.Speed;
-        AttackDamage = baseData.AttackDamage;
-        Armor = baseData.Armor;
-        AttackSpeed = baseData.AttackSpeed;
-        XpReward = baseData.XpReward;
-        KpReward = baseData.KpReward;
+        CurrentLevel = 1;
+        CurrentMovementSpeed = BaseData.Speed;
+        CurrentAttackDamage = BaseData.AttackDamage;
+        CurrentArmor = BaseData.Armor;
     }
 }

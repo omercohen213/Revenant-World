@@ -23,7 +23,7 @@ MonoBehaviour:
   IsInfinite: 0
   IsSignleInstance: 1
   ProjectilePrefab: {fileID: 296941351677146672, guid: 2cc80d9718bda3b4f845278f1161bd56, type: 3}
-  ProjectileDamage: 2000
+  ProjectileDamage: 56
   DelayBetweenShots: 0.5
   AimZoomRatio: 1.5
   AimOffset: {x: 0, y: 0, z: 0}

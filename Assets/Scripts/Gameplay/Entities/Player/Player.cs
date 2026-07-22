@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.Pool;
 
 [RequireComponent(typeof(PlayerRuntimeData))]
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(InventoryManager))]
 [RequireComponent(typeof(PlayerInput))]
 public class Player : Entity
@@ -27,6 +27,7 @@ public class Player : Entity
     {
         PlayerData.OnLevelUp += OnLevelUp;
     }
+
     protected override void OnDisable()
     {
         PlayerData.OnLevelUp -= OnLevelUp;
@@ -41,8 +42,8 @@ public class Player : Entity
     // Add the rewards to the player data
     public void GetRewardForKill(Entity killedEntity)
     {
-        int xp = killedEntity.GetEntityData().XpReward;
-        int kp = killedEntity.GetEntityData().KpReward;
+        int xp = killedEntity.GetEntityData().CurrentXpReward;
+        int kp = killedEntity.GetEntityData().CurrentKpReward;
 
         PlayerData.AddXp(xp);
         PlayerData.AddKp(kp);
@@ -50,7 +51,7 @@ public class Player : Entity
         OnKillRewarded?.Invoke(killedEntity, xp, kp);
     }
 
-    protected override void HandleDeath(Health health, GameObject killer)
+    protected override void HandleDeath(EntityHealth health, GameObject killer)
     {
         _playerPool.Release(this);
         base.HandleDeath(health, killer);

@@ -20,13 +20,13 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
 
     private Dictionary<string, Image> _bars;
     private Dictionary<string, TextMeshProUGUI> _texts;
-    private Health _playerHealth;
+    private EntityHealth _playerHealth;
     private PlayerRuntimeData _playerData;
 
     private void Awake()
     {
         // Health is a seperate class unlike other bar resources
-        _playerHealth = GetComponentInParent<Health>();
+        _playerHealth = GetComponentInParent<EntityHealth>();
 
         Player player = GetComponentInParent<Player>();
         _playerData = player.PlayerData;
@@ -112,7 +112,7 @@ public class PlayerBarsHUD : MonoBehaviour, IBarsUI
     }
 
     // Update bar fill upon death
-    private void HandleDeath(Health health, GameObject killer)
+    private void HandleDeath(EntityHealth health, GameObject killer)
     {
         UpdateBar("Health", 0f);
     }

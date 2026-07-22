@@ -5,13 +5,12 @@ using UnityEngine;
 public class PlayerCombat : EntityCombat
 {
     private PlayerInput _playerInput;
-    private WeaponController _weaponManager;
-
+    private WeaponController _weaponController;
 
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
-        _weaponManager = GetComponent<WeaponController>();
+        _weaponController = GetComponent<WeaponController>();
     }
 
     protected virtual void OnEnable()
@@ -32,7 +31,7 @@ public class PlayerCombat : EntityCombat
 
     private void HandleReloadPressed()
     {
-        _weaponManager.HandleWeaponReload();
+        _weaponController.HandleWeaponReload();
     }
 
     public virtual void HandleAttackDown()
@@ -43,7 +42,7 @@ public class PlayerCombat : EntityCombat
     {
         if (!CanAttack())
             return;
-        _weaponManager.ActiveWeapon.TryAttack();
+        _weaponController.ActiveWeapon.TryAttack();
     }
 
     public virtual void HandleAttackReleased()

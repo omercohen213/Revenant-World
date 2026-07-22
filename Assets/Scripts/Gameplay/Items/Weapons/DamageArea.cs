@@ -18,7 +18,7 @@ namespace Unity.FPS.Game
         public void InflictDamageInArea(float damage, Vector3 center, LayerMask layers,
             QueryTriggerInteraction interaction, GameObject owner)
         {
-            Dictionary<Health, Damageable> uniqueDamagedHealths = new Dictionary<Health, Damageable>();
+            Dictionary<EntityHealth, Damageable> uniqueDamagedHealths = new Dictionary<EntityHealth, Damageable>();
 
             // Create a collection of unique health components that would be damaged in the area of effect (in order to avoid damaging a same entity multiple times)
             Collider[] affectedColliders = Physics.OverlapSphere(center, AreaOfEffectDistance, layers, interaction);
@@ -27,7 +27,7 @@ namespace Unity.FPS.Game
                 Damageable damageable = coll.GetComponent<Damageable>();
                 if (damageable)
                 {
-                    Health health = damageable.GetComponentInParent<Health>();
+                    EntityHealth health = damageable.GetComponentInParent<EntityHealth>();
                     if (health && !uniqueDamagedHealths.ContainsKey(health))
                     {
                         uniqueDamagedHealths.Add(health, damageable);

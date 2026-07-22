@@ -13,12 +13,12 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
     private Dictionary<string, Image> _bars;
     private Dictionary<string, TextMeshProUGUI> _texts;
 
-    private Health _monsterHealth;
+    private EntityHealth _monsterHealth;
     private float _monsterLevel;
 
     private void Awake()
     {
-        _monsterHealth = GetComponentInParent<Health>();
+        _monsterHealth = GetComponentInParent<EntityHealth>();
 
         _bars = new Dictionary<string, Image>
         {
@@ -52,8 +52,8 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
 
     private void Start()
     {
-        MonsterDataManager monsterDataManager = GetComponentInParent<MonsterDataManager>();
-        _monsterLevel = monsterDataManager.Level;
+        MonsterRuntimeData monsterDataManager = GetComponentInParent<MonsterRuntimeData>();
+        _monsterLevel = monsterDataManager.CurrentLevel;
         UpdateText("Level", _monsterLevel.ToString());
     }
 
@@ -65,7 +65,7 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
         }
     }
 
-    private void HandleDeath(Health health, GameObject killer)
+    private void HandleDeath(EntityHealth health, GameObject killer)
     {
         UpdateBar("Health", 0f);
     }

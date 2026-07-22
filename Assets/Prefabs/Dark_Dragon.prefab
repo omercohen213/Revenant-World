@@ -4905,12 +4905,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3945829692746217454}
   - component: {fileID: 6637295261158928358}
-  - component: {fileID: 7177880130636862632}
   - component: {fileID: 6743017535890291506}
-  - component: {fileID: 612236923175947023}
   - component: {fileID: 2777343380740289403}
   - component: {fileID: 2348639386395231473}
-  - component: {fileID: 1124339495896642497}
+  - component: {fileID: 1953984571987092291}
+  - component: {fileID: 4796691067125502809}
+  - component: {fileID: 8984808553781734196}
   m_Layer: 0
   m_Name: Dark_Dragon
   m_TagString: Untagged
@@ -4958,33 +4958,6 @@ CapsuleCollider:
   m_Height: 6.893522
   m_Direction: 1
   m_Center: {x: -1.4456953, y: 2.9467611, z: 1.4056015}
---- !u!54 &7177880130636862632
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616211505216702690}
-  serializedVersion: 4
-  m_Mass: 1.29
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!95 &6743017535890291506
 Animator:
   serializedVersion: 7
@@ -5007,32 +4980,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &612236923175947023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616211505216702690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f071734362b044e986fee66c5c5d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseData: {fileID: 11400000, guid: 47a0c1d0f25a73d45a36fc6c900d6cc4, type: 2}
-  Level: 0
-  Speed: 0
-  AttackDamage: 0
-  Armor: 0
-  AttackSpeed: 0
-  XpReward: 0
-  KpReward: 0
-  aggroRange: 0
-  attackPatternCooldown: 0
-  aiStateChangeRate: 0
-  isFlying: 0
-  specialAbilities: []
-  lootTable: {fileID: 0}
 --- !u!114 &2777343380740289403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5061,7 +5008,7 @@ MonoBehaviour:
   SelfDamageMultiplier: 0.5
   _hitVFX: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
   _hitVFXLifetime: 0.3
---- !u!114 &1124339495896642497
+--- !u!114 &1953984571987092291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5070,10 +5017,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 4616211505216702690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a475e911f4d6f704fb93456215f95ece, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bac4af039e75e941a3cb5fef5eab97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentLevel: 0
+  CurrentMovementSpeed: 0
+  CurrentAttackDamage: 0
+  CurrentAttackSpeed: 0
+  CurrentArmor: 0
+  CurrentXpReward: 0
+  CurrentKpReward: 0
+  _baseData: {fileID: 11400000, guid: 47a0c1d0f25a73d45a36fc6c900d6cc4, type: 2}
+--- !u!114 &4796691067125502809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616211505216702690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7d11efd0b182249b1ff932a13316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentHealth: 0
+--- !u!114 &8984808553781734196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616211505216702690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2633ecb720cbd2c44a0c65005af1a463, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 0}
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &4625528097855613612
 GameObject:
   m_ObjectHideFlags: 0

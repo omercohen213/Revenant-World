@@ -2,16 +2,21 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : MonoBehaviour
+public class EntityHealth : MonoBehaviour
 {
     public float MaxHealth { get; private set; }
+
     [ProgressBar("Health", "MaxHealth", EColor.Red)]
-    [SerializeField] private float CurrentHealth;
+    [SerializeField] private float _currentHealth;
+    public float CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+
 
     private Entity Owner;
-    public UnityAction<float, GameObject> OnLostHealth;
-    public UnityAction<float> OnGainedHealth;
-    public UnityAction<Health, GameObject> OnHealthReachedZero;
+    public UnityAction<float, GameObject> OnLostHealth { get; set; }
+
+    public UnityAction<float> OnGainedHealth { get; set; }
+
+    public UnityAction<EntityHealth, GameObject> OnHealthReachedZero { get; set; }
 
     public bool Invincible { get; set; }
 
@@ -30,7 +35,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        MaxHealth = Owner.GetEntityData().baseData.MaxHealth;
+        MaxHealth = Owner.GetEntityData().BaseData.MaxHealth;
         CurrentHealth = MaxHealth;
     }
 

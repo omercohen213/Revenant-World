@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(EntityHealth))]
 public class Damageable : MonoBehaviour
 {
     [Range(0, 1)]
@@ -15,15 +15,15 @@ public class Damageable : MonoBehaviour
     [SerializeField] private float _hitVFXLifetime = 0.3f;
     [SerializeField] private ObjectPool<GameObject> _hitVFXPool;
 
-    public Health Health { get; private set; }
+    public EntityHealth Health { get; private set; }
 
     void Awake()
     {
         // find the health component either at the same level, or higher in the hierarchy
-        Health = GetComponent<Health>();
+        Health = GetComponent<EntityHealth>();
         if (!Health)
         {
-            Health = GetComponentInParent<Health>();
+            Health = GetComponentInParent<EntityHealth>();
         }
 
     }

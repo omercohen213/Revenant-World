@@ -1,2 +1,8 @@
--　ammo hud
-- ranged weapon animation to player animation
+
+
+- HUD ammo hud
+- ANIMATION ranged weapon animation to player animation
+- RELOAD check reloading while aiming
+- INVENTORY default weapon + inventory for it
+
+- HITVFX remove from damagable and change name to hitvfx?

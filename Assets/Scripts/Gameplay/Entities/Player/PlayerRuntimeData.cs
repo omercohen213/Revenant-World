@@ -3,8 +3,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerRuntimeData : EntityRuntimeData
-{
+public class PlayerRuntimeData : EntityRuntimeData<PlayerBaseData>
+{  
     public int Kp = 0;
     public float Gold = 0f;
     [ProgressBar("Xp", "XpToLevelUp", EColor.Violet)]
@@ -25,9 +25,8 @@ public class PlayerRuntimeData : EntityRuntimeData
     protected override void Start()
     {
         base.Start();
-        PlayerBaseData playerBaseData = (PlayerBaseData)baseData;
-        _xpTable = playerBaseData.XpTable;
-        XpToLevelUp = _xpTable[Level-1];
+        _xpTable = TypedBaseData.XpTable;
+        XpToLevelUp = _xpTable[CurrentLevel-1];
     }
 
     public void AddXp(int recievedXp)
@@ -39,19 +38,19 @@ public class PlayerRuntimeData : EntityRuntimeData
 
     private void CheckLevelUp()
     {
-        while (Level < _xpTable.Length && Xp >= XpToLevelUp)
+        while (CurrentLevel < _xpTable.Length && Xp >= XpToLevelUp)
         {
             LevelUp();
-            OnLevelUp?.Invoke(Level);
+            OnLevelUp?.Invoke(CurrentLevel);
         }
     }
 
     private void LevelUp()
     {
-        Level++;
+        CurrentLevel++;
         Xp -= XpToLevelUp;
-        XpToLevelUp = _xpTable[Level-1];
-        AttackDamage += 10;
+        XpToLevelUp = _xpTable[CurrentLevel-1];
+        CurrentAttackDamage += 10;
     }
 
     public void AddKp(int recievedKp)

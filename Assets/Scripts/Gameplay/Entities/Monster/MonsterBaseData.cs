@@ -5,18 +5,22 @@ using UnityEngine;
 public class MonsterBaseData : EntityBaseData
 {
     [Header("Detection")]
-    public float aggroRange;         // Range at which monster targets players
-    public float loseTargetRange;
+    public float AggroRange;       // Range at which monster targets players
+    public float LoseTargetRange;
 
     [Header("Combat")]
-    public float attackPatternCooldown;  // Cooldown between special attack patterns
-    public float aiStateChangeRate;  // Rate at which monster switches behavior (e.g., idle to attacking)
-    public float attackRange;  // Rate at which monster switches behavior (e.g., idle to attacking)
+    public float AttackPatternCooldown;     // Cooldown between special attack patterns
+    public float AiStateChangeRate;     // Rate at which monster switches behavior (e.g., idle to attacking)
+    public float AttackRange;        // Rate at which monster switches behavior (e.g., idle to attacking)
 
     [Header("Movement")]
     //public bool canFly;       
-    public float rotationSpeed;
+    public float RotationSpeed;
 
     [Header("Loot")]
-    public LootTable lootTable;  // A list of item names this monster can drop
+    public LootTable LootTable;    // A list of item names this monster can drop
+
+    [Header("Kill Rewards")]
+    public int XpReward;
+    public int KpReward;
 }

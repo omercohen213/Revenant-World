@@ -201,7 +201,7 @@ public class InventoryManager : MonoBehaviour
 
     public void PrintInventory()
     {
-        Debug.Log("Total Capacity: " + Capacity + " Current Weight: " + CurrentWeight);
+        //Debug.Log("Total Capacity: " + Capacity + " Current Weight: " + CurrentWeight);
 
         string inventoryText = "Current Inventory: ";
 
@@ -211,7 +211,7 @@ public class InventoryManager : MonoBehaviour
             inventoryText += $"{slot.ItemData.ItemName}, Quantity: {slot.Quantity}, Weight: {slot.Weight} | ";
         }
 
-        Debug.Log(inventoryText);
+        //Debug.Log(inventoryText);
     }
 
 }

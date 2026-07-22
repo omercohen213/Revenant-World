@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-[RequireComponent(typeof(MonsterDataManager))]
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(MonsterRuntimeData))]
+[RequireComponent(typeof(EntityHealth))]
 public class Monster : Entity
 {
-    public MonsterDataManager MonsterData;
+    public MonsterRuntimeData MonsterData;
     private ObjectPool<Monster> _monsterPool;
 
     protected override void Awake()
     {
         base.Awake();
-        MonsterData = GetComponent<MonsterDataManager>();
+        MonsterData = GetComponent<MonsterRuntimeData>();
     }
 
     protected override void Start()
@@ -20,7 +20,7 @@ public class Monster : Entity
         _monsterPool = ObjectPoolingManager.Instance.GetOrCreatePool(this);
     }
 
-    protected override void HandleDeath(Health health, GameObject killer)
+    protected override void HandleDeath(EntityHealth health, GameObject killer)
     {
         base.HandleDeath(health, killer);
         _monsterPool.Release(this);

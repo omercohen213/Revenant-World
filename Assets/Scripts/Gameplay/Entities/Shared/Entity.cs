@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(Damageable))]
 public abstract class Entity : MonoBehaviour
 {
-    protected Health _health;
+    protected EntityHealth _health;
 
-    public UnityAction<Entity, GameObject> OnKilled; // Monster killed, Killer
+    public UnityAction<Entity, GameObject> OnKilled { get; set; } // Monster killed, Killer
 
     protected virtual void Awake()
     {
-        _health = GetComponent<Health>();
+        _health = GetComponent<EntityHealth>();
 
     }
 
@@ -31,7 +31,7 @@ public abstract class Entity : MonoBehaviour
         _health.OnHealthReachedZero -= HandleDeath;
     }
 
-    protected virtual void HandleDeath(Health health, GameObject killerObject)
+    protected virtual void HandleDeath(EntityHealth health, GameObject killerObject)
     {
         // If the killer is a player, they get rewards
         if (killerObject.TryGetComponent<Player>(out var killerPlayer))
@@ -40,7 +40,6 @@ public abstract class Entity : MonoBehaviour
             OnKilled.Invoke(this, killerPlayer.gameObject);
         }
     }
-
 
     public virtual EntityRuntimeData GetEntityData()
     {
