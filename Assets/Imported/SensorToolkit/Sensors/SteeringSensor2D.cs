@@ -228,7 +228,6 @@ namespace Micosmo.SensorToolkit {
             decision.Interpolate(Time.deltaTime);
         }
 
-        [System.Obsolete]
         void FixedUpdate() {
             if (LocomotionMode == LocomotionMode2D.RigidBody2D) {
                 locomotion.RigidBody2DSeek(RigidBody, GetSteeringVector());

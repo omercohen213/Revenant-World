@@ -7,6 +7,10 @@ If you have any questions, feature requests or if you have found a bug then plea
 
 
 [CHANGELOG]
+2.5.18 - Fixes some deprecation warnings in Unity 6.0 and up
+2.5.17 - Can trigger OnNoDetection from initial pulse. SensorToolkit/Settings can toggle user-comments on sensor inspectors
+2.5.16 - Adds GetNavMeshHit() to NavMeshSensor, to expose the underlying NavMeshHit struct
+2.5.15 - Fix il2cpp build failure, Quality point generation on LOSSensor, and a couple of other small bugs.
 2.5.14 - Fix for domain reload optimization. LOSSensor allows > 180 horizontal angle.
 2.5.13 - Fix boxcast shape on RaySensor2D, add setters for OnClear and OnObstruction events on raycasting sensors.
 2.5.12 - Fix CollectionModifiedException when a detection event handler causes the sensor to update its list of detections.

@@ -146,7 +146,7 @@ namespace Micosmo.SensorToolkit {
                 visibilityScale *= config.VisibilityByDistance.Evaluate(distance / config.MaxDistance);
             }
             if (config.LimitViewAngle) {
-                var coords = AngleUtils.HorizontalCoordsToBounds(config.Frame, config.InputSignal.Bounds).Abs;
+                var coords = AngleUtils.ViewAnglesToBounds(config.Frame, config.InputSignal.Bounds).Abs;
                 visibilityScale *= config.VisibilityByHorizAngle.Evaluate(coords.HorizAngle / config.MaxHorizAngle)
                     * config.VisibilityByVertAngle.Evaluate(coords.VertAngle / config.MaxVertAngle);
             }
@@ -160,7 +160,7 @@ namespace Micosmo.SensorToolkit {
                 visibilityScale *= config.VisibilityByDistance.Evaluate(distance / config.MaxDistance);
             }
             if (config.LimitViewAngle) {
-                var coords = AngleUtils.HorizontalCoordsToPoint(config.Frame, target).Abs;
+                var coords = AngleUtils.ViewAnglesToPoint(config.Frame, target).Abs;
                 visibilityScale *= config.VisibilityByHorizAngle.Evaluate(coords.HorizAngle / config.MaxHorizAngle)
                     * config.VisibilityByVertAngle.Evaluate(coords.VertAngle / config.MaxVertAngle);
             }

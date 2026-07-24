@@ -3,7 +3,6 @@ using UnityEngine.Events;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(EntityHealth))]
-[RequireComponent(typeof(Damageable))]
 public abstract class Entity : MonoBehaviour
 {
     protected EntityHealth _health;

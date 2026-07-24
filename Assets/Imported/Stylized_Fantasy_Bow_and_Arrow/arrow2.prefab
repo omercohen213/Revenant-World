@@ -168,13 +168,13 @@ MonoBehaviour:
   Root: {fileID: 3938266750860339543}
   Tip: {fileID: 1501699975342428622}
   MaxLifeTime: 5
-  DefaultImpactVfx: {fileID: 4186470608034871016, guid: 104d74e12646dae47a090f8bc732aeb4, type: 3}
+  DefaultImpactVfx: {fileID: 1265685705872479134, guid: d17d35e6b7d629e4c882283c7329d2f5, type: 3}
   ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
   HittableLayers:
     serializedVersion: 2
     m_Bits: 2147483767
-  Speed: 90
+  Speed: 150
   GravityDownAcceleration: 3
   TrajectoryCorrectionDistance: -1
   InheritWeaponVelocity: 0

@@ -10,6 +10,7 @@ namespace Micosmo.SensorToolkit {
         public ReferenceFrame(Vector3 position, Vector3 forward, Vector3 right, Vector3 up) {
             Position = position; Forward = forward; Right = right; Up = up;
         }
+        public static ReferenceFrame Identity => new ReferenceFrame { Forward = Vector3.forward, Right = Vector3.right, Up = Vector3.up };
         public static ReferenceFrame Planar(Vector3 position, Vector3 forward, Vector3 right) =>
             new ReferenceFrame(position, forward, right, default);
         public static ReferenceFrame From(Transform transform) =>
@@ -26,8 +27,10 @@ namespace Micosmo.SensorToolkit {
             var up = Vector3.Cross(forward, right);
             return new ReferenceFrame(transform.position, forward, right, up);
         }
-        public HorizontalCoords AngleTo(Bounds bounds) => AngleUtils.HorizontalCoordsToBounds(this, bounds);
-        public HorizontalCoords AngleTo(Vector3 target) => AngleUtils.HorizontalCoordsToPoint(this, target);
+        public ViewAngles AngleTo(Bounds bounds) => AngleUtils.ViewAnglesToBounds(this, bounds);
+        public SphericalCoords SphericalCoordsTo(Bounds bounds) => AngleUtils.SphericalCoordsToBounds(this, bounds);
+        public ViewAngles AngleTo(Vector3 target) => AngleUtils.ViewAnglesToPoint(this, target);
+        public SphericalCoords SphericalCoordsTo(Vector3 target) => AngleUtils.SphericalCoordsToPoint(this, target);
         public ReferenceFrame Push(Vector3 nextPosition, Vector3 nextForward) {
             // Minimizes twist rotation to push the frame forward and align with a new forward direction
             var n0 = Up;
@@ -43,6 +46,10 @@ namespace Micosmo.SensorToolkit {
             return From(nextPosition, Quaternion.LookRotation(t1, n1));
         }
         public Vector3 LocalToWorld(Vector3 localPosition) => Position + (Right * localPosition.x) + (Up * localPosition.y) + (Forward * localPosition.z);
+        public Vector3 WorldToLocal(Vector3 worldPosition) {
+            var delta = worldPosition - Position;
+            return new Vector3(Vector3.Dot(delta, Right), Vector3.Dot(delta, Up), Vector3.Dot(delta, Forward));
+        }
         public void DrawGizmos(float size) {
             var length = 10f * size;
             var thickness = 2f * size;
@@ -53,20 +60,36 @@ namespace Micosmo.SensorToolkit {
         }
     }
 
-    public struct HorizontalCoords {
+    [System.Serializable]
+    public struct ViewAngles {
         public float HorizAngle;
         public float VertAngle;
-        public float CentralAngle;
-        public HorizontalCoords Abs => new HorizontalCoords(Mathf.Abs(HorizAngle), Mathf.Abs(VertAngle));
-        public HorizontalCoords(float horizAngle, float vertAngle) {
+        public ViewAngles Abs => new ViewAngles(Mathf.Abs(HorizAngle), Mathf.Abs(VertAngle));
+        public ViewAngles(float horizAngle, float vertAngle) {
             HorizAngle = horizAngle; VertAngle = vertAngle;
-            CentralAngle = GetCentralAngle(horizAngle, vertAngle);
         }
-        static float GetCentralAngle(float horizAngle, float vertAngle) {
-            var horiz = horizAngle * Mathf.Deg2Rad;
-            var vert = vertAngle * Mathf.Deg2Rad;
-            return Mathf.Rad2Deg* Mathf.Acos(Mathf.Cos(horiz) * Mathf.Cos(vert));
+        public float GetCentralAngle() {
+            var horiz = HorizAngle * Mathf.Deg2Rad;
+            var vert = VertAngle * Mathf.Deg2Rad;
+            return Mathf.Rad2Deg * Mathf.Acos(Mathf.Cos(horiz) * Mathf.Cos(vert));
         }
+        public Vector3 ToCartesian(float distance) {
+            var horiz = HorizAngle * Mathf.Deg2Rad;
+            var vert = VertAngle * Mathf.Deg2Rad;
+            var cosVert = Mathf.Cos(vert);
+            var sinVert = Mathf.Sin(vert);
+            return new Vector3(cosVert * Mathf.Sin(horiz), sinVert, cosVert * Mathf.Cos(horiz)) * distance;
+        }
+    }
+
+    [System.Serializable]
+    public struct SphericalCoords {
+        public ViewAngles Angles;
+        public float Radius;
+        public SphericalCoords(ViewAngles angles, float radius) {
+            Angles = angles; Radius = radius;
+        }
+        public Vector3 ToCartesian() => Angles.ToCartesian(Radius);
     }
 
     public class AngleUtils {
@@ -112,22 +135,34 @@ namespace Micosmo.SensorToolkit {
             return nearest;
         }
 
-        public static HorizontalCoords HorizontalCoordsToPoint(ReferenceFrame frame, Vector3 target) {
+        public static ViewAngles ViewAnglesToPoint(ReferenceFrame frame, Vector3 target) {
             var horizAngle = PlanarAngleToPoint(frame, target);
             var toTarget = target - frame.Position;
             var projToTarget = toTarget - (Vector3.Dot(toTarget, frame.Up) * frame.Up);
             var vertAngle = PlanarAngleToPoint(ReferenceFrame.Planar(frame.Position, projToTarget.normalized, frame.Up), target);
-            return new HorizontalCoords(horizAngle, vertAngle);
+            return new ViewAngles(horizAngle, vertAngle);
         }
 
-        public static HorizontalCoords HorizontalCoordsToBounds(ReferenceFrame frame, Bounds bounds) {
+        public static SphericalCoords SphericalCoordsToPoint(ReferenceFrame frame, Vector3 target) {
+            var angles = ViewAnglesToPoint(frame, target);
+            var radius = Vector3.Distance(frame.Position, target);
+            return new SphericalCoords(angles, radius);
+        }
+
+        public static ViewAngles ViewAnglesToBounds(ReferenceFrame frame, Bounds bounds) {
             var horizAngle = PlanarAngleToBounds(frame, bounds);
             var toTarget = (bounds.center - frame.Position);
             var projToTarget = toTarget - (Vector3.Dot(toTarget, frame.Up) * frame.Up);
             var vertAngle = PlanarAngleToBounds(ReferenceFrame.Planar(frame.Position, projToTarget.normalized, frame.Up), bounds);
-            return new HorizontalCoords(horizAngle, vertAngle);
+            return new ViewAngles(horizAngle, vertAngle);
         }
-        
+
+        public static SphericalCoords SphericalCoordsToBounds(ReferenceFrame frame, Bounds bounds) {
+            var angles = ViewAnglesToBounds(frame, bounds);
+            var radius = Mathf.Sqrt(bounds.SqrDistance(frame.Position));
+            return new SphericalCoords(angles, radius);
+        }
+
         struct CircleInscribedTriangle {
             Vector2 coords;
             bool isValid => coords != Vector2.zero;
@@ -152,7 +187,7 @@ namespace Micosmo.SensorToolkit {
                 return tri1.IsNearestClockwise(tri2) ? tri2 : tri1;
             }
             int GetClockwiseQuadrant() => coords.x > 0 ? (coords.y > 0 ? 0 : 1) : (coords.y > 0 ? 3 : 2);
-            int GetAntiClockwiseQuadrant() => 3 - GetAntiClockwiseQuadrant();
+            int GetAntiClockwiseQuadrant() => 3 - GetClockwiseQuadrant();
             bool IsNearestClockwise(CircleInscribedTriangle other) {
                 var myQuad = GetClockwiseQuadrant();
                 var otherQuad = other.GetClockwiseQuadrant();

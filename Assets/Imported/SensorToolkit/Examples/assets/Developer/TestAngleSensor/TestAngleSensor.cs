@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Micosmo.SensorToolkit.Experimental;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -70,7 +69,7 @@ namespace Micosmo.SensorToolkit.Example.Developer {
                 return null;
             }
             var frame = ReferenceFrame.From(transform, screenRay.Direction);
-            var dirCoords = AngleUtils.HorizontalCoordsToPoint(frame, refPoint);
+            var dirCoords = AngleUtils.ViewAnglesToPoint(frame, refPoint);
             var results = GetDetectionsByPlanarAngle();
             var bestGrade = float.MaxValue;
             GameObject bestObject = null;
@@ -79,11 +78,11 @@ namespace Micosmo.SensorToolkit.Example.Developer {
                 if (ReferenceEquals(result.Object, ignore)) {
                     continue;
                 }
-                var deltaHoriz = result.Coords.HorizAngle - dirCoords.HorizAngle;
+                var deltaHoriz = result.Angles.HorizAngle - dirCoords.HorizAngle;
                 if (deltaHoriz < 0) {
                     deltaHoriz += 360f;
                 }
-                var grade = deltaHoriz + (vertAnglePenalty * Mathf.Abs(result.Coords.VertAngle)) + (distPenalty * result.Distance);
+                var grade = deltaHoriz + (vertAnglePenalty * Mathf.Abs(result.Angles.VertAngle)) + (distPenalty * result.Distance);
                 if (grade < bestGrade) {
                     bestGrade = grade;
                     bestObject = result.Object;

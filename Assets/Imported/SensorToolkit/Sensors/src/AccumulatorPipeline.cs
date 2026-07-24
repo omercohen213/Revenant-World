@@ -56,7 +56,7 @@ namespace Micosmo.SensorToolkit {
         }
         [NonSerialized] List<Event> eventQueue = new List<Event>();
 
-        [SerializeField] int prevSignalCount;
+        int prevSignalCount = -1;
         int timestamp = 0;
         bool isPlayingEvents = false;
         
@@ -299,9 +299,10 @@ namespace Micosmo.SensorToolkit {
                 eventQueue.Clear();
 
                 var signalCount = Outputs.Count;
-                if (prevSignalCount == 0 && signalCount > 0) {
+                // prevSignalCount initialized to -1, so event always triggers on first update
+                if (prevSignalCount <= 0 && signalCount > 0) {
                     OnSome?.Invoke();
-                } else if (prevSignalCount > 0 && signalCount == 0) {
+                } else if (prevSignalCount != 0 && signalCount == 0) {
                     OnNone?.Invoke();
                 }
                 prevSignalCount = signalCount;

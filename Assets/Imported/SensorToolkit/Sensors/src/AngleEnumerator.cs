@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Micosmo.SensorToolkit.Experimental {
+namespace Micosmo.SensorToolkit {
 
     public struct AngleEnumerator {
         public enum AngleMethodType { Center, Origin, BoundingBox }
@@ -10,7 +10,7 @@ namespace Micosmo.SensorToolkit.Experimental {
 
         public AngleMethodType AngleMethod;
         public SortByType SortBy;
-        
+
         public List<AngleResult> results { get; private set; }
 
         public static AngleEnumerator Create() => new AngleEnumerator {
@@ -25,18 +25,19 @@ namespace Micosmo.SensorToolkit.Experimental {
             Clear();
             fov.Distance *= fov.Distance;
             foreach (var signal in signals) {
-                var coords =
+                var angles =
                     AngleMethod == AngleMethodType.Origin ? frame.AngleTo(signal.Object.transform.position) :
                     AngleMethod == AngleMethodType.Center ? frame.AngleTo(signal.Bounds.center) :
                     AngleMethod == AngleMethodType.BoundingBox ? frame.AngleTo(signal.Bounds) :
                     default;
                 var quadrance = signal.Bounds.SqrDistance(frame.Position);
-                if (!fov.Contains(coords, quadrance)) {
+                if (!fov.Contains(angles, quadrance)) {
                     continue;
                 }
                 var result = new AngleResult {
                     Object = signal.Object,
-                    Coords = coords,
+                    Angles = angles,
+                    CentralAngle = angles.GetCentralAngle(),
                     Distance = quadrance
                 };
                 results.Add(result);
@@ -52,18 +53,19 @@ namespace Micosmo.SensorToolkit.Experimental {
             SensorGizmos.PushColor(Color.black);
             int i = 0;
             foreach (var result in results) {
-                SensorGizmos.Label(result.Object.transform.position, $"Index: {i}\n({result.Coords.HorizAngle.ToString("N1")},{result.Coords.VertAngle.ToString("N1")})");
+                SensorGizmos.Label(result.Object.transform.position, $"Index: {i}\n({result.Angles.HorizAngle.ToString("N1")},{result.Angles.VertAngle.ToString("N1")})");
                 i++;
             }
             SensorGizmos.PopColor();
         }
-        
+
         public struct AngleResult {
             public GameObject Object;
-            public HorizontalCoords Coords;
+            public ViewAngles Angles;
+            public float CentralAngle;
             public float Distance;
             public static int CompareCentralAngle(AngleResult r1, AngleResult r2) {
-                var angleDiff = r1.Coords.CentralAngle - r2.Coords.CentralAngle;
+                var angleDiff = r1.CentralAngle - r2.CentralAngle;
                 if (angleDiff != 0f) {
                     return angleDiff > 0f ? 1 : -1;
                 }
@@ -76,8 +78,8 @@ namespace Micosmo.SensorToolkit.Experimental {
             public static int CompareHorizAngle(AngleResult r1, AngleResult r2) {
                 //var a1 = r1.Coords.HorizAngle >= 0 ? r1.Coords.HorizAngle : 360f + r1.Coords.HorizAngle;
                 //var a2 = r2.Coords.HorizAngle >= 0 ? r2.Coords.HorizAngle : 360f + r2.Coords.HorizAngle;
-                var a1 = r1.Coords.HorizAngle;
-                var a2 = r2.Coords.HorizAngle;
+                var a1 = r1.Angles.HorizAngle;
+                var a2 = r2.Angles.HorizAngle;
                 var angleDiff = a1 - a2;
                 if (angleDiff != 0f) {
                     return angleDiff > 0f ? 1 : -1;

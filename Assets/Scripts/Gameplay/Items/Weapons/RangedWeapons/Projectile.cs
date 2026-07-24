@@ -68,7 +68,10 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        _impactVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(DefaultImpactVfx);
+        if (DefaultImpactVfx != null)
+        {
+            _impactVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(DefaultImpactVfx);
+        }
     }
 
     void OnEnable()
@@ -95,10 +98,10 @@ public class Projectile : MonoBehaviour
         HandleGravity();
         HandleHitDetection();
 
-       _lastRootPosition = Root.position;
+        _lastRootPosition = Root.position;
     }
 
-   
+
     private void MoveProjectile()
     {
         transform.position += _velocity * Time.deltaTime;
@@ -246,13 +249,20 @@ public class Projectile : MonoBehaviour
         Damageable damageable = collider.GetComponent<Damageable>();
         if (damageable)
         {
-            damageable.InflictDamage(hitPoint, WeaponParent.WeaponData.ProjectileDamage, Owner);
+            HitData hitData = new()
+            {
+                HitPoint = hitPoint,
+                Damage = WeaponParent.WeaponData.ProjectileDamage,
+                DamageSource = Owner
+            };
+
+            damageable.ReceiveHit(hitData);
         }
 
         else
         {
             // impact vfx on objects
-            if (DefaultImpactVfx)
+            if (DefaultImpactVfx != null)
             {
                 GameObject impactVFX = _impactVFXPool.Get();
                 impactVFX.transform.SetPositionAndRotation(hitPoint, Quaternion.LookRotation(normal));

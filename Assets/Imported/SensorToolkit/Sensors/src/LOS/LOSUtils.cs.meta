@@ -13,6 +13,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 205336
   packageName: SensorToolkit 2
-  packageVersion: 2.5.14
-  assetPath: Assets/SensorToolkit/Sensors/src/LOS/LOSUtils.cs
-  uploadId: 692014
+  packageVersion: 2.5.18
+  assetPath: Assets/Imported/SensorToolkit/Sensors/src/LOS/LOSUtils.cs
+  uploadId: 902008

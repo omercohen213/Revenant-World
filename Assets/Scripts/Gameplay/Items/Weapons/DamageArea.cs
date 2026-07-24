@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Unity.FPS.Game
 {
@@ -39,8 +40,14 @@ namespace Unity.FPS.Game
             foreach (Damageable uniqueDamageable in uniqueDamagedHealths.Values)
             {
                 float distance = Vector3.Distance(uniqueDamageable.transform.position, transform.position);
-                uniqueDamageable.InflictDamage(transform.position,
-                    damage * DamageRatioOverDistance.Evaluate(distance / AreaOfEffectDistance), owner);
+
+                HitData hitData = new()
+                {
+                    HitPoint = transform.position,
+                    Damage = damage * DamageRatioOverDistance.Evaluate(distance / AreaOfEffectDistance),
+                    DamageSource = owner
+                };
+                uniqueDamageable.ReceiveHit(hitData);
             }
         }
 

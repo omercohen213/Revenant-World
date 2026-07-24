@@ -1,10 +1,10 @@
 next:
-
+attack behaviour/
+weak spots
 
 
 - HUD ammo hud
 - ANIMATION ranged weapon animation to player animation
-- RELOAD check reloading while aiming
 - INVENTORY default weapon + inventory for it
 
 - REGISTER EVERY MONSTER ON ENTITY. USE WORLD MANAGER AND CURRENTWORLD REFERENCE
@@ -16,9 +16,10 @@ next:
     }
 - move RandomPatrol from brain to monster-specific
 
-- HITVFX remove from damagable and change name to hitvfx?
+- fix projectile pool
 
 
 Low effort: 
 change PlayerMovment properties to data
 player to singleplayer
+monster weakspot visuals

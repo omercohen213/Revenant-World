@@ -33,6 +33,8 @@ namespace Micosmo.SensorToolkit.Editors {
         bool isInGame => EditorApplication.isPlaying || EditorApplication.isPaused;
         protected bool showDetections => isInGame || IsTesting;
 
+        SerializedProperty comment;
+
         protected virtual void OnEnable() {
             if (serializedObject == null) {
                 return;
@@ -45,6 +47,8 @@ namespace Micosmo.SensorToolkit.Editors {
             if ((EditorApplication.isPlaying || EditorApplication.isPaused) && EditorState.ActivePulsable.Value == null) {
                 EditorState.ActivePulsable.Value = pulsable;
             }
+
+            comment = serializedObject.FindProperty("comment");
         }
 
         protected virtual void OnDisable() {
@@ -70,6 +74,9 @@ namespace Micosmo.SensorToolkit.Editors {
             rect.xMin -= 12; rect.xMax += 2;
             if (IsActivePulsable) {
                 DrawActive(rect);
+            }
+            if (STPrefs.ShowUserComments) {
+                EditorGUILayout.PropertyField(comment);
             }
             OnPulsableGUI();
             EditorGUILayout.EndVertical();

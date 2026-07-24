@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EntityHealth : MonoBehaviour
+public class EntityHealth : MonoBehaviour, IDamageReceiver
 {
     public float MaxHealth { get; private set; }
 
@@ -17,8 +17,6 @@ public class EntityHealth : MonoBehaviour
     public UnityAction<float> OnGainedHealth { get; set; }
 
     public UnityAction<EntityHealth, GameObject> OnHealthReachedZero { get; set; }
-
-    public bool Invincible { get; set; }
 
     public float GetRatio() => CurrentHealth / MaxHealth;
 
@@ -58,9 +56,6 @@ public class EntityHealth : MonoBehaviour
     // Take damage from a damage source
     public virtual void TakeDamage(float damage, GameObject damageSource)
     {
-        if (Invincible)
-            return;
-
         float healthBefore = CurrentHealth;
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, MaxHealth);
@@ -96,6 +91,22 @@ public class EntityHealth : MonoBehaviour
             IsDead = true;
             OnHealthReachedZero?.Invoke(this, killer);
         }
+    }
+
+    public void RecieveDamage(HitData hitData)
+    {
+        float healthBefore = CurrentHealth;
+        CurrentHealth -= hitData.Damage;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, MaxHealth);
+
+        // call action
+        float trueDamageAmount = healthBefore - CurrentHealth;
+        if (trueDamageAmount > 0f)
+        {
+            OnLostHealth?.Invoke(trueDamageAmount, hitData.DamageSource);
+        }
+
+        CheckDeath(hitData.DamageSource);
     }
 
     /*private IEnumerator RegenerateCoroutine()

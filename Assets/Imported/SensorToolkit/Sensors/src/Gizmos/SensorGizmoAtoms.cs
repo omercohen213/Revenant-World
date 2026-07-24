@@ -14,7 +14,7 @@ namespace Micosmo.SensorToolkit {
             Handles.Label(position, text, EditorStyles.textField);
 #endif
         }
-      
+
         public static void Polyline(float width, params Vector3[] points) {
 #if UNITY_EDITOR
             Handles.DrawAAPolyLine(width, points);
@@ -47,10 +47,10 @@ namespace Micosmo.SensorToolkit {
 #endif
         }
 
-        public static void CircleGizmo(Vector3 position, float radius) {
+        public static void CircleGizmo(Vector3 position, Vector3 normal, float radius) {
 #if UNITY_EDITOR
             PushMatrix(Matrix4x4.identity);
-            Handles.DrawWireDisc(position, -Vector3.forward, radius);
+            Handles.DrawWireDisc(position, normal, radius);
             PopMatrix();
 #endif
         }
@@ -62,7 +62,7 @@ namespace Micosmo.SensorToolkit {
             var r1 = Quaternion.AngleAxis(-angle, normal) * direction * radius;
             var r2 = Quaternion.AngleAxis(angle, normal) * direction * radius;
 
-            Handles.DrawWireArc(position, normal, r1, angle*2, radius);
+            Handles.DrawWireArc(position, normal, r1, angle * 2, radius);
             //BackfaceArc(position, direction, normal, angle, radius);
             Handles.DrawLine(position, position + r1);
             Handles.DrawLine(position, position + r2);

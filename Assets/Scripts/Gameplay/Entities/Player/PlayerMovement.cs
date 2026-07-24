@@ -159,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Determine target speed based on whether sprinting
-        float targetSpeed = _isSprinting ? _data.MovementSpeed * _data.BaseData.SprintSpeedMultiplyer: _data.MovementSpeed;
+        float targetSpeed = _isSprinting ? _data.MovementSpeed * _data.BaseData.SprintSpeedMultiplier: _data.MovementSpeed;
         if (_currentMovement == Vector2.zero)
         {
             targetSpeed = 0.0f;

@@ -42,9 +42,9 @@ namespace Micosmo.SensorToolkit {
         CuttingPlane rightPlane, leftPlane, topPlane, bottomPlane;
 
         public static FOVCuttingPlanes From(ReferenceFrame frame, FOVRange fov) {
-            var horizRightRot = Quaternion.AngleAxis(fov.HorizAngle / 2f, Vector3.up);
+            var horizRightRot = Quaternion.AngleAxis(fov.HorizAngle / 2f, frame.Up);
             var horizLeftRot = Quaternion.Inverse(horizRightRot);
-            var vertUpRot = Quaternion.AngleAxis(fov.VertAngle / 2f, Vector3.right);
+            var vertUpRot = Quaternion.AngleAxis(fov.VertAngle / 2f, frame.Right);
             var vertDownRot = Quaternion.Inverse(vertUpRot);
             return new FOVCuttingPlanes {
                 rightPlane = new CuttingPlane { Point = frame.Position, Normal = horizRightRot * (-frame.Right) },

@@ -14,11 +14,11 @@ namespace Micosmo.SensorToolkit {
             VertAngle = Mathf.Clamp(vertAngle, 0f, 180f),
             Distance = distance
         };
-        public bool ContainsAngles(HorizontalCoords coords) =>
-            Mathf.Abs(coords.HorizAngle) <= HorizAngle && Mathf.Abs(coords.VertAngle) <= VertAngle;
+        public bool ContainsAngles(ViewAngles angles) =>
+            Mathf.Abs(angles.HorizAngle) <= HorizAngle && Mathf.Abs(angles.VertAngle) <= VertAngle;
         public bool ContainsDistance(float distance) => distance <= Distance;
-        public bool Contains(HorizontalCoords coords, float distance) =>
-            ContainsAngles(coords) && ContainsDistance(distance);
+        public bool Contains(ViewAngles angles, float distance) =>
+            ContainsAngles(angles) && ContainsDistance(distance);
         public void DrawGizmos(ReferenceFrame frame) {
             SensorGizmos.FOVGizmo(frame, float.IsInfinity(Distance) ? 1f : Distance, HorizAngle, VertAngle);
         }

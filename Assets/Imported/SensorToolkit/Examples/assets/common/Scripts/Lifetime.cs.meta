@@ -14,6 +14,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 205336
   packageName: SensorToolkit 2
-  packageVersion: 2.5.14
-  assetPath: Assets/SensorToolkit/Examples/assets/common/Scripts/Lifetime.cs
-  uploadId: 692014
+  packageVersion: 2.5.18
+  assetPath: Assets/Imported/SensorToolkit/Examples/assets/common/Scripts/Lifetime.cs
+  uploadId: 902008
