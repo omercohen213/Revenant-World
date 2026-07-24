@@ -53,7 +53,7 @@ public class MonsterBarsUI : MonoBehaviour, IBarsUI
     private void Start()
     {
         MonsterRuntimeData monsterDataManager = GetComponentInParent<MonsterRuntimeData>();
-        _monsterLevel = monsterDataManager.CurrentLevel;
+        _monsterLevel = monsterDataManager.Level;
         UpdateText("Level", _monsterLevel.ToString());
     }
 

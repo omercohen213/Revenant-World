@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EntityBaseData", menuName = "Scriptable Objects/MonsterBaseData")]
 public class MonsterBaseData : EntityBaseData
 {
+    [Header("States")]
+    public float PatrolStoppingDelay;       // Delay time for stopping each time reched destination in patrol state
+
     [Header("Detection")]
     public float AggroRange;       // Range at which monster targets players
     public float LoseTargetRange;

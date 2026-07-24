@@ -6176,6 +6176,37 @@ TerrainCollider:
   serializedVersion: 2
   m_TerrainData: {fileID: 15600000, guid: 5be6b0a5313d28745a5f29ef7fc5602d, type: 2}
   m_EnableTreeColliders: 1
+--- !u!1 &4212695660759230856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9158867282195322688}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9158867282195322688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4212695660759230856}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.709169, z: -0, w: 0.70503867}
+  m_LocalPosition: {x: 50.4, y: -1.16, z: -24.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3151441307960399787}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.335, z: 0}
 --- !u!1 &4249938408185899601
 GameObject:
   m_ObjectHideFlags: 0
@@ -6478,6 +6509,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 839359063024094158}
+  - {fileID: 8398923166504741330}
+  - {fileID: 1932723241732098108}
+  - {fileID: 9158867282195322688}
+  - {fileID: 1318549352529973678}
   - {fileID: 1937034880716456543}
   - {fileID: 1135422000388560982}
   - {fileID: 1315664589411567503}
@@ -7027,6 +7062,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6741766153369008019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1318549352529973678}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1318549352529973678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6741766153369008019}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.709169, z: -0, w: 0.70503867}
+  m_LocalPosition: {x: 46.2, y: -1.16, z: -7.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3151441307960399787}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.335, z: 0}
 --- !u!1 &6756595454013626557
 GameObject:
   m_ObjectHideFlags: 0
@@ -7986,6 +8052,37 @@ ReflectionProbe:
   m_UseOcclusionCulling: 1
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
+--- !u!1 &8493895314796072773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1932723241732098108}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1932723241732098108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8493895314796072773}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.709169, z: -0, w: 0.70503867}
+  m_LocalPosition: {x: 38.3, y: -1.16, z: -12.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3151441307960399787}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.335, z: 0}
 --- !u!1 &8520749745394116735
 GameObject:
   m_ObjectHideFlags: 0
@@ -8094,6 +8191,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8652690747497568692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8398923166504741330}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8398923166504741330
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8652690747497568692}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.709169, z: -0, w: 0.70503867}
+  m_LocalPosition: {x: 20.31, y: -1.16, z: -12.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3151441307960399787}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.335, z: 0}
 --- !u!1 &8758159242640111769
 GameObject:
   m_ObjectHideFlags: 0

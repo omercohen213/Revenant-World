@@ -45,6 +45,7 @@ public class World : MonoBehaviour
     private void Start()
     {
         SetupWorld();
+        RegisterExistingMonsters();
     }
 
     private void SetupWorld()
@@ -58,7 +59,17 @@ public class World : MonoBehaviour
         var monsters = _entitySpawner.SpawnInitialMonsters(_monsterSpawnPoints, WorldData.MonsterSpawnData, _monstersParent, RegisterMonster);
         _monstersAlive.AddRange(monsters);
     }
- 
+
+    // **************** TEMPORARY SOLUTION. REGISTER EVERY MONSTER ON ENTITY ***************
+    private void RegisterExistingMonsters()
+    {
+        var monsters = FindObjectsOfType<Monster>();
+
+        foreach (var monster in monsters)
+        {
+            RegisterMonster(monster);
+        }
+    }
 
     public void RegisterMonster(Monster monster)
     {
@@ -78,7 +89,7 @@ public class World : MonoBehaviour
         {
             _monstersAlive.Remove((Monster)monster);
             killObjective.RegisterKill();
-            OnMonsterKilled.Invoke(monster);
+            OnMonsterKilled?.Invoke(monster);
 
             Debug.Log($"{killer} killed {monster}");
         }

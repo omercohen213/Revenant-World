@@ -25,8 +25,8 @@ public class PlayerRuntimeData : EntityRuntimeData<PlayerBaseData>
     protected override void Start()
     {
         base.Start();
-        _xpTable = TypedBaseData.XpTable;
-        XpToLevelUp = _xpTable[CurrentLevel-1];
+        _xpTable = BaseData.XpTable;
+        XpToLevelUp = _xpTable[Level-1];
     }
 
     public void AddXp(int recievedXp)
@@ -38,19 +38,19 @@ public class PlayerRuntimeData : EntityRuntimeData<PlayerBaseData>
 
     private void CheckLevelUp()
     {
-        while (CurrentLevel < _xpTable.Length && Xp >= XpToLevelUp)
+        while (Level < _xpTable.Length && Xp >= XpToLevelUp)
         {
             LevelUp();
-            OnLevelUp?.Invoke(CurrentLevel);
+            OnLevelUp?.Invoke(Level);
         }
     }
 
     private void LevelUp()
     {
-        CurrentLevel++;
+        Level++;
         Xp -= XpToLevelUp;
-        XpToLevelUp = _xpTable[CurrentLevel-1];
-        CurrentAttackDamage += 10;
+        XpToLevelUp = _xpTable[Level-1];
+        AttackDamage += 10;
     }
 
     public void AddKp(int recievedKp)

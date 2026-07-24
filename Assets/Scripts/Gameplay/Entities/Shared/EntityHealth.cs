@@ -35,7 +35,8 @@ public class EntityHealth : MonoBehaviour
 
     private void Start()
     {
-        MaxHealth = Owner.GetEntityData().BaseData.MaxHealth;
+        EntityRuntimeData owner = Owner.GetEntityData();
+        MaxHealth = owner.BaseDataUntyped.MaxHealth;
         CurrentHealth = MaxHealth;
     }
 

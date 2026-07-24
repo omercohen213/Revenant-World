@@ -5,15 +5,15 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerMovement : EntityMovement
+[RequireComponent(typeof(PlayerRuntimeData))]
+public class PlayerMovement : MonoBehaviour
 {
     private PlayerInput _playerInput;
+    private CharacterController _controller;
+    private PlayerRuntimeData _data;
+
 
     [Header("Player")]
-    [Tooltip("Move speed of the character in m/s")]
-    [SerializeField] private float _moveSpeed = 4.0f;
-    [Tooltip("Sprint speed of the character in m/s")]
-    [SerializeField] private float _sprintSpeed = 6.0f;
     [Tooltip("Acceleration and deceleration")]
     [SerializeField] private float _speedChangeRate = 10.0f;
 
@@ -36,18 +36,24 @@ public class PlayerMovement : EntityMovement
     [Tooltip("What layers the character uses as ground")]
     [SerializeField] private LayerMask _groundLayers;
 
+    [SerializeField] protected float _gravity = -9.81f;
+
+    protected Vector2 _currentMovement;
+    protected float _verticalVelocity; // for gravity
     private bool _jumpRequested = false;
     private bool _isSprinting;
     private float _currentSpeed;
     private float _jumpTimeoutDelta;
     private float _fallTimeoutDelta;
 
+
     private readonly float _maxVelocity = 53.0f;
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
+        _controller = GetComponent<CharacterController>();
+        _data = GetComponent<PlayerRuntimeData>();
     }
 
     private void OnEnable()
@@ -153,7 +159,7 @@ public class PlayerMovement : EntityMovement
         }
 
         // Determine target speed based on whether sprinting
-        float targetSpeed = _isSprinting ? _sprintSpeed : _moveSpeed;
+        float targetSpeed = _isSprinting ? _data.MovementSpeed * _data.BaseData.SprintSpeedMultiplyer: _data.MovementSpeed;
         if (_currentMovement == Vector2.zero)
         {
             targetSpeed = 0.0f;
@@ -174,7 +180,19 @@ public class PlayerMovement : EntityMovement
             _currentSpeed = targetSpeed;
         }
 
-        base.Move(inputDirection, _currentSpeed);
+        Vector3 movement = inputDirection * _currentSpeed;
+        movement.y = _verticalVelocity;
+        _controller.Move(movement * Time.deltaTime);
+    }
+
+    private void ApplyGravity()
+    {
+        if (_controller.isGrounded && _verticalVelocity < 0)
+        {
+            _verticalVelocity = -2f;
+        }
+
+        _verticalVelocity += _gravity * Time.deltaTime;
     }
 
 }

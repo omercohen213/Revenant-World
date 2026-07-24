@@ -1,34 +1,64 @@
+using System;
+using System.Net;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(MonsterRuntimeData))]
 public class MonsterMovement : MonoBehaviour
 {
-    /*public void MoveTowards(MonsterRuntimeContext context, Vector3 destination)
-    {
-        Vector3 targetPosition = destination;
+    private MonsterAnimationController _animationController;
+    private NavMeshAgent _agent;
+    private MonsterRuntimeData _data;
 
-        context.Transform.position = Vector3.MoveTowards(
-            context.Transform.position,
-            targetPosition,
-            context.Data.MoveSpeed * Time.deltaTime
-        );
+    private void Awake()
+    {
+        _animationController = GetComponentInChildren<MonsterAnimationController>();
+        _agent = GetComponent<NavMeshAgent>();
+        _data = GetComponent<MonsterRuntimeData>();
     }
 
-    public void FaceTarget(MonsterRuntimeContext context, Vector3 targetPosition)
+    private void Start()
     {
-        Vector3 direction = targetPosition - context.Transform.position;
+        _agent.speed = _data.BaseData.MovementSpeed;
+    }
 
-        if (!context.Data.isFlying)
-            direction.y = 0f;
+    private void Update()
+    {
+        float currentSpeed = _agent.velocity.magnitude;
+        _animationController.SetMovementSpeed(currentSpeed);
+    }
 
-        if (direction.sqrMagnitude < 0.001f)
-            return;
+    public void Stop()
+    {
+        _agent.isStopped = true;
+    }
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
+    public void Resume()
+    {
+        _agent.isStopped = false;
+    }
 
-        context.Transform.rotation = Quaternion.Slerp(
-            context.Transform.rotation,
-            targetRotation,
-            context.Data.rotationSpeed * Time.deltaTime
-        );
-    }*/
+
+    public void MoveTo(Vector3 position)
+    {
+        _agent.isStopped = false;
+        _agent.SetDestination(position);
+    }
+
+
+    public bool HasReachedDestination()
+    {
+        if (_agent.pathPending)
+        {
+            return false;
+        }
+
+        if (_agent.remainingDistance > _agent.stoppingDistance)
+        {
+            return false ;
+        }
+
+        return !_agent.hasPath || _agent.velocity.sqrMagnitude < 0.01f;
+    }
 }

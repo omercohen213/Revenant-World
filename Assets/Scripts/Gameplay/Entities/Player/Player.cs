@@ -42,8 +42,8 @@ public class Player : Entity
     // Add the rewards to the player data
     public void GetRewardForKill(Entity killedEntity)
     {
-        int xp = killedEntity.GetEntityData().CurrentXpReward;
-        int kp = killedEntity.GetEntityData().CurrentKpReward;
+        int xp = killedEntity.GetEntityData().XpReward;
+        int kp = killedEntity.GetEntityData().KpReward;
 
         PlayerData.AddXp(xp);
         PlayerData.AddKp(kp);

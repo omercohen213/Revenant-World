@@ -1,3 +1,5 @@
+next:
+
 
 
 - HUD ammo hud
@@ -5,4 +7,18 @@
 - RELOAD check reloading while aiming
 - INVENTORY default weapon + inventory for it
 
+- REGISTER EVERY MONSTER ON ENTITY. USE WORLD MANAGER AND CURRENTWORLD REFERENCE
+ protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        World.Instance.RegisterMonster(this);
+    }
+- move RandomPatrol from brain to monster-specific
+
 - HITVFX remove from damagable and change name to hitvfx?
+
+
+Low effort: 
+change PlayerMovment properties to data
+player to singleplayer

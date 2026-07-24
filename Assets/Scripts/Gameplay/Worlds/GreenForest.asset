@@ -15,7 +15,7 @@ MonoBehaviour:
   WorldName: Green Forest
   Objective: {fileID: 11400000, guid: 229d33f84202fbc4fa49ff6b6631a7cd, type: 2}
   MonsterSpawnData:
-  - MonsterPrefab: {fileID: 4616211505216702690, guid: 5d95869919b1b954eaa0d2f19e944224, type: 3}
-    IntialAmountToSpawn: 4
+  - MonsterPrefab: {fileID: 4787734284849576031, guid: 76e350b1204d65242aa631af40f56028, type: 3}
+    IntialAmountToSpawn: 8
   MaxMonsterAmount: 10
   EnvironmentPrefab: {fileID: 0}

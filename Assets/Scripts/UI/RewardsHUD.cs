@@ -47,7 +47,7 @@ public class RewardsHUD : MonoBehaviour
         ReleaseAfterTime(killRewardObj, _fadeDelay + _fadeDuration);
 
         KillRewardUI rewardUI = killRewardObj.GetComponent<KillRewardUI>();
-        string killedEntityName = killedEntity.GetEntityData().BaseData.Name;
+        string killedEntityName = killedEntity.GetEntityData().BaseDataUntyped.Name;
         rewardUI.Initialize(killedEntityName, xp, kp, _fadeDelay, _fadeDuration);
     }
 

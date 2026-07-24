@@ -3,6 +3,7 @@ using UnityEngine.Pool;
 
 [RequireComponent(typeof(MonsterRuntimeData))]
 [RequireComponent(typeof(EntityHealth))]
+[RequireComponent(typeof(MonsterBrain))]
 public class Monster : Entity
 {
     public MonsterRuntimeData MonsterData;

@@ -37,7 +37,7 @@ public abstract class Entity : MonoBehaviour
         if (killerObject.TryGetComponent<Player>(out var killerPlayer))
         {
             killerPlayer.GetRewardForKill(this);
-            OnKilled.Invoke(this, killerPlayer.gameObject);
+            OnKilled?.Invoke(this, killerPlayer.gameObject);
         }
     }
 

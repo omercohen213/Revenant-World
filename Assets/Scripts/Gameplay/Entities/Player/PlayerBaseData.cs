@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EntityBaseData", menuName = "Scriptable Objects/PlayerBaseData")]
 public class PlayerBaseData : EntityBaseData
 {
-    [Tooltip("XP required for each level")]
+    [Tooltip("Movment speed multiplyer when sprinting")]
+    public float SprintSpeedMultiplyer;
+
     public int[] XpTable;
 }

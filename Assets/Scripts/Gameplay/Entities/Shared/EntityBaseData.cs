@@ -10,7 +10,7 @@ public abstract class EntityBaseData : ScriptableObject
     [Header("Stats")]
     public float MaxHealth;
     public float HealthRegen;
-    public float Speed;
+    public float MovementSpeed;
     public float AttackDamage;
     public float AttackSpeed;
     public float Armor;

@@ -1,55 +1,55 @@
+using GLTF.Schema;
 using UnityEngine;
 
 // High level class for Monster AI behaviour
 [RequireComponent(typeof(MonsterRuntimeData))]
-[RequireComponent(typeof(EntityHealth))]
+[RequireComponent(typeof(MonsterMovement))]
+[RequireComponent(typeof(PatrolArea))]
 public class MonsterBrain : MonoBehaviour
 {
     [Header("References")]
     private MonsterRuntimeData _data;
-    private EntityHealth _health;
+    private MonsterAnimationController _animation;
+    private MonsterMovement _movment;
+    private PatrolArea _patrolArea;
     [SerializeField] private LayerMask _playerLayer;
 
     public MonsterTargetSensor Sensor { get; private set; }
 
     public MonsterIdleState IdleState { get; private set; }
+    public MonsterPatrolState PatrolState { get; private set; }
     public MonsterChaseState ChaseState { get; private set; }
     public MonsterAttackState AttackState { get; private set; }
-    public MonsterReturnState ReturnState { get; private set; }
-
-    private StateMachine _stateMachine;
-
-    private bool _hasFled = false;
-
+    public StateMachine StateMachine { get; private set; }
 
     private void Awake()
     {
         _data = GetComponent<MonsterRuntimeData>();
-        _health = GetComponent<EntityHealth>();
-        _stateMachine = new StateMachine();
+        _animation = GetComponentInChildren<MonsterAnimationController>();
+        _movment = GetComponent<MonsterMovement>(); 
+        _patrolArea = GetComponent<PatrolArea>();
+        StateMachine = new StateMachine();
 
         Sensor = new MonsterTargetSensor(_playerLayer);
-        //Movement = new MonsterMovement();
 
-        IdleState = new MonsterIdleState();
+        IdleState = new MonsterIdleState(this,_data,_movment,_animation);
+
+        RandomPatrolBehaviour patrolBehaviour = new (_movment,_patrolArea, _data.BaseData.PatrolStoppingDelay); // Might want to move it from here
+        PatrolState = new MonsterPatrolState(this,_data,_movment,_animation, patrolBehaviour);
+        
         ChaseState = new MonsterChaseState();
         AttackState = new MonsterAttackState();
-        ReturnState = new MonsterReturnState();
+
     }
 
     private void Start()
     {
-        _stateMachine.ChangeState(IdleState);
+        StateMachine.ChangeState(PatrolState);
     }
 
     private void Update()
     {
-        _stateMachine.Tick();
-        if (!_hasFled && _health.CurrentHealth < 50f)
-        {
-            _stateMachine.ChangeState(ChaseState);
-            _hasFled = true;
-        }
-
+        StateMachine.Tick();
     }
+
 }

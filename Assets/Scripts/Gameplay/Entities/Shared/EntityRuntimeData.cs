@@ -1,20 +1,24 @@
 using UnityEngine;
 
-/// Contains all of the data for the entity; this data can be changed during the game
-
+/// <summary>
+/// Contains all runtime data shared by every entity.
+/// </summary>
 public abstract class EntityRuntimeData : MonoBehaviour
 {
-    public abstract EntityBaseData BaseData { get; }
+    // Untyped access for generic systems.
 
-    public int CurrentLevel;
-    public int CurrentMaxHealth;
-    public int CurrentHealth;
-    public float CurrentMovementSpeed;
-    public float CurrentAttackDamage;
-    public float CurrentAttackSpeed;    
-    public float CurrentArmor;
-    public int CurrentXpReward;
-    public int CurrentKpReward;
+    public abstract EntityBaseData BaseDataUntyped { get; }
+
+    [Header("Runtime Stats")]
+    public int Level; 
+    public int MaxHealth;
+    public int Health;
+    public float MovementSpeed;
+    public float AttackDamage;
+    public float AttackSpeed;
+    public float Armor;
+    public int XpReward;
+    public int KpReward;
 }
 
 
@@ -24,13 +28,14 @@ public abstract class EntityRuntimeData<TBaseData> : EntityRuntimeData
     [SerializeField]
     private TBaseData _baseData;
 
-    public override EntityBaseData BaseData => _baseData;
+    // Strongly-typed access for derived classes.
+    public TBaseData BaseData => _baseData;
 
-    protected TBaseData TypedBaseData => _baseData;
+    // Untyped access for shared systems.
+    public override EntityBaseData BaseDataUntyped => _baseData;
 
     protected virtual void Awake()
     {
-
     }
 
     protected virtual void Start()
@@ -41,9 +46,9 @@ public abstract class EntityRuntimeData<TBaseData> : EntityRuntimeData
     // Reset data to base values
     protected virtual void ResetToBaseData()
     {
-        CurrentLevel = 1;
-        CurrentMovementSpeed = BaseData.Speed;
-        CurrentAttackDamage = BaseData.AttackDamage;
-        CurrentArmor = BaseData.Armor;
+        Level = 1;
+        MovementSpeed = BaseData.MovementSpeed;
+        AttackDamage = BaseData.AttackDamage;
+        Armor = BaseData.Armor;
     }
 }
