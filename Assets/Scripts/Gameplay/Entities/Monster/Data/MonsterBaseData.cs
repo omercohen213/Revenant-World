@@ -12,6 +12,7 @@ public class MonsterBaseData : EntityBaseData
     public float LoseTargetRange;
 
     [Header("Combat")]
+    public List<MonsterAttackData> Attacks;
     public float AttackPatternCooldown;     // Cooldown between special attack patterns
     public float AiStateChangeRate;     // Rate at which monster switches behavior (e.g., idle to attacking)
     public float AttackRange;        // Rate at which monster switches behavior (e.g., idle to attacking)

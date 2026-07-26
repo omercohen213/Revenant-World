@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 
 public class RandomPatrolBehaviour : IPatrolBehaviour
 {
-    private readonly MonsterMovement _movement;
+    private readonly MonsterMovement _monsterMovement;
     private readonly PatrolArea _area;
 
+    private bool _breakPatrolBehaviour; // flag for stopping directly the patrol
     private float _stoppingDelay;
     private float _timer;
     private bool _waiting;
@@ -14,19 +16,26 @@ public class RandomPatrolBehaviour : IPatrolBehaviour
         PatrolArea area,
         float stoppingDelay)
     {
-        _movement = movement;
+        _monsterMovement = movement;
         _area = area;
         _stoppingDelay = stoppingDelay;
     }
 
     public void Enter()
     {
+        _breakPatrolBehaviour = false;
         _waiting = false;
         PickNewDestination();
     }
 
     public void Tick()
     {
+        if (_breakPatrolBehaviour)
+        {
+            _monsterMovement.Stop();
+            return;
+        }
+
         if (_waiting)
         {
             _timer += Time.deltaTime;
@@ -40,9 +49,9 @@ public class RandomPatrolBehaviour : IPatrolBehaviour
             return;
         }
 
-        if (_movement.HasReachedDestination())
+        if (_monsterMovement.HasReachedDestination())
         {
-            _movement.Stop();
+            _monsterMovement.Stop();
 
             _waiting = true;
             _timer = 0f;
@@ -51,11 +60,12 @@ public class RandomPatrolBehaviour : IPatrolBehaviour
 
     public void Exit()
     {
+        _breakPatrolBehaviour = true;
     }
 
     private void PickNewDestination()
     {
-        _movement.Resume();
-        _movement.MoveTo(_area.GetRandomPoint());
+        _monsterMovement.Resume();
+        _monsterMovement.MoveTo(_area.GetRandomPoint());
     }
 }

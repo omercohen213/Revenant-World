@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerCombat : EntityCombat
+public class PlayerCombat : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private WeaponController _weaponController;
@@ -40,8 +40,6 @@ public class PlayerCombat : EntityCombat
 
     public virtual void HandleAttackHeld()
     {
-        if (!CanAttack())
-            return;
         _weaponController.ActiveWeapon.TryAttack();
     }
 

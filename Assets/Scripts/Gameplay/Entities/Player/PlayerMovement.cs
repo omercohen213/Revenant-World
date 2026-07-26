@@ -12,42 +12,16 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
     private PlayerRuntimeData _data;
 
-
-    [Header("Player")]
-    [Tooltip("Acceleration and deceleration")]
-    [SerializeField] private float _speedChangeRate = 10.0f;
-
-    [Space(10)]
-    [Tooltip("The height the player can jump")]
-    [SerializeField] private float _jumpHeight = 1f;
-    [Space(10)]
-    [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
-    [SerializeField] private float _jumpTimeout = 0.1f;
-    [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
-    [SerializeField] private float _fallTimeout = 0.15f;
-
-    [Header("Player Grounded")]
-    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-    [SerializeField] private bool _isGrounded = true;
-    [Tooltip("Useful for rough ground")]
-    [SerializeField] private float _groundedOffset = -0.14f;
-    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-    [SerializeField] private float _groundedRadius = 0.5f;
-    [Tooltip("What layers the character uses as ground")]
-    [SerializeField] private LayerMask _groundLayers;
-
-    [SerializeField] protected float _gravity = -9.81f;
-
     protected Vector2 _currentMovement;
     protected float _verticalVelocity; // for gravity
     private bool _jumpRequested = false;
     private bool _isSprinting;
+    private bool _isGrounded;
     private float _currentSpeed;
     private float _jumpTimeoutDelta;
     private float _fallTimeoutDelta;
 
-
-    private readonly float _maxVelocity = 53.0f;
+    private PlayerBaseData _baseData => _data.BaseData;
 
     private void Awake()
     {
@@ -74,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         // reset timeouts on start
-        _jumpTimeoutDelta = _jumpTimeout;
-        _fallTimeoutDelta = _fallTimeout;
+        _jumpTimeoutDelta = _baseData.JumpTimeout;
+        _fallTimeoutDelta = _baseData.FallTimeout;
         GroundedCheck();
     }
 
@@ -116,11 +90,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isGrounded)
         {
-            _fallTimeoutDelta = _fallTimeout;
+            _fallTimeoutDelta = _baseData.FallTimeout;
 
             if (_jumpRequested && _jumpTimeoutDelta <= 0.0f)
             {
-                _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+                _verticalVelocity = Mathf.Sqrt(_baseData.JumpHeight * -2f * _baseData.Gravity);
             }
 
             // Count down jump timeout
@@ -131,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            _jumpTimeoutDelta = _jumpTimeout;
+            _jumpTimeoutDelta = _baseData.JumpTimeout;
 
             if (_fallTimeoutDelta > 0.0f)
             {
@@ -143,8 +117,8 @@ public class PlayerMovement : MonoBehaviour
     private void GroundedCheck()
     {
         // set sphere position, with offset
-        Vector3 spherePosition = new(transform.position.x, transform.position.y - _groundedOffset, transform.position.z);
-        _isGrounded = Physics.CheckSphere(spherePosition, _groundedRadius, _groundLayers, QueryTriggerInteraction.Ignore);
+        Vector3 spherePosition = new(transform.position.x, transform.position.y - _baseData.GroundedOffset, transform.position.z);
+        _isGrounded = Physics.CheckSphere(spherePosition, _baseData.GroundedRadius, _baseData.GroundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void Move()
@@ -159,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Determine target speed based on whether sprinting
-        float targetSpeed = _isSprinting ? _data.MovementSpeed * _data.BaseData.SprintSpeedMultiplier: _data.MovementSpeed;
+        float targetSpeed = _isSprinting ? _data.MovementSpeed * _data.BaseData.SprintSpeedMultiplier : _data.MovementSpeed;
         if (_currentMovement == Vector2.zero)
         {
             targetSpeed = 0.0f;
@@ -172,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         // Smoothly adjust the current speed towards the target speed.
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
-            _currentSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed, Time.deltaTime * _speedChangeRate);
+            _currentSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed, Time.deltaTime * _baseData.SpeedChangeRate);
             _currentSpeed = Mathf.Round(_currentSpeed * 1000f) / 1000f;
         }
         else
@@ -192,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
             _verticalVelocity = -2f;
         }
 
-        _verticalVelocity += _gravity * Time.deltaTime;
+        _verticalVelocity += _baseData.Gravity * Time.deltaTime;
     }
 
 }

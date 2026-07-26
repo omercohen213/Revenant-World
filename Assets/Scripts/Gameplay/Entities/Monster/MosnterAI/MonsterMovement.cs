@@ -46,7 +46,6 @@ public class MonsterMovement : MonoBehaviour
         _agent.SetDestination(position);
     }
 
-
     public bool HasReachedDestination()
     {
         if (_agent.pathPending)

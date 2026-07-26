@@ -30,7 +30,7 @@ namespace Micosmo.SensorToolkit {
 
         public static void DetectedObjectGizmo(Bounds bounds) {
 #if UNITY_EDITOR
-            PushMatrix(Matrix4x4.identity);
+            /*PushMatrix(Matrix4x4.identity);
             PushColor(STPrefs.SignalBoundsColour);
 
             if (bounds.extents != Vector3.zero) {
@@ -47,7 +47,7 @@ namespace Micosmo.SensorToolkit {
             }
 
             PopColor();
-            PopMatrix();
+            PopMatrix();*/
 #endif
         }
 

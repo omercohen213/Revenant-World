@@ -1,6 +1,8 @@
 next:
-attack behaviour/
-weak spots
+rotation, fireball spawn
+
+high level: 
+monster attacks -> attack selector -> repositioning -> player damage -> weak spots
 
 
 - HUD ammo hud
@@ -14,12 +16,15 @@ weak spots
 
         World.Instance.RegisterMonster(this);
     }
-- move RandomPatrol from brain to monster-specific
+- stop movement in patrol when entering combat
 
-- fix projectile pool
+- rotation before attack
+- bite longer distance
+- fix bullet speed not hitting
+- fix projectile pool / vfx?
 
 
 Low effort: 
-change PlayerMovment properties to data
+attacks in animationconroller to data
 player to singleplayer
 monster weakspot visuals

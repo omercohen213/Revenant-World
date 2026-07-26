@@ -1,33 +1,33 @@
-using GLTF.Schema;
 using UnityEngine;
 
-public class MonsterPatrolState : State
+public class MonsterCombatState : State
 {
-    private readonly IPatrolBehaviour _patrolBehaviour;
+    private MonsterCombat _monsterCombat;
+    private CombatDecisionMaker _decisionMaker;
 
-    public MonsterPatrolState(
+    public MonsterCombatState(
         MonsterBrain brain,
         MonsterRuntimeData runtimeData,
         MonsterMovement movement,
         MonsterAnimationController animation,
-        IPatrolBehaviour patrolBehaviour)
+        CombatDecisionMaker decisionMaker)
         : base(brain, runtimeData, movement, animation)
     {
-        _patrolBehaviour = patrolBehaviour;
+        _decisionMaker = decisionMaker;
     }
 
     public override void Enter()
     {
-        _patrolBehaviour.Enter();
+        _monsterMovement.Stop();
     }
 
     public override void Tick()
     {
-        _patrolBehaviour.Tick();
+        _decisionMaker.Tick();
     }
 
     public override void Exit()
     {
-        _patrolBehaviour.Exit();
+        Debug.Log("exit combat");
     }
 }

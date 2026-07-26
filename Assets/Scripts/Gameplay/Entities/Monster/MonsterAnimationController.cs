@@ -9,7 +9,10 @@ public class MonsterAnimationController : MonoBehaviour
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Idle = Animator.StringToHash("Idle");
     private static readonly int Move = Animator.StringToHash("Move");
-    private static readonly int Attack = Animator.StringToHash("Attack");
+    private static readonly int BiteAttack = Animator.StringToHash("Bite");
+    private static readonly int FireballAttack = Animator.StringToHash("Fireball");
+
+    private float _rootMotionMultiplier = 1f;
 
     private void Awake()
     {
@@ -26,13 +29,29 @@ public class MonsterAnimationController : MonoBehaviour
         _animator.CrossFade(Move, 0.1f);
     }
 
-    public void PlayAttack()
+    public void PlayBiteAttack()
     {
-        _animator.CrossFade(Attack, 0.05f);
+        _animator.SetTrigger(BiteAttack);
+    }
+
+    public void PlayFireballAttack()
+    {
+        _animator.SetTrigger(FireballAttack);
     }
 
     public void SetMovementSpeed(float speed)
     {
         _animator.SetFloat(Speed, speed);
+    }
+
+    private void OnAnimatorMove()
+    {
+        transform.position += _animator.deltaPosition * _rootMotionMultiplier;
+        transform.rotation *= _animator.deltaRotation;
+    }
+
+    public void SetRootMotionMultiplier(float multiplier)
+    {
+        _rootMotionMultiplier = multiplier;
     }
 }

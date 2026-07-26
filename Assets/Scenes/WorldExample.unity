@@ -7158,6 +7158,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3641011870917666852, guid: 406914f8286f20d47b9e9188c9429f1c, type: 3}
+      propertyPath: _groundedOffset
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3641011870917666852, guid: 406914f8286f20d47b9e9188c9429f1c, type: 3}
       propertyPath: _speedChangeRate
       value: 20
       objectReference: {fileID: 0}
