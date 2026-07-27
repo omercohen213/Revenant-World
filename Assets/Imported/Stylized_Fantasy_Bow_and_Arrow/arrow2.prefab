@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39adbe21cda6994ba59a6a621db0fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.01
+  Radius: 0.03
   Root: {fileID: 3938266750860339543}
   Tip: {fileID: 1501699975342428622}
   MaxLifeTime: 5
@@ -173,9 +173,9 @@ MonoBehaviour:
   ImpactVfxSpawnOffset: 0.1
   HittableLayers:
     serializedVersion: 2
-    m_Bits: 2147483767
+    m_Bits: 2147483735
   Speed: 150
-  GravityDownAcceleration: 3
+  GravityDownAcceleration: 5
   TrajectoryCorrectionDistance: -1
   InheritWeaponVelocity: 0
 --- !u!1001 &7761688875428397589

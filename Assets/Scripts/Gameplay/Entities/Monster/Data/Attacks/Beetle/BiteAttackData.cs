@@ -8,8 +8,9 @@ public class BiteAttackData : MonsterAttackData
     public override IMonsterAttack Create(
        MonsterBrain brain,
        MonsterCombat combat,
-       MonsterAnimationController animation)
+       MonsterAnimationController animation,
+       MonsterAttackPoints attackPoints)
     {
-        return new BiteAttack(brain, combat, this, animation);
+        return new BiteAttack(brain, combat, this, animation, attackPoints);
     }
 }

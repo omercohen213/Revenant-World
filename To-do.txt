@@ -1,14 +1,10 @@
 next:
-rotation, fireball spawn
+monster chase, rotation, updraft, animation match to projectile
 
 high level: 
-monster attacks -> attack selector -> repositioning -> player damage -> weak spots
+monster attacks -> attack selector and range-> repositioning and rotation,-> player damage -> weak spots
 
-
-- HUD ammo hud
-- ANIMATION ranged weapon animation to player animation
-- INVENTORY default weapon + inventory for it
-
+fix:
 - REGISTER EVERY MONSTER ON ENTITY. USE WORLD MANAGER AND CURRENTWORLD REFERENCE
  protected override void OnEnable()
     {
@@ -20,11 +16,17 @@ monster attacks -> attack selector -> repositioning -> player damage -> weak spo
 
 - rotation before attack
 - bite longer distance
-- fix bullet speed not hitting
-- fix projectile pool / vfx?
+- bow tip
+- projectile pool / vfx?
 
 
 Low effort: 
 attacks in animationconroller to data
 player to singleplayer
 monster weakspot visuals
+
+
+low prio:
+- HUD ammo hud
+- ranged weapon animation to player animation
+- INVENTORY default weapon + inventory for it

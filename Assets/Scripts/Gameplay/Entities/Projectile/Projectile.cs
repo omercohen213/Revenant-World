@@ -9,47 +9,18 @@ using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
-    [Header("General")]
-    [Tooltip("Radius of this projectile's collision detection")]
-    public float Radius = 0.01f;
-
     [Tooltip("Transform representing the root of the projectile (used for accurate collision detection)")]
     public Transform Root;
 
     [Tooltip("Transform representing the tip of the projectile (used for accurate collision detection)")]
     public Transform Tip;
 
-    [Tooltip("LifeTime of the projectile")]
-    public float MaxLifeTime = 5f;
-
-    [Tooltip("Default VFX prefab to spawn upon impact on objects")]
-    public GameObject DefaultImpactVfx;
+    private IProjectilePool _pool;
     private ObjectPool<GameObject> _impactVFXPool;
 
-    [Tooltip("LifeTime of the VFX before being destroyed")]
-    public float ImpactVfxLifetime = 5f;
-
-    [Tooltip("Offset along the hit normal where the VFX will be spawned")]
-    public float ImpactVfxSpawnOffset = 0.1f;
-
-    [Tooltip("Layers this projectile can collide with")]
-    public LayerMask HittableLayers = -1;
-
-    [Header("Movement")]
-    [Tooltip("Speed of the projectile")]
-    public float Speed = 20f;
-
-    [Tooltip("Downward acceleration from gravity")]
-    public float GravityDownAcceleration = 0f;
-
-
-    [Tooltip(
-        "Distance over which the projectile will correct its course to fit the intended trajectory (used to drift projectiles towards center of screen in First Person view). At values under 0, there is no correction")]
-    public float TrajectoryCorrectionDistance = -1;
-
-    [Tooltip("Determines if the projectile inherits the velocity that the weapon's muzzle had when firing")]
-    public bool InheritWeaponVelocity = false;
-
+    private ProjectileData _data;
+    private ProjectileContext _context;
+    private bool _initialized;
 
     private Vector3 _lastRootPosition;
     private Vector3 _velocity;
@@ -60,24 +31,34 @@ public class Projectile : MonoBehaviour
 
     private const QueryTriggerInteraction k_TriggerInteraction = QueryTriggerInteraction.Collide;
 
-    public GameObject Owner { get; private set; }
-    public Weapon WeaponParent { get; private set; }
     public Vector3 InitialPosition { get; private set; }
     public Vector3 InitialDirection { get; private set; }
     public Vector3 InheritedMuzzleVelocity { get; private set; }
 
-    private void Awake()
+    public void Initialize(ProjectileData data, ProjectileContext context, IProjectilePool pool)
     {
-        if (DefaultImpactVfx != null)
+        _initialized = true;
+        _context = context;
+        _pool = pool;
+
+        if (_data != data)
         {
-            _impactVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(DefaultImpactVfx);
+            _data = data;
+            SetupData();
         }
     }
 
-    void OnEnable()
+    private void SetupData()
     {
-        ResetState();
-        StartCoroutine(SelfDestructCoroutine(MaxLifeTime));
+        if (_data.ImpactVFX != null)
+        {
+            _impactVFXPool = ObjectPoolingManager.Instance.GetOrCreatePool(_data.ImpactVFX);
+        }
+    }
+
+    public void SetPool(IProjectilePool pool)
+    {
+        _pool = pool;
     }
 
     public void ResetState()
@@ -92,6 +73,9 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
+        if (!_initialized)
+            return;
+
         MoveProjectile();
         CorrectTrajectory();
         HandleRotation();
@@ -105,7 +89,7 @@ public class Projectile : MonoBehaviour
     private void MoveProjectile()
     {
         transform.position += _velocity * Time.deltaTime;
-        if (InheritWeaponVelocity)
+        if (_data.InheritWeaponVelocity)
         {
             transform.position += InheritedMuzzleVelocity * Time.deltaTime;
         }
@@ -121,7 +105,7 @@ public class Projectile : MonoBehaviour
             Vector3 correctionLeft = _trajectoryCorrectionVector - _consumedTrajectoryCorrectionVector;
             float distanceThisFrame = (Root.position - _lastRootPosition).magnitude;
             Vector3 correctionThisFrame =
-                (distanceThisFrame / TrajectoryCorrectionDistance) * _trajectoryCorrectionVector;
+                (distanceThisFrame / _data.TrajectoryCorrectionDistance) * _trajectoryCorrectionVector;
             correctionThisFrame = Vector3.ClampMagnitude(correctionThisFrame, correctionLeft.magnitude);
             _consumedTrajectoryCorrectionVector += correctionThisFrame;
 
@@ -140,16 +124,16 @@ public class Projectile : MonoBehaviour
     {
         if (_velocity.sqrMagnitude > 0.01f)  // Only rotate if moving
         {
-            transform.rotation = Quaternion.LookRotation(_velocity * -1);
+            transform.rotation = Quaternion.LookRotation(_velocity);
         }
     }
 
     // add gravity to the projectile velocity for ballistic effect
     private void HandleGravity()
     {
-        if (GravityDownAcceleration > 0)
+        if (_data.GravityAcceleration > 0)
         {
-            _velocity += Vector3.down * GravityDownAcceleration * Time.deltaTime;
+            _velocity += Vector3.down * _data.GravityAcceleration * Time.deltaTime;
         }
     }
 
@@ -162,8 +146,8 @@ public class Projectile : MonoBehaviour
 
         // Sphere cast
         Vector3 displacementSinceLastFrame = Tip.position - _lastRootPosition;
-        RaycastHit[] hits = Physics.SphereCastAll(_lastRootPosition, Radius,
-            displacementSinceLastFrame.normalized, displacementSinceLastFrame.magnitude, HittableLayers,
+        RaycastHit[] hits = Physics.SphereCastAll(_lastRootPosition, _data.Radius,
+            displacementSinceLastFrame.normalized, displacementSinceLastFrame.magnitude, _data.HittableLayers,
             k_TriggerInteraction);
         foreach (var hit in hits)
         {
@@ -187,41 +171,34 @@ public class Projectile : MonoBehaviour
         }
     }
 
-
-    public void Shoot(Weapon weapon)
+    public void Launch()
     {
-        WeaponParent = weapon;
-        Owner = weapon.Owner.gameObject;
-        Transform muzzleTransform = weapon.WeaponTip;
-
-        CameraManager ownerCameraManager = Owner.GetComponent<CameraManager>();
-
-        CinemachineCamera activeCamera = ownerCameraManager.Camera;
-
-        // Get aiming direction from the correct camera
-        Vector3 aimDirection = activeCamera.transform.forward;
+        ResetState();
 
         // Set projectile position at the muzzle   
         // Correct rotation: Align projectile's forward (Z-axis) with the aiming direction
-        transform.SetPositionAndRotation(muzzleTransform.position, Quaternion.LookRotation(aimDirection));
+        transform.SetPositionAndRotation(_context.ReleasePosition, Quaternion.LookRotation(_context.Direction));
 
         // Store the initial direction
         InitialPosition = transform.position;
-        InitialDirection = aimDirection;
+        InitialDirection = _context.Direction;
 
         // Set the velocity in the new direction
-        _velocity = aimDirection * Speed;
+        _velocity = _context.Direction * _data.Speed;
 
         // Apply inherited weapon velocity
-        InheritedMuzzleVelocity = weapon.WeaponVelocity;
-        if (InheritWeaponVelocity)
+        InheritedMuzzleVelocity = _context.InitialVelocity;
+        if (_data.InheritWeaponVelocity)
         {
             _velocity += InheritedMuzzleVelocity;
         }
 
         // Ignore colliders of the weapon owner
-        Collider[] ownerColliders = Owner.GetComponentsInChildren<Collider>();
+        Collider[] ownerColliders = _context.Owner.GetComponentsInChildren<Collider>();
         _ignoredColliders = new List<Collider>(ownerColliders);
+
+        gameObject.SetActive(true);
+        StartCoroutine(SelfDestructCoroutine(_data.MaxLifeTime));
     }
 
     private bool IsHitValid(RaycastHit hit)
@@ -252,8 +229,8 @@ public class Projectile : MonoBehaviour
             HitData hitData = new()
             {
                 HitPoint = hitPoint,
-                Damage = WeaponParent.WeaponData.ProjectileDamage,
-                DamageSource = Owner
+                Damage = _context.Damage,
+                DamageSource = _context.Owner.gameObject
             };
 
             damageable.ReceiveHit(hitData);
@@ -262,7 +239,7 @@ public class Projectile : MonoBehaviour
         else
         {
             // impact vfx on objects
-            if (DefaultImpactVfx != null)
+            if (_data.ImpactVFX != null)
             {
                 GameObject impactVFX = _impactVFXPool.Get();
                 impactVFX.transform.SetPositionAndRotation(hitPoint, Quaternion.LookRotation(normal));
@@ -273,12 +250,12 @@ public class Projectile : MonoBehaviour
         }
 
         // return the projectile to the pool
-        WeaponParent.ProjectilePool.Release(this);
+        _pool.Release(this);
     }
 
     private IEnumerator SelfDestructCoroutine(float lifetime)
     {
         yield return new WaitForSeconds(lifetime);
-        WeaponParent.ProjectilePool.Release(this);
+        _pool.Release(this);
     }
 }

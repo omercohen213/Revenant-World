@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4e0aa53136a434db3c75418d29d1eb, type: 3}
   m_Name: BiteAttackData
   m_EditorClassIdentifier: 
-  AttackName: 
-  Cooldown: 0
-  Range: 0
-  Damage: 0
+  AttackName: Bite
+  Cooldown: 3
+  Range: 3
+  Damage: 100

@@ -22,6 +22,9 @@ MonoBehaviour:
   PatrolStoppingDelay: 1
   AggroRange: 0
   LoseTargetRange: 0
+  Attacks:
+  - {fileID: 11400000, guid: b7b49259f0d9262488cb7db2591d2a48, type: 2}
+  - {fileID: 11400000, guid: 62910384ed7c9e84e9b545bd32265038, type: 2}
   AttackPatternCooldown: 0
   AiStateChangeRate: 0
   AttackRange: 0

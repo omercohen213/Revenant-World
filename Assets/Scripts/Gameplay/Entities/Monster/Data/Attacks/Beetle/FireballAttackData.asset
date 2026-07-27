@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d7b0830c54490428eb1e0b506a20dd, type: 3}
   m_Name: FireballAttackData
   m_EditorClassIdentifier: 
-  AttackName: 
-  Cooldown: 0
-  Range: 0
-  Damage: 0
-  ProjectilePrefab: {fileID: 0}
+  AttackName: Fireball
+  Cooldown: 3
+  Range: 10
+  Damage: 20
+  ProjectilePrefab: {fileID: 3768141594774851940, guid: 56a31e3fb12a7da4cb69ab4dfcc420ac, type: 3}
+  ProjectileData: {fileID: 11400000, guid: 411d561c76321af4ebe7ad7a86b84185, type: 2}

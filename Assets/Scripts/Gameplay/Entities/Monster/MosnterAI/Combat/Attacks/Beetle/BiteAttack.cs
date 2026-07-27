@@ -16,7 +16,8 @@ public class BiteAttack : IMonsterAttack
         MonsterBrain brain,
         MonsterCombat combat,
         BiteAttackData data,
-        MonsterAnimationController animationController)
+        MonsterAnimationController animationController,
+        MonsterAttackPoints attackPoints)
     {
         _brain = brain;
         _combat = combat;

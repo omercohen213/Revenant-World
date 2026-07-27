@@ -9,5 +9,6 @@ public abstract class MonsterAttackData : ScriptableObject
     public abstract IMonsterAttack Create(
         MonsterBrain brain,
         MonsterCombat combat,
-        MonsterAnimationController animation);
+        MonsterAnimationController animation,
+        MonsterAttackPoints attackPoints);
 }

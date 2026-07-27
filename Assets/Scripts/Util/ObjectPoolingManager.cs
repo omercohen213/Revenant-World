@@ -34,14 +34,7 @@ public class ObjectPoolingManager : MonoBehaviour
                 T newObj = Instantiate(prefab);
                 return newObj;
             },
-            actionOnGet: obj =>
-            {
-                obj.gameObject.SetActive(true);
-                if (obj is Projectile projectile)
-                {
-                    projectile.ResetState();
-                }
-            },
+            actionOnGet: obj => { },
             actionOnRelease: obj => obj.gameObject.SetActive(false),
             actionOnDestroy: obj => Destroy(obj.gameObject),
             collectionCheck: false,
@@ -62,7 +55,7 @@ public class ObjectPoolingManager : MonoBehaviour
         // Check if a pool already exists
         if (_pools.TryGetValue(key, out var existingPool))
             return (ObjectPool<GameObject>)existingPool;
-      
+
         // Create a new object pool
         var pool = new ObjectPool<GameObject>(
             createFunc: () =>
@@ -70,7 +63,7 @@ public class ObjectPoolingManager : MonoBehaviour
                 GameObject newObj = Instantiate(prefab);
                 return newObj;
             },
-            actionOnGet: obj => obj.SetActive(true),
+            actionOnGet: obj => { },
             actionOnRelease: obj => obj.SetActive(false),
             actionOnDestroy: obj => Destroy(obj),
             collectionCheck: false,

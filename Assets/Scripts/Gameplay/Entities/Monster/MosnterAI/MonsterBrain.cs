@@ -21,6 +21,7 @@ public class MonsterBrain : MonoBehaviour
     private CombatDecisionMaker _combatDecisionMaker;
     private AttackSelector _attackSelector;
     private List<IMonsterAttack> _attacks;
+    private MonsterAttackPoints _attackPoints;
     private StateMachine _stateMachine;
     private PatrolArea _patrolArea;
     private LOSSensor _sensor;
@@ -40,7 +41,6 @@ public class MonsterBrain : MonoBehaviour
     private void Awake()
     {
         Initialize();
-     
     }
 
     private void Initialize()
@@ -53,10 +53,11 @@ public class MonsterBrain : MonoBehaviour
         _sensor = GetComponent<LOSSensor>();
 
         _attacks = new List<IMonsterAttack>();
+        _attackPoints = GetComponent<MonsterAttackPoints>();
 
         foreach (MonsterAttackData attackData in _data.BaseData.Attacks)
         {
-            _attacks.Add(attackData.Create(this,_monsterCombat,_animation));
+            _attacks.Add(attackData.Create(this,_monsterCombat,_animation, _attackPoints));
         }
 
         _stateMachine = new StateMachine();

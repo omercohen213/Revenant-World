@@ -190,15 +190,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21809dc367abb694d90352bbd01308ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentLevel: 0
-  CurrentMaxHealth: 0
-  CurrentHealth: 0
-  CurrentMovementSpeed: 0
-  CurrentAttackDamage: 0
-  CurrentAttackSpeed: 0
-  CurrentArmor: 0
-  CurrentXpReward: 0
-  CurrentKpReward: 0
+  Level: 0
+  MaxHealth: 0
+  Health: 0
+  MovementSpeed: 0
+  AttackDamage: 0
+  AttackSpeed: 0
+  Armor: 0
+  XpReward: 0
+  KpReward: 0
   _baseData: {fileID: 0}
   Kp: 0
   Gold: 0
@@ -326,19 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6a1cf865e63454b92ad45655d72785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gravity: -19.81
-  _moveSpeed: 4
-  _sprintSpeed: 6
-  _speedChangeRate: 10
-  _jumpHeight: 1
-  _jumpTimeout: 0.1
-  _fallTimeout: 0.15
-  _isGrounded: 1
-  _groundedOffset: 0.14
-  _groundedRadius: 0.5
-  _groundLayers:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &6138751440454962997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,9 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02db9e9537fca204795d1ac093b12b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelfDamageMultiplier: 0.5
-  _hitVFX: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
-  _hitVFXLifetime: 0.3
+  _hitZoneData: {fileID: 11400000, guid: bbae9f60d68577a48be7c79aac4decf1, type: 2}
 --- !u!114 &8331266957339004985
 MonoBehaviour:
   m_ObjectHideFlags: 0

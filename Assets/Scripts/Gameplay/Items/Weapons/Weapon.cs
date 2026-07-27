@@ -1,16 +1,16 @@
 using NaughtyAttributes;
 using System;
 using Unity.Burst.Intrinsics;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Pool;
 
 
-public abstract class Weapon : Item, IWeapon
+public abstract class Weapon : Item, IWeapon, IProjectilePool
 {
     [HideInInspector] public WeaponData WeaponData => ItemData as WeaponData;
     [HideInInspector] public Entity Owner;
     public ObjectPool<Projectile> ProjectilePool;
-
 
     [Header("Projectile Spawning")]
     public Transform WeaponTip; //Tip of the weapon, where the projectiles are shot
@@ -52,8 +52,6 @@ public abstract class Weapon : Item, IWeapon
 
     private void Start()
     {
-
-        // *****************************
         if (_player != null)
         {
             Owner = _player;
@@ -87,7 +85,7 @@ public abstract class Weapon : Item, IWeapon
 
     public virtual void TryAttack()
     {
-        
+
     }
 
     // Spawn a projectile
@@ -95,9 +93,20 @@ public abstract class Weapon : Item, IWeapon
     {
         if (ProjectilePool != null)
         {
-            Projectile newProjectile = ProjectilePool.Get();
-            newProjectile.Shoot(this);
+            CameraManager ownerCameraManager = Owner.GetComponent<CameraManager>();
+            CinemachineCamera activeCamera = ownerCameraManager.Camera;
+            Vector3 aimDirection = activeCamera.transform.forward;
+
+            Projectile projectile = ProjectilePool.Get();
+            ProjectileContext context = new(Owner, WeaponTip.position, aimDirection, WeaponData.ProjectileDamage, WeaponVelocity);
+            projectile.Initialize(WeaponData.ProjectileData, context, this);
+            projectile.Launch();
         }
+    }
+
+    public void Release(Projectile projectile)
+    {
+        ProjectilePool.Release(projectile);
     }
 }
 
