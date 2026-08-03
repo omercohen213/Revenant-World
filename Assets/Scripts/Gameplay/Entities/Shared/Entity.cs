@@ -12,7 +12,6 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         _health = GetComponent<EntityHealth>();
-
     }
 
     protected virtual void Start()
@@ -23,6 +22,11 @@ public abstract class Entity : MonoBehaviour
     protected virtual void OnEnable()
     {
         _health.OnHealthReachedZero += HandleDeath;
+    }
+
+    protected virtual void Update()
+    {
+        
     }
 
     protected virtual void OnDisable()
@@ -43,5 +47,10 @@ public abstract class Entity : MonoBehaviour
     public virtual EntityRuntimeData GetEntityData()
     {
         return null;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        
     }
 }

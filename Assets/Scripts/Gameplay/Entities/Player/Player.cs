@@ -59,12 +59,6 @@ public class Player : Entity
 
     private void OnLevelUp(int level)
     {
-        StartLevelUpAnimation();
-    }
-
-    private void StartLevelUpAnimation()
-    {
-
     }
 
     public override EntityRuntimeData GetEntityData()

@@ -24,7 +24,7 @@ public class Damageable : MonoBehaviour
 
         _receiver?.RecieveDamage(hitData);
         OnHit?.Invoke(hitData);
-        Debug.Log("received dmg: "+ hitData.HitZoneData.ZoneName);
+        //Debug.Log("received dmg: "+ hitData.HitZoneData.ZoneName);
     }
 }
 

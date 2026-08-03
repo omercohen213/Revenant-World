@@ -3,30 +3,19 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(MonsterRuntimeData))]
-public class MonsterMovement : MonoBehaviour
+public class MonsterMovement: IDisposable
 {
-    private MonsterAnimationController _animationController;
-    private NavMeshAgent _agent;
-    private MonsterRuntimeData _data;
+    public float CurrentSpeed => _agent.velocity.magnitude;
+    private readonly NavMeshAgent _agent;
 
-    private void Awake()
+    public MonsterMovement(NavMeshAgent agent, float movementSpeed)
     {
-        _animationController = GetComponentInChildren<MonsterAnimationController>();
-        _agent = GetComponent<NavMeshAgent>();
-        _data = GetComponent<MonsterRuntimeData>();
+        _agent = agent;
+        _agent.speed = movementSpeed;
     }
 
-    private void Start()
+    public void Tick()
     {
-        _agent.speed = _data.BaseData.MovementSpeed;
-    }
-
-    private void Update()
-    {
-        float currentSpeed = _agent.velocity.magnitude;
-        _animationController.SetMovementSpeed(currentSpeed);
     }
 
     public void Stop()
@@ -55,9 +44,13 @@ public class MonsterMovement : MonoBehaviour
 
         if (_agent.remainingDistance > _agent.stoppingDistance)
         {
-            return false ;
+            return false;
         }
 
         return !_agent.hasPath || _agent.velocity.sqrMagnitude < 0.01f;
+    }
+
+    public void Dispose()
+    {
     }
 }

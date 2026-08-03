@@ -19,11 +19,12 @@ MonoBehaviour:
   AttackDamage: 10
   AttackSpeed: 1
   Armor: 5
+  HasPatrolBehaviour: 1
   PatrolStoppingDelay: 1
   AggroRange: 0
   LoseTargetRange: 0
-  Attacks:
-  - {fileID: 11400000, guid: b7b49259f0d9262488cb7db2591d2a48, type: 2}
+  Abilities:
+  - {fileID: 11400000, guid: 4799a18f39b322943b3b25d67c996191, type: 2}
   - {fileID: 11400000, guid: 62910384ed7c9e84e9b545bd32265038, type: 2}
   AttackPatternCooldown: 0
   AiStateChangeRate: 0

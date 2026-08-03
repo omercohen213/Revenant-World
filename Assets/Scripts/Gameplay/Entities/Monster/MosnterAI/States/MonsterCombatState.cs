@@ -2,32 +2,28 @@ using UnityEngine;
 
 public class MonsterCombatState : State
 {
-    private MonsterCombat _monsterCombat;
-    private CombatDecisionMaker _decisionMaker;
+    private MonsterCombat _combat;
 
     public MonsterCombatState(
-        MonsterBrain brain,
         MonsterRuntimeData runtimeData,
-        MonsterMovement movement,
-        MonsterAnimationController animation,
-        CombatDecisionMaker decisionMaker)
-        : base(brain, runtimeData, movement, animation)
+        MonsterCombat combat)
+        : base(runtimeData)
     {
-        _decisionMaker = decisionMaker;
+        _combat = combat;
     }
 
     public override void Enter()
     {
-        _monsterMovement.Stop();
+        _combat.StartCombat();
     }
 
     public override void Tick()
     {
-        _decisionMaker.Tick();
     }
 
     public override void Exit()
     {
+        _combat.ExitCombat();
         Debug.Log("exit combat");
     }
 }

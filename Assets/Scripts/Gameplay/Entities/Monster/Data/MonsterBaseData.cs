@@ -5,6 +5,7 @@ using UnityEngine;
 public class MonsterBaseData : EntityBaseData
 {
     [Header("States")]
+    public bool HasPatrolBehaviour;
     public float PatrolStoppingDelay;       // Delay time for stopping each time reched destination in patrol state
 
     [Header("Detection")]
@@ -12,7 +13,7 @@ public class MonsterBaseData : EntityBaseData
     public float LoseTargetRange;
 
     [Header("Combat")]
-    public List<MonsterAttackData> Attacks;
+    public List<MonsterAbilityData> Abilities;
     public float AttackPatternCooldown;     // Cooldown between special attack patterns
     public float AiStateChangeRate;     // Rate at which monster switches behavior (e.g., idle to attacking)
     public float AttackRange;        // Rate at which monster switches behavior (e.g., idle to attacking)

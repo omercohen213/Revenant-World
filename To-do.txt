@@ -1,27 +1,38 @@
 next:
-monster chase, rotation, updraft, animation match to projectile
+entity health to c#
+position in data
 
-high level: 
-monster attacks -> attack selector and range-> repositioning and rotation,-> player damage -> weak spots
+BITE DASH RANGE, hit box
+rotation,
+updraft,
+damage indicator
+
+high level:
+monster attacks -> attack selector and range-> repositioning and rotation-> player damage -> weak spots
 
 fix:
+monsterSensor updateTargetInfo
 - REGISTER EVERY MONSTER ON ENTITY. USE WORLD MANAGER AND CURRENTWORLD REFERENCE
- protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        World.Instance.RegisterMonster(this);
-    }
 - stop movement in patrol when entering combat
-
 - rotation before attack
 - bite longer distance
 - bow tip
-- projectile pool / vfx?
+- projectile pool
+- create attacks in combat instead of brain?
+- ranged attack
+- layers + monster vision blocking layers
 
+architecture: 
+update monster transfrom position only in runtime data
+public interface IMonsterSystem
+{
+    void Update();
+}
+player -> playerLevelManager
+world -> worldManager
+dash -> playerAbilityManger
 
-Low effort: 
-attacks in animationconroller to data
+Low effort:
 player to singleplayer
 monster weakspot visuals
 

@@ -21,6 +21,5 @@ MonoBehaviour:
   GravityAcceleration: 0
   InheritWeaponVelocity: 0
   TrajectoryCorrectionDistance: -1
-  Damage: 10
   ImpactVFX: {fileID: 1259728499545269012, guid: 56194691821dbea49af3609eba679ad1, type: 3}
   ImpactVFXOffset: 0.1

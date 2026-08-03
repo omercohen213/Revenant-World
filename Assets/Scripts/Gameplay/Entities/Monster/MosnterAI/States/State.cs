@@ -2,22 +2,11 @@ using UnityEngine;
 
 public class State : IState
 {
-    protected readonly MonsterBrain _brain;
     protected readonly MonsterRuntimeData _runtimeData;
-    protected readonly MonsterMovement _monsterMovement;
-    protected readonly MonsterAnimationController _animController;
 
-    protected State(
-        MonsterBrain brain,
-        MonsterRuntimeData runtimeData,
-        MonsterMovement movement,
-        MonsterAnimationController animController
-        )
+    protected State(MonsterRuntimeData runtimeData)
     {
-        _brain = brain;
         _runtimeData = runtimeData;
-        _monsterMovement = movement;
-        _animController = animController;
     }
 
     public virtual void Enter() { }
@@ -25,5 +14,14 @@ public class State : IState
     public virtual void Tick() { }
 
     public virtual void Exit() { }
+}
 
+public enum MonsterStateType
+{
+    Idle,
+    Patrol,
+    Combat, // seperate to attack, chase, retreat
+    Stunned,
+    Dead
+      
 }

@@ -6,12 +6,9 @@ public class MonsterPatrolState : State
     private readonly IPatrolBehaviour _patrolBehaviour;
 
     public MonsterPatrolState(
-        MonsterBrain brain,
         MonsterRuntimeData runtimeData,
-        MonsterMovement movement,
-        MonsterAnimationController animation,
         IPatrolBehaviour patrolBehaviour)
-        : base(brain, runtimeData, movement, animation)
+        : base(runtimeData)
     {
         _patrolBehaviour = patrolBehaviour;
     }

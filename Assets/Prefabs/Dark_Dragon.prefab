@@ -4705,6 +4705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3df5ac9b291d934a83316c0babca04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rootTransform: {fileID: 0}
 --- !u!1 &4273246040647264005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4945,9 +4946,8 @@ GameObject:
   - component: {fileID: 2348639386395231473}
   - component: {fileID: 1953984571987092291}
   - component: {fileID: 4796691067125502809}
-  - component: {fileID: 8984808553781734196}
   - component: {fileID: 4551171798635424385}
-  - component: {fileID: 3360688781022761496}
+  - component: {fileID: 8401333914205907386}
   m_Layer: 0
   m_Name: Dark_Dragon
   m_TagString: Untagged
@@ -5007,7 +5007,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0972751963720489af3dada528ae4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MonsterData: {fileID: 0}
 --- !u!114 &2348639386395231473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5020,9 +5019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02db9e9537fca204795d1ac093b12b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelfDamageMultiplier: 0.5
-  _hitVFX: {fileID: 854334216272741172, guid: b0590f575f7e3b848975e2efce7806ef, type: 3}
-  _hitVFXLifetime: 0.3
+  _hitZoneData: {fileID: 0}
 --- !u!114 &1953984571987092291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5044,6 +5041,7 @@ MonoBehaviour:
   Armor: 0
   XpReward: 0
   KpReward: 0
+  Position: {x: 0, y: 0, z: 0}
   _baseData: {fileID: 11400000, guid: 47a0c1d0f25a73d45a36fc6c900d6cc4, type: 2}
 --- !u!114 &4796691067125502809
 MonoBehaviour:
@@ -5058,22 +5056,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
---- !u!114 &8984808553781734196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616211505216702690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2633ecb720cbd2c44a0c65005af1a463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  PatrolPoint: {fileID: 0}
 --- !u!195 &4551171798635424385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5096,7 +5078,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3360688781022761496
+--- !u!114 &8401333914205907386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5105,9 +5087,152 @@ MonoBehaviour:
   m_GameObject: {fileID: 4616211505216702690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dc73a9e64afc3040b4ff9a28af9499e, type: 3}
+  m_Script: {fileID: 11500000, guid: 37d0f18f006f45eabdf63f3b9421bdb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  comment: 
+  signalProcessors: []
+  OnDetected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLostDetection:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSomeDetection:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNoDetection:
+    m_PersistentCalls:
+      m_Calls: []
+  inputSensor:
+    value: {fileID: 0}
+  pulseRoutine:
+    Mode:
+      value: 2
+    UpdateFunction: 0
+    Interval:
+      value: 1
+  BlocksLineOfSight:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTriggerColliders: 0
+  PointSamplingMethod: 0
+  TestLOSTargetsOnly: 0
+  NumberOfRays: 1
+  MinimumVisibility: 0.5
+  MovingAverageEnabled: 0
+  MovingAverageWindowSize: 10
+  LimitDistance: 0
+  MaxDistance: 1
+  VisibilityByDistance:
+    Mode: 0
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  LimitViewAngle: 0
+  MaxHorizAngle: 45
+  VisibilityByHorizAngle:
+    Mode: 0
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  MaxVertAngle: 45
+  VisibilityByVertAngle:
+    Mode: 0
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.5
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  FOVConstraintMethod: 0
 --- !u!1 &4625528097855613612
 GameObject:
   m_ObjectHideFlags: 0

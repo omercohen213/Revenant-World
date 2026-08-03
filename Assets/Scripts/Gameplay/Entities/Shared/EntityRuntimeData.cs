@@ -6,7 +6,6 @@ using UnityEngine;
 public abstract class EntityRuntimeData : MonoBehaviour
 {
     // Untyped access for generic systems.
-
     public abstract EntityBaseData BaseDataUntyped { get; }
 
     [Header("Runtime Stats")]
@@ -19,6 +18,8 @@ public abstract class EntityRuntimeData : MonoBehaviour
     public float Armor;
     public int XpReward;
     public int KpReward;
+
+    public Vector3 Position;
 }
 
 
@@ -33,6 +34,7 @@ public abstract class EntityRuntimeData<TBaseData> : EntityRuntimeData
 
     // Untyped access for shared systems.
     public override EntityBaseData BaseDataUntyped => _baseData;
+
 
     protected virtual void Awake()
     {

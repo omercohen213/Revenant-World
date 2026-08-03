@@ -17,7 +17,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483712
   MaxLifeTime: 5
-  Speed: 10
+  Speed: 20
   GravityAcceleration: 0
   InheritWeaponVelocity: 0
   TrajectoryCorrectionDistance: -1

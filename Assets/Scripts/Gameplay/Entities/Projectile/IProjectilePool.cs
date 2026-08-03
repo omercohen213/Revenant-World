@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IProjectilePool
 {
-    public void Release(Projectile projectile);
+    public void ReleaseFromPool(Projectile projectile);
 }

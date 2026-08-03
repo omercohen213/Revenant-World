@@ -96,6 +96,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "UpDraft",
+                    "type": "PassThrough",
+                    "id": "39340b49-ed74-45de-b13a-e00a69d28def",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Inventory",
                     "type": "Button",
                     "id": "1fa572ef-49a6-4809-9571-b4e3574d09f7",
@@ -388,6 +397,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "606b1b79-eeaa-40c6-b65a-acb70b9cee15",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDraft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

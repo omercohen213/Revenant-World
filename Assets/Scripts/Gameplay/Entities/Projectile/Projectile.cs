@@ -187,11 +187,11 @@ public class Projectile : MonoBehaviour
         _velocity = _context.Direction * _data.Speed;
 
         // Apply inherited weapon velocity
-        InheritedMuzzleVelocity = _context.InitialVelocity;
+        /*InheritedMuzzleVelocity = _context.InitialVelocity;
         if (_data.InheritWeaponVelocity)
         {
             _velocity += InheritedMuzzleVelocity;
-        }
+        }*/
 
         // Ignore colliders of the weapon owner
         Collider[] ownerColliders = _context.Owner.GetComponentsInChildren<Collider>();
@@ -250,12 +250,12 @@ public class Projectile : MonoBehaviour
         }
 
         // return the projectile to the pool
-        _pool.Release(this);
+        _pool.ReleaseFromPool(this);
     }
 
     private IEnumerator SelfDestructCoroutine(float lifetime)
     {
         yield return new WaitForSeconds(lifetime);
-        _pool.Release(this);
+        _pool.ReleaseFromPool(this);
     }
 }

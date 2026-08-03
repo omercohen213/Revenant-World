@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class MonsterIdleState : State
 {
+    private MonsterMovement _monsterMovement;
+
     public MonsterIdleState(
-        MonsterBrain brain,
         MonsterRuntimeData runtimeData,
-        MonsterMovement movement,
-        MonsterAnimationController animation)
-        : base(brain, runtimeData, movement, animation)
+        MonsterMovement movement)
+        : base(runtimeData)
     {
+        _monsterMovement = movement;
     }
   
     public override void Enter()

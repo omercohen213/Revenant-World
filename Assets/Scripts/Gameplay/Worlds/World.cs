@@ -91,7 +91,7 @@ public class World : MonoBehaviour
             killObjective.RegisterKill();
             OnMonsterKilled?.Invoke(monster);
 
-            Debug.Log($"{killer} killed {monster}");
+            //Debug.Log($"{killer} killed {monster}");
         }
     }
 

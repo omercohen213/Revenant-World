@@ -104,7 +104,7 @@ public abstract class Weapon : Item, IWeapon, IProjectilePool
         }
     }
 
-    public void Release(Projectile projectile)
+    public void ReleaseFromPool(Projectile projectile)
     {
         ProjectilePool.Release(projectile);
     }

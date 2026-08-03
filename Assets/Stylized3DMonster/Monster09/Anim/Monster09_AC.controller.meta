@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 093f3fc55cc282f4290af6444e6cdcf4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 350496
+  packageName: "Fantasy Monster 09 \u2013 Game Ready (Rigged + Animations) \u2013
+    PixeliusVita"
+  packageVersion: 1.0
+  assetPath: Assets/Stylized3DMonster/Monster09/Anim/Monster09_AC.controller
+  uploadId: 898198

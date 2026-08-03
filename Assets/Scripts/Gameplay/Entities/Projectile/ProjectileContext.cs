@@ -8,7 +8,6 @@ public class ProjectileContext
     public Vector3 Direction { get; }
     public Vector3 ReleasePosition { get; }
     public float Damage { get; }
-    public Vector3 InitialVelocity { get; }
 
     public ProjectileContext(Entity owner, Vector3 releasePosition, Vector3 direction, float damage, Vector3 initialVelocity)
     {
@@ -16,6 +15,5 @@ public class ProjectileContext
         ReleasePosition = releasePosition;
         Direction = direction;
         Damage = damage;
-        InitialVelocity = initialVelocity;
     }
 }

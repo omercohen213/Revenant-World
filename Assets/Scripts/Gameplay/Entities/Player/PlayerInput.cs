@@ -13,6 +13,7 @@ public class PlayerInput : MonoBehaviour
 
     public event Action OnJumpPressed;
     public event Action OnDashPressed;
+    public event Action OnUpwardDashPressed;
     public event Action OnCrouchPressed;
     public event Action OnReloadPressed;
     public event Action OnAimPressed;
@@ -115,6 +116,7 @@ public class PlayerInput : MonoBehaviour
     // One-Frame actions
     public void OnJump(InputValue value) { if (value.isPressed) OnJumpPressed?.Invoke(); }
     public void OnDash(InputValue value) { if (value.isPressed) OnDashPressed?.Invoke(); }
+    public void OnUpwardDash(InputValue value) { if (value.isPressed) OnUpwardDashPressed?.Invoke(); }
     public void OnCrouch(InputValue value) { if (value.isPressed) OnCrouchPressed?.Invoke(); }
     public void OnReload(InputValue value) { if (value.isPressed) OnReloadPressed?.Invoke(); }
     public void OnAim(InputValue value)

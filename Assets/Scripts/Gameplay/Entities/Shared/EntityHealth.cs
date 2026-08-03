@@ -38,6 +38,7 @@ public class EntityHealth : MonoBehaviour, IDamageReceiver
         CurrentHealth = MaxHealth;
     }
 
+  
     // Heal for heal amount
     public virtual void Heal(float healAmount)
     {
@@ -108,35 +109,6 @@ public class EntityHealth : MonoBehaviour, IDamageReceiver
 
         CheckDeath(hitData.DamageSource);
     }
-
-    /*private IEnumerator RegenerateCoroutine()
-{
-   while (true)
-   {
-       if (isInCombat)
-       {
-           yield return new WaitForSeconds(inCombatDelay);
-           isInCombat = false; // set isInCombat back to false after inCombatDelay
-       }
-       else
-       {
-           bool shouldRegenerateHp = hp < maxHp;
-
-           if (shouldRegenerateHp)
-           {
-               // Regenerate HP
-               hp += hpRegen;
-               if (hp > maxHp)
-               {
-                   hp = maxHp;
-               }
-               hud.onHpChange();
-           }
-
-           // Wait for the next regeneration tick
-           yield return new WaitForSeconds(regenDelay);
-       }
-   }*/
 }
 
 
